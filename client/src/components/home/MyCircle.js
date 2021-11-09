@@ -44,6 +44,15 @@ function MyCircle() {
   };
 
   const inviteHandler = async () => {
+    if (
+      inviteState.firstName.length === 0 ||
+      inviteState.lastName.length === 0 ||
+      inviteState.email.length === 0 ||
+      inviteState.circle === "" ||
+      inviteState.phone === ""
+    ) {
+      return false;
+    }
     try {
       const res = await inviteUser({ ...inviteState, userId: userState._id });
       if (res.status === 201) {
@@ -266,7 +275,7 @@ function MyCircle() {
                       placeholder="(000) - 000 - 0000"
                     />
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-12 mt-13">
                     <label>
                       Contact's Email<span className="text-danger">*</span>
                     </label>
@@ -349,6 +358,13 @@ function MyCircle() {
                 <div className="d-flex actions mt-20">
                   <button className="cancel-button">Cancel</button>
                   <button
+                    disabled={
+                      inviteState.firstName.length === 0 ||
+                      inviteState.lastName.length === 0 ||
+                      inviteState.email.length === 0 ||
+                      inviteState.circle === "" ||
+                      inviteState.phone === ""
+                    }
                     onClick={() => inviteHandler()}
                     className="save-button ml-30"
                   >

@@ -1,4 +1,4 @@
-const MyCircle = require("../models/MyCircle");
+const MyCircle = require("../models/MyCircleModel");
 
 module.exports = {
   create: async (obj) => {

@@ -2,6 +2,7 @@ const {
   sendResponse,
   generateToken,
   generateRandomLink,
+  dayDifference,
 } = require("../utils/utils");
 const userDao = require("../daos/userDao");
 const mycircleDao = require("../daos/mycircleDao");
@@ -144,8 +145,8 @@ module.exports = {
           sendResponse(err, req, res, err);
           return;
         }
-        if (user.password === null) {
-          let err = new Error("User has not signed up through email");
+        if (!user.password && !user.isProfileComplete) {
+          let err = new Error("User has not registed completely");
           err.statusCode = 403;
           sendResponse(err, req, res, err);
           return;
@@ -210,6 +211,28 @@ module.exports = {
       sendResponse(err, req, res, err);
     }
   },
+  verifyInviteLink: async (req, res) => {
+    try {
+      const { inviteLink } = req.query;
+      const user = await userDao.findOneWhere({ inviteLink });
+      if (user === null) {
+        let err = new Error("Invalid link");
+        err.statusCode = 400;
+        sendResponse(err, req, res, err);
+      } else {
+        if (dayDifference(new Date(), user.inviteLinkDate) < 4) {
+          sendResponse(null, req, res, user);
+        } else {
+          let err = new Error("Link expired");
+          err.statusCode = 400;
+          sendResponse(err, req, res, err);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      sendResponse(err, req, res, err);
+    }
+  },
   inviteUser: async (req, res) => {
     try {
       const { firstName, lastName, circle, notes, phone, email, userId } =
@@ -224,6 +247,8 @@ module.exports = {
           isProfileComplete: false,
           role: 1,
           invitedBy: userId,
+          inviteLink: generateRandomLink(),
+          inviteLinkDate: new Date(),
         });
         const newCircle = await mycircleDao.create({
           userId,
@@ -232,6 +257,50 @@ module.exports = {
           status: "",
         });
         sendResponse(null, req, res, { newUser, newCircle });
+        const mailOptions = {
+          from: "cranehawk54@gmail.com",
+          to: `${email}`,
+          subject: "Invitation for registeration-- Health Trader App",
+          html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>Custom Code From Scratch</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+             
+          </head>
+          <body style="margin:0; padding:10px; background-color: #F0F0F0;">
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="640" style="border-collapse: collapse;" bgcolor="#ffffff" >
+                <tr style="">
+                  <td style="padding:40px">
+                    
+                    </td>
+                </tr>
+                <tr>
+                  <td style="padding-left:40px; padding-right:40px; padding-top:0px;">
+                    <p style="display:block; margin:0;   font-family:field-work-light; font-weight: normal; font-size:21px; line-height: 35px;">
+                      Hello, <br/>
+                      Your app registration Link is <br/><a href="http://localhost:3000/register/${
+                        newUser.inviteLink
+                      }">click here</a>
+                  </td>
+                </tr>
+                <tr style="display:block; border-top:2px solid green;">
+                  <td style="padding-left:40px;padding-right:40px; padding-bottom:40px;">
+                    <p style="display:block; margin:0; color:#808080; padding-top:10px;  padding-right:20px; font-family:field-work-thin; font-weight: normal; font-size:12px; line-height: 24px;">Copyright &#xa9; ${new Date().getFullYear()} , All rights reserved.</p>
+                  </td>
+                </tr>
+              </table>
+          </body>
+        </html>`,
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
       } else {
         let err = new Error("Email Already exists");
         err.statusCode = 400;

@@ -27,6 +27,10 @@ export const verifyResetPasswordLink = (link) => {
   );
 };
 
+export const verifyInviteLink = (link) => {
+  return request.get(`${apiUrl}users/verifyInviteLink?inviteLink=${link}`);
+};
+
 export const resetPassword = (link, password) => {
   return request.put(`${apiUrl}users/resetPassword`, { link, password });
 };

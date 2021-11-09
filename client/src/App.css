@@ -90,6 +90,12 @@ input[type="number"] {
 .mt-50 {
   margin-top: 50px;
 }
+.pt-10 {
+  padding-top: 10px;
+}
+.pt-20 {
+  padding-top: 20px;
+}
 
 .navbar-username {
   font-size: 16px;
@@ -309,6 +315,9 @@ span > .kep-login-facebook {
 }
 .timeline .search-actions .MuiFormControl-root {
   width: 200px;
+}
+.timeline .search-actions .search .MuiFormControl-root label {
+  margin-left: -13px;
 }
 .timeline .search-actions .category .MuiTextField-root {
   width: 200px;
@@ -549,14 +558,18 @@ span > .kep-login-facebook {
 }
 
 .modal-new-person {
-  padding: 35px;
+  padding: 20px;
   max-width: 719px;
+}
+.modal-new-person .info {
+  padding-left: 11px;
+  padding-right: 11px;
 }
 
 .modal-new-person .title h5 {
   font-weight: bold;
-  font-size: 36px;
-  line-height: 42px;
+  font-size: 20px;
+  line-height: 23px;
   color: #474646;
   margin-bottom: 0px;
 }
@@ -569,7 +582,23 @@ span > .kep-login-facebook {
   margin-bottom: 0px;
 }
 .modal-new-person .fields {
-  padding-top: 7px;
+  padding-top: 5px;
+}
+.modal-new-person .fields label {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  color: #9d9d9d;
+}
+.modal-new-person .fields input,
+.modal-new-person .fields select {
+  border: 1px solid #aeadad;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 40px;
+  color: #484644;
+  font-size: 16px;
 }
 .modal-new-person .profile-picture-upload .picture {
   width: 175px;
@@ -582,8 +611,8 @@ span > .kep-login-facebook {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
-  height: 24px;
   border: none;
+  padding: 8px 10px 8px 10px;
 }
 .modal-new-person .notification-settings button {
   background: #dadada;
@@ -593,6 +622,17 @@ span > .kep-login-facebook {
   font-weight: bold;
   line-height: 16px;
   border: none;
+  color: #484644;
+}
+.modal-new-person .profile-picture-upload .upload-title {
+  font-size: 13px;
+  line-height: 9px;
+  margin-left: 10px;
+}
+.modal-new-person .profile-picture-upload .type {
+  font-size: 12px;
+  line-height: 9px;
+  margin-left: 10px;
   color: #484644;
 }
 .modal-new-person .notification-settings .actions .cancel-button {
@@ -621,6 +661,9 @@ span > .kep-login-facebook {
   padding-left: 5px;
   padding-right: 5px;
 }
+.modal-new-person .notification-settings .actions .save-button:disabled {
+  opacity: 0.5;
+}
 .modal-new-person .notification-settings button .form-check {
   min-height: 0;
 }
@@ -640,7 +683,130 @@ span > .kep-login-facebook {
   position: absolute;
   left: 11px;
 }
+.create-reminder-modal .title-div {
+  padding: 18px 30px 17px 30px;
+  border-bottom: 2px solid #000000;
+}
+.create-reminder-modal .title-div h5 {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  color: #474646;
+  margin-bottom: 0;
+}
+.create-reminder-modal .title-div button {
+  background: #ffffff;
+  border: 2px solid #474646;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+.create-reminder-modal .form-div {
+  padding: 20px 32px 20px 32px;
+}
+.create-reminder-modal .form-div .number-circle {
+  background: #427a8e;
+  width: 40px;
+  height: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+}
 
+.create-reminder-modal .form-div .text {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #484644;
+  margin-left: 9px;
+}
+.create-reminder-modal .form-div .description span {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  font-style: italic;
+  color: #484644;
+  margin-top: 10px;
+}
+.create-reminder-modal .form-div .select-type-button a {
+  text-decoration: none;
+}
+.create-reminder-modal .form-div .select-type-button {
+  background: #ffffff;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+  border-radius: 8px;
+  padding: 20px 20px 20px 20px;
+  text-align: left;
+  margin-top: 20px;
+}
+.create-reminder-modal .form-div .select-type-button img {
+  width: 22.75px;
+}
+.create-reminder-modal .form-div .select-type-button .button-text h5 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 26px;
+  color: #474646;
+  margin-left: 13.25px;
+  margin-bottom: 0;
+}
+.create-reminder-modal .form-div .select-type-button .button-text p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  margin-left: 13.25px;
+  color: #484644;
+  margin-bottom: 0;
+}
+.create-reminder-modal .form-div .schedule {
+  padding-top: 20px;
+  text-align: left;
+}
+.create-reminder-modal .form-div .schedule .date-time-picker {
+  border: 1px solid #aeadad;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+.create-reminder-modal .form-div .schedule .repeat-check label {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #484644;
+}
+.create-reminder-modal .form-div .details-fields {
+  text-align: left;
+}
+.create-reminder-modal .form-div .details-fields label {
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  color: #9d9d9d;
+}
+.create-reminder-modal .form-div .details-fields input,
+.create-reminder-modal .form-div .details-fields textarea {
+  border: 1px solid #aeadad;
+  box-sizing: border-box;
+  border-radius: 8px;
+  resize: none;
+}
+.create-reminder-modal .form-div .details-fields .btn-create-reminder {
+  background: #79905d;
+  border-radius: 8px;
+  padding: 8px 10px 8px 10px;
+  color: #fff;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 20px;
+}
 /* Media Queries */
 
 @media only screen and (min-width: 1440px) {
@@ -712,6 +878,12 @@ span > .kep-login-facebook {
 @media only screen and (max-width: 375px) {
   .timeline .reminder-div .actions-btns button {
     margin-left: 0px;
+  }
+  .timeline .search-actions .MuiFormControl-root {
+    width: 140px;
+  }
+  .timeline .search-actions .category .MuiTextField-root {
+    width: 140px;
   }
 }
 

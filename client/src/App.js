@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Header from "./components/Header";
+import RegisterForm from "./components/login/RegisterForm";
 
 //Private Route ........
 const PrivateRoute = (props) => {
@@ -62,6 +63,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/forgotPassword" component={ForgotPassword} />
           <Route path="/resetPassword/:link" component={ResetPassword} />
+          <Route path="/register/:link" component={RegisterForm} />
           <PrivateRoute path="/" component={Main} />
         </Switch>
       </Router>

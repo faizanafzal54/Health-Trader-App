@@ -10,8 +10,11 @@ import {
 import HomeIcon from "../assets/Home icon.png";
 import MessageIcon from "../assets/Message icon.png";
 import MedIcon from "../assets/Meds icon.png";
+import { useDispatch } from "react-redux";
 
 function Navbar() {
+  const dispatch = useDispatch();
+
   const toggleHandler = () => {
     const output = document.getElementById("navLinksContent");
     if (output) {
@@ -21,6 +24,10 @@ function Navbar() {
         output.style.display = "none";
       }
     }
+  };
+  const reminderModalHandler = (e) => {
+    e.preventDefault();
+    dispatch({ type: "OpenModal" });
   };
 
   return (
@@ -38,7 +45,7 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navLinksContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink to="/home">
+                <NavLink to="/">
                   <img src={HomeIcon} alt="Home icon" />
                   <span>Home</span>
                 </NavLink>
@@ -70,8 +77,8 @@ function Navbar() {
                 </NavLink>
               </li>
             </ul>
-            <form className="d-flex">
-              <button className="new-reminder-btn btn">
+            <form onSubmit={reminderModalHandler} className="d-flex">
+              <button type="submit" className="new-reminder-btn btn">
                 New Reminder&nbsp; <FontAwesomeIcon icon={faPlus} />
               </button>
             </form>

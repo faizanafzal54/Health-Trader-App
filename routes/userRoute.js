@@ -13,6 +13,7 @@ const {
   changePassword,
   facebookSignin,
   inviteUser,
+  verifyInviteLink,
 } = require("../controllers/userController");
 const { verifyToken } = require("../middleware/authValidator");
 
@@ -21,6 +22,7 @@ router.post("/signup", register);
 router.post("/facebook/login", facebookSignin);
 router.post("/forgotPassword", forgotPassword);
 router.get("/verifyResetLink", verifyResetLink);
+router.get("/verifyInviteLink", verifyInviteLink);
 router.put("/resetPassword", resetPassword);
 router.post("/inviteUser", inviteUser);
 

@@ -74,7 +74,7 @@ export const loginWithEmailAction = (email, password) => async (dispatch) => {
         )
       );
 
-      history.push("/home");
+      history.push("/");
     }
   } catch (err) {
     console.log(err);
@@ -93,7 +93,7 @@ export const signInWithFacebookAction = (response) => async (dispatch) => {
         )
       );
 
-      history.push("/home");
+      history.push("/");
     }
   } catch (err) {
     console.log(err);

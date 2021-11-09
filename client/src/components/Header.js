@@ -40,6 +40,10 @@ export default function Navbar() {
     setAnchorEl(null);
     history.push("/account");
   };
+  const renderAvatarName = (name) => {
+    return name.charAt(0);
+  };
+
   return (
     <div className="header">
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -142,7 +146,9 @@ export default function Navbar() {
 
             {userState.isAuthenticated ? (
               <>
-                <Avatar className="user-avatar">H</Avatar>
+                <Avatar className="user-avatar">
+                  {renderAvatarName(userState.user.firstName)}
+                </Avatar>
                 <div className="d-flex align-items-center">
                   <span className="navbar-username">
                     {userState?.user.name ?? userState.user.firstName}
