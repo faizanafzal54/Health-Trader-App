@@ -7,9 +7,16 @@ import ServiceIcon from "../../assets/reminder-service-icon.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Checkbox from "@mui/material/Checkbox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCalendarDay,
+  faCalendarWeek,
+  faCalendar,
+} from "@fortawesome/free-solid-svg-icons";
 
 function CreateReminder() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isRepeating, setIsRepeating] = useState(false);
 
   const reminderState = useSelector((state) => state.reminder);
   const dispatch = useDispatch();
@@ -59,8 +66,8 @@ function CreateReminder() {
                   <span>Select a type of reminder to create.</span>
                 </div>
                 <div className="select-type-button">
-                  <a href="#">
-                    <div id="music" class="d-flex">
+                  <a href={() => false}>
+                    <div id="music" className="d-flex">
                       <div>
                         <img src={MedicationIcon} alt="Med Icon" />{" "}
                       </div>
@@ -75,9 +82,9 @@ function CreateReminder() {
                     </div>
                   </a>
                 </div>
-                <div className="select-type-button">
-                  <a href="#">
-                    <div id="music" class="d-flex">
+                <div className="select-type-button selected-type ">
+                  <a href={() => false}>
+                    <div id="music" className="d-flex">
                       <div>
                         <img src={ServiceIcon} alt="Med Icon" />{" "}
                       </div>
@@ -93,8 +100,8 @@ function CreateReminder() {
                   </a>
                 </div>
                 <div className="select-type-button">
-                  <a href="#">
-                    <div id="music" class="d-flex">
+                  <a href={() => false}>
+                    <div id="music" className="d-flex">
                       <div>
                         <img src={AppointmentIcon} alt="Med Icon" />{" "}
                       </div>
@@ -118,25 +125,129 @@ function CreateReminder() {
                 <div className="description">
                   <span>Select the date and time of your reminder.</span>
                 </div>
-                <div class="schedule">
-                  <DatePicker
-                    className="form-control date-time-picker"
-                    placeholderText="MM/DD/YYYY -- HH:MM"
-                    selected={null}
-                    //   onChange={(date) => setStartDate(date)}
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                  />
+                <div className="schedule">
+                  <div className="app-field-div mt-20">
+                    <label htmlFor="activityName">Start Date and time</label>
+                    <DatePicker
+                      className="form-control date-time-picker"
+                      placeholderText="MM/DD/YYYY -- HH:MM"
+                      selected={null}
+                      //   onChange={(date) => setStartDate(date)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                    />
+                  </div>
+
                   <div className="repeat-check">
                     <Checkbox
-                      //   onChange={(e) =>
-                      //     onInputChange("isAcknowledged", e.target.checked)
-                      //   }
+                      onChange={(e) => setIsRepeating(e.target.checked)}
+                      value={isRepeating}
                       className="ps-0"
-                      color="primary"
+                      color="success"
                     />
                     <label>Repeating Reminder</label>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <a href={() => false}>
+                      <div className="reminder-frequency frequency-selected">
+                        <div>
+                          <FontAwesomeIcon icon={faCalendarDay} />
+                        </div>
+                        <div>
+                          <span>Daily</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a href={() => false}>
+                      <div className="reminder-frequency">
+                        <div>
+                          <FontAwesomeIcon icon={faCalendarWeek} />
+                        </div>
+                        <div>
+                          <span>Weekly</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a href={() => false}>
+                      <div className="reminder-frequency">
+                        <div>
+                          <FontAwesomeIcon icon={faCalendar} />
+                        </div>
+                        <div>
+                          <span>Monthly</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div className="row daily">
+                    <div className="col-md-5">
+                      <div className="app-field-div mt-10">
+                        <label htmlFor="location">Repeat Every</label>
+                        <select className="form-select">
+                          <option>4 days</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <div className="app-field-div mt-10">
+                        <label htmlFor="location">Duration</label>
+                        <select className="form-select">
+                          <option>Forever</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="weekly">
+                    <div className="d-flex flex-wrap">
+                      <div class="day-circle">Mon</div>
+                      <div class="day-circle">Tue</div>
+                      <div class="day-circle day-selected">Wed</div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-5">
+                        <div className="app-field-div mt-10">
+                          <label htmlFor="location">Repeat Every</label>
+                          <select className="form-select">
+                            <option>4 days</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-7">
+                        <div className="app-field-div mt-10">
+                          <label htmlFor="location">Duration</label>
+                          <select className="form-select">
+                            <option>Until</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row monthly">
+                    <div className="col-md-5">
+                      <div className="app-field-div mt-10">
+                        <label htmlFor="location">Repeat Every</label>
+                        <select className="form-select">
+                          <option>4 months</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <div className="app-field-div mt-10">
+                        <label htmlFor="location">Duration</label>
+                        <select className="form-select">
+                          <option>Forever</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      <div className="app-field-div mt-10">
+                        <label htmlFor="location">Repeat by</label>
+                        <select className="form-select">
+                          <option>Day of month</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -149,17 +260,26 @@ function CreateReminder() {
                   <span>Add further information.</span>
                 </div>
                 <div className="details-fields">
-                  <div>
-                    <label>Service/Activity Name</label>
-                    <input className="form-control" placeholder="Name" />
+                  <div className="app-field-div mt-20">
+                    <label htmlFor="activityName">Service/Activity Name</label>
+                    <input
+                      id="activityName"
+                      className="form-control"
+                      placeholder="Name"
+                    />
                   </div>
-                  <div>
-                    <label>Location</label>
-                    <input className="form-control" placeholder="Location" />
+                  <div className="app-field-div mt-10">
+                    <label htmlFor="location">Location</label>
+                    <input
+                      id="location"
+                      className="form-control"
+                      placeholder="Location"
+                    />
                   </div>
-                  <div>
-                    <label>Other comments</label>
+                  <div className="app-field-div mt-10">
+                    <label htmlFor="otherComments">Other comments</label>
                     <textarea
+                      id="otherComments"
                       className="form-control"
                       placeholder="Other details to include"
                     ></textarea>

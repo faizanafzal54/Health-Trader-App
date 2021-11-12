@@ -90,6 +90,12 @@ input[type="number"] {
 .mt-50 {
   margin-top: 50px;
 }
+.mt-10 {
+  margin-top: 10px;
+}
+.pt-05 {
+  padding-top: 5px;
+}
 .pt-10 {
   padding-top: 10px;
 }
@@ -596,7 +602,6 @@ span > .kep-login-facebook {
   border: 1px solid #aeadad;
   box-sizing: border-box;
   border-radius: 8px;
-  height: 40px;
   color: #484644;
   font-size: 16px;
 }
@@ -645,8 +650,7 @@ span > .kep-login-facebook {
   line-height: 19px;
   color: #fff;
   border: none;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 5px 10px 5px 10px;
 }
 .modal-new-person .notification-settings .actions .save-button {
   height: 29px;
@@ -658,8 +662,7 @@ span > .kep-login-facebook {
   line-height: 19px;
   color: #fff;
   border: none;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 5px 10px 5px 10px;
 }
 .modal-new-person .notification-settings .actions .save-button:disabled {
   opacity: 0.5;
@@ -682,6 +685,15 @@ span > .kep-login-facebook {
   height: 100%;
   position: absolute;
   left: 11px;
+}
+.modal-new-person .add-emergency-contact button {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration-line: underline;
+  padding: 0;
+  margin-top: 5px;
+  color: #427a8e;
 }
 .create-reminder-modal .title-div {
   padding: 18px 30px 17px 30px;
@@ -717,6 +729,26 @@ span > .kep-login-facebook {
   color: #fff;
   text-align: center;
 }
+.create-reminder-modal .schedule .day-circle {
+  background: #fff;
+  border: 1px solid #d6d5d5;
+  width: 30px;
+  height: 30px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px;
+  border-radius: 50%;
+  font-size: 11px;
+  color: #d6d5d5;
+  text-align: center;
+  margin-top: 5px;
+  margin-left: 3px;
+}
+.create-reminder-modal .schedule .day-selected {
+  background: #e4eef1;
+  border: 2px solid #427a8e;
+  color: #000000;
+}
 
 .create-reminder-modal .form-div .text {
   font-weight: 500;
@@ -744,6 +776,11 @@ span > .kep-login-facebook {
   padding: 20px 20px 20px 20px;
   text-align: left;
   margin-top: 20px;
+}
+.create-reminder-modal .form-div .selected-type {
+  background: #e4eef1;
+  border: 2px solid #427a8e;
+  box-sizing: border-box;
 }
 .create-reminder-modal .form-div .select-type-button img {
   width: 22.75px;
@@ -784,15 +821,24 @@ span > .kep-login-facebook {
 .create-reminder-modal .form-div .details-fields {
   text-align: left;
 }
-.create-reminder-modal .form-div .details-fields label {
-  font-weight: normal;
-  font-size: 11px;
-  line-height: 13px;
-  color: #9d9d9d;
+.create-reminder-modal .form-div .schedule .reminder-frequency {
+  padding: 10px 0;
+  border: 2px solid #aeadad;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 76px;
+  width: 76px;
 }
+.create-reminder-modal .form-div .schedule .frequency-selected {
+  border-color: #427a8e;
+  color: #427a8e;
+}
+.create-reminder-modal .form-div .schedule .reminder-frequency svg {
+  font-size: 24px;
+}
+
 .create-reminder-modal .form-div .details-fields input,
 .create-reminder-modal .form-div .details-fields textarea {
-  border: 1px solid #aeadad;
   box-sizing: border-box;
   border-radius: 8px;
   resize: none;
@@ -806,6 +852,41 @@ span > .kep-login-facebook {
   font-weight: bold;
   font-size: 16px;
   margin-top: 20px;
+}
+.app-field-div {
+  padding: 4px 11px;
+  position: relative;
+  border: 1px solid #aeadad;
+  border-radius: 10px;
+}
+.app-field-div label {
+  display: block;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  color: #9d9d9d;
+}
+.app-field-div input,
+.app-field-div textarea,
+.app-field-div select {
+  border-radius: 10px;
+  border: none !important;
+  width: 100%;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 0;
+  color: #484644;
+}
+.app-field-div input:focus,
+.app-field-div textarea:focus,
+.app-field-div select:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+.create-reminder-modal .schedule .react-datepicker {
+  min-width: 328px;
 }
 /* Media Queries */
 

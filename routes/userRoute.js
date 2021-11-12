@@ -14,6 +14,7 @@ const {
   facebookSignin,
   inviteUser,
   verifyInviteLink,
+  completeRegistration,
 } = require("../controllers/userController");
 const { verifyToken } = require("../middleware/authValidator");
 
@@ -25,6 +26,7 @@ router.get("/verifyResetLink", verifyResetLink);
 router.get("/verifyInviteLink", verifyInviteLink);
 router.put("/resetPassword", resetPassword);
 router.post("/inviteUser", inviteUser);
+router.put("/completeRegistration", completeRegistration);
 
 router.put("/refreshToken", refreshToken);
 router.put("/profilePicture", verifyToken, uploadProfilePicture);

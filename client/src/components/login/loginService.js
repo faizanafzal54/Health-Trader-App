@@ -35,6 +35,10 @@ export const resetPassword = (link, password) => {
   return request.put(`${apiUrl}users/resetPassword`, { link, password });
 };
 
+export const completeRegistration = (data) => {
+  return request.put(`${apiUrl}users/completeRegistration`, data);
+};
+
 export const refreshToken = () => {
   const state = Store.getState();
 

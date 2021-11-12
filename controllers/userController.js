@@ -310,6 +310,58 @@ module.exports = {
       sendResponse(err, req, res, err);
     }
   },
+  completeRegistration: async (req, res) => {
+    try {
+      const {
+        inviteLink,
+        email,
+        firstName,
+        lastName,
+        phone,
+        middleName,
+        gender,
+        dateOfBirth,
+        address1,
+        password,
+        city,
+        state,
+        zipCode,
+      } = req.body;
+      const account = await userDao.findOneWhere({ email, inviteLink });
+
+      if (account !== null) {
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        console.log(password);
+        const registeredUser = await userDao.findOneAndUpdate(
+          { email },
+          {
+            email,
+            firstName,
+            lastName,
+            phone,
+            middleName,
+            gender,
+            dateOfBirth,
+            address: address1,
+            password: hashedPassword,
+            city,
+            state,
+            zipCode,
+            isProfileComplete: true,
+            inviteLink: "",
+            inviteLinkDate: null,
+          }
+        );
+        sendResponse(null, req, res, { user: registeredUser });
+      } else {
+        let err = new Error("Link is not valid");
+        err.statusCode = 400;
+        sendResponse(err, req, res, err);
+      }
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
   refreshToken: async (req, res) => {
     try {
       const { refreshToken } = req.body;
