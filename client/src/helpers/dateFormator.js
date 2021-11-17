@@ -22,3 +22,8 @@ export const formatAMPM = (date) => {
   let strTime = hours + ":" + minutes + " " + ampm;
   return strTime;
 };
+
+export const getTime = (date)=>{
+  const dateObj = new Date(date);
+  return `${formatAMPM(dateObj)}`;
+}

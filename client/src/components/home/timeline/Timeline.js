@@ -14,9 +14,11 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
 import PillImg from "../../../assets/Pill icon.png";
+import AppointmentImg from "../../../assets/appointment icon.png";
+import ServiceImg from "../../../assets/service icon.png";
 import { getReminders, setReminderStatus } from "../homeService";
 import { useSelector } from "react-redux";
-import { getDateTime } from "../../../helpers/dateFormator";
+import { getDateTime, getTime } from "../../../helpers/dateFormator";
 import { toastify } from "../../../actions/userActions";
 
 function Timeline() {
@@ -97,26 +99,37 @@ function Timeline() {
               <div className="row justify-content-between">
                 <div className="col-md-6">
                   <div className="d-flex">
-                    <img src={PillImg} alt="Pill Img" />
-                    <h4 className="med-name">{reminder.subject}</h4>
+                    <img
+                      src={
+                        reminder.reminderType === "medication"
+                          ? PillImg
+                          : reminder.reminderType === "appointment"
+                          ? AppointmentImg
+                          : ServiceImg
+                      }
+                      height={reminder.reminderType === 'appointment' ? 30:25}
+                      alt="Pill Img"
+                    />
+                    <h4 className="med-name">{reminder.name}</h4>
                   </div>
                   <div className="text-start">
-                    <span className="med-frequency">100mg, 1/day(pill)</span>
+                    <span className="med-frequency">{reminder.location}</span>
                   </div>
                 </div>
                 <div className="col-md-6 text-end">
                   <span className="med-time">
-                    <FontAwesomeIcon icon={faBell} /> &nbsp;&nbsp; 09:00 AM
+                    <FontAwesomeIcon icon={faBell} /> &nbsp;&nbsp;{" "}
+                    {getTime(reminder.startDateTime)}
                   </span>
                 </div>
               </div>
               <div className="med-text">
-                <span>{reminder.details}</span>
+                <span>{reminder.comments}</span>
               </div>
               <div className="med-border"></div>
               <div className="row actions-btns align-items-center">
                 <div className="col-md-8">
-                  <div className="d-flex">
+                  <div className="d-flex flex-wrap">
                     <button
                       onClick={() =>
                         setReminderStatusHandler(reminder._id, "Taken")
@@ -127,7 +140,7 @@ function Timeline() {
                           : "btn btn-sm btn-transparent text-success"
                       }
                     >
-                      Taken
+                      Completed
                     </button>
                     <button
                       onClick={() =>
@@ -158,7 +171,7 @@ function Timeline() {
                 <div className="col-md-4">
                   <div className="d-flex created-date-div justify-content-end">
                     <span className="created-date me-4">
-                      {getDateTime(reminder.createdAt)}
+                      {getDateTime(reminder.startDateTime)}
                     </span>
                     <FontAwesomeIcon icon={faEllipsisV} />
                   </div>

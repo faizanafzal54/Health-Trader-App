@@ -10,32 +10,37 @@ const reminderSchema = new Schema(
     reminderType: {
       type: String,
     },
-    subject: {
-      type: String,
-    },
-    howMuch: {
-      type: String,
-    },
-    link: {
-      type: String,
-    },
-    details: {
-      type: String,
-    },
-    predefinedTime: {
+    startDateTime: {
       type: Date,
     },
-    medicationStartDate: {
+    isRepeating:{
+      type:Boolean
+    },
+    reminderFrequency: {
+      type: String, //Day, Week, Month
+    },
+    dayOfWeek: {
+      type: String, //Mon, Tue, Wed,
+    },
+    repeatEvery: {
+      type: String, //1day, 1week, 1month
+    },
+    duration: {
+      type: String,//once,forever,uptil
+    },
+    terminationDate: {
       type: Date,
     },
-    medicationEndDate: {
-      type: Date,
+    terminationDate: {
+      type: String,
     },
-    notificationType: {
-      mobile: Boolean,
-      email: Boolean,
+    name: {
+      type: String,
     },
-    status: {
+    location: {
+      type: String,
+    },
+    comments: {
       type: String,
     },
     isActive: {

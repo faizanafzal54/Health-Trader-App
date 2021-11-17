@@ -13,12 +13,24 @@ import {
   faCalendarWeek,
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
+import { createReminder } from "./reminderService";
 
 function CreateReminder() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [reminderType, setReminderType] = useState("medication");
   const [isRepeating, setIsRepeating] = useState(false);
+  const [startDateTime, setStartDateTime] = useState(new Date());
+  const [reminderFrequency, setReminderFrequency] = useState("daily");
+  const [dayOfWeek, setDayOfWeek] = useState("");
+  const [repeatEvery, setRepeatEvery] = useState("");
+  const [duration, setDuration] = useState("");
+  const [terminationDate, setTerminationDate] = useState(null);
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [comments, setComments] = useState("");
 
   const reminderState = useSelector((state) => state.reminder);
+  const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +40,28 @@ function CreateReminder() {
   const closeModalHandler = () => {
     setModalOpen(false);
     dispatch({ type: "CloseModal" });
+  };
+
+  const createReminderHandler = async () => {
+    try {
+      const res = await createReminder({
+        userId: userState.user?._id,
+        reminderType,
+        startDateTime,
+        isRepeating,
+        reminderFrequency,
+        dayOfWeek,
+        repeatEvery,
+        duration,
+        terminationDate,
+        name,
+        location,
+        comments,
+      });
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
@@ -65,26 +99,44 @@ function CreateReminder() {
                 <div className="description">
                   <span>Select a type of reminder to create.</span>
                 </div>
-                <div className="select-type-button">
-                  <a href={() => false}>
-                    <div id="music" className="d-flex">
+                <div
+                  className={
+                    reminderType === "medication"
+                      ? "select-type-button selected-type"
+                      : "select-type-button"
+                  }
+                >
+                  <a
+                    onClick={() => setReminderType("medication")}
+                    href={() => false}
+                  >
+                    <div id="onclick-div" className="d-flex">
                       <div>
                         <img src={MedicationIcon} alt="Med Icon" />{" "}
                       </div>
                       <div className="button-text">
                         <div>
-                          <h5>Medication</h5>
+                          <h5>Medicatiom Group</h5>
                         </div>
                         <div>
-                          <p>Add prescriptions, supplements, etc. </p>
+                          <p>Add reminders of your med group </p>
                         </div>
                       </div>
                     </div>
                   </a>
                 </div>
-                <div className="select-type-button selected-type ">
-                  <a href={() => false}>
-                    <div id="music" className="d-flex">
+                <div
+                  className={
+                    reminderType === "service"
+                      ? "select-type-button selected-type"
+                      : "select-type-button"
+                  }
+                >
+                  <a
+                    onClick={() => setReminderType("service")}
+                    href={() => false}
+                  >
+                    <div id="onclick-div" className="d-flex">
                       <div>
                         <img src={ServiceIcon} alt="Med Icon" />{" "}
                       </div>
@@ -99,9 +151,18 @@ function CreateReminder() {
                     </div>
                   </a>
                 </div>
-                <div className="select-type-button">
-                  <a href={() => false}>
-                    <div id="music" className="d-flex">
+                <div
+                  className={
+                    reminderType === "appointment"
+                      ? "select-type-button selected-type"
+                      : "select-type-button"
+                  }
+                >
+                  <a
+                    onClick={() => setReminderType("appointment")}
+                    href={() => false}
+                  >
+                    <div id="onclick-div" className="d-flex">
                       <div>
                         <img src={AppointmentIcon} alt="Med Icon" />{" "}
                       </div>
@@ -131,10 +192,12 @@ function CreateReminder() {
                     <DatePicker
                       className="form-control date-time-picker"
                       placeholderText="MM/DD/YYYY -- HH:MM"
-                      selected={null}
-                      //   onChange={(date) => setStartDate(date)}
+                      selected={startDateTime}
+                      onChange={(date) => setStartDateTime(date)}
                       showTimeSelect
                       timeFormat="HH:mm"
+                      timeIntervals={15}
+                      timeCaption="time"
                       dateFormat="MMMM d, yyyy h:mm aa"
                     />
                   </div>
@@ -148,107 +211,312 @@ function CreateReminder() {
                     />
                     <label>Repeating Reminder</label>
                   </div>
-                  <div className="d-flex justify-content-between">
-                    <a href={() => false}>
-                      <div className="reminder-frequency frequency-selected">
-                        <div>
-                          <FontAwesomeIcon icon={faCalendarDay} />
+                  {isRepeating ? (
+                    <>
+                      {" "}
+                      <div className="d-flex justify-content-between">
+                        <a
+                          onClick={() => setReminderFrequency("daily")}
+                          href={() => false}
+                        >
+                          <div
+                            className={
+                              reminderFrequency === "daily"
+                                ? "reminder-frequency frequency-selected"
+                                : "reminder-frequency"
+                            }
+                          >
+                            <div>
+                              <FontAwesomeIcon icon={faCalendarDay} />
+                            </div>
+                            <div>
+                              <span>Daily</span>
+                            </div>
+                          </div>
+                        </a>
+                        <a
+                          onClick={() => setReminderFrequency("weekly")}
+                          href={() => false}
+                        >
+                          <div
+                            className={
+                              reminderFrequency === "weekly"
+                                ? "reminder-frequency frequency-selected"
+                                : "reminder-frequency"
+                            }
+                          >
+                            <div>
+                              <FontAwesomeIcon icon={faCalendarWeek} />
+                            </div>
+                            <div>
+                              <span>Weekly</span>
+                            </div>
+                          </div>
+                        </a>
+                        <a
+                          onClick={() => setReminderFrequency("monthly")}
+                          href={() => false}
+                        >
+                          <div
+                            className={
+                              reminderFrequency === "monthly"
+                                ? "reminder-frequency frequency-selected"
+                                : "reminder-frequency"
+                            }
+                          >
+                            <div>
+                              <FontAwesomeIcon icon={faCalendar} />
+                            </div>
+                            <div>
+                              <span>Monthly</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                      {reminderFrequency === "daily" ? (
+                        <div className="row daily">
+                          <div className="col-md-5">
+                            <div className="app-field-div mt-10">
+                              <label htmlFor="location">Repeat Every</label>
+                              <select
+                                onChange={(e) => setRepeatEvery(e.target.value)}
+                                value={repeatEvery}
+                                className="form-select"
+                              >
+                                <option value="1">1 day</option>
+                                <option value="2">2 days</option>
+                                <option value="3">3 days</option>
+                                <option value="4">4 days</option>
+                                <option value="5">5 days</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-md-7">
+                            <div className="app-field-div mt-10">
+                              <label htmlFor="location">Duration</label>
+                              <select
+                                onChange={(e) => setDuration(e.target.value)}
+                                value={duration}
+                                className="form-select"
+                              >
+                                <option value="once">Once</option>
+                                <option value="forever">Forever</option>
+                                <option value="uptill">Up till</option>
+                              </select>
+                            </div>
+                          </div>
+                          {duration === "uptill" ? (
+                            <div class="col-md-12">
+                              <div className="app-field-div mt-10">
+                                <label htmlFor="terminationDate">
+                                  Termination date
+                                </label>
+                                <DatePicker
+                                  className="form-control date-time-picker"
+                                  placeholderText="MM/DD/YYYY"
+                                  selected={terminationDate}
+                                  id="terminationDate"
+                                  onChange={(date) => setTerminationDate(date)}
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                        <div>
-                          <span>Daily</span>
+                      ) : reminderFrequency === "weekly" ? (
+                        <div className="weekly">
+                          <div className="d-flex flex-wrap justify-content-around mt-10">
+                            <div
+                              onClick={() => setDayOfWeek("Mon")}
+                              className={
+                                dayOfWeek === "Mon"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Mon
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Tue")}
+                              className={
+                                dayOfWeek === "Tue"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Tue
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Wed")}
+                              className={
+                                dayOfWeek === "Wed"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Wed
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Thu")}
+                              className={
+                                dayOfWeek === "Thu"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Thu
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Fri")}
+                              className={
+                                dayOfWeek === "Fri"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Fri
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Sat")}
+                              className={
+                                dayOfWeek === "Sat"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Sat
+                            </div>
+                            <div
+                              onClick={() => setDayOfWeek("Sun")}
+                              className={
+                                dayOfWeek === "Sun"
+                                  ? "day-selected day-circle"
+                                  : "day-circle"
+                              }
+                            >
+                              Sun
+                            </div>
+                          </div>
+                          <div className="row daily">
+                            <div className="col-md-5">
+                              <div className="app-field-div mt-10">
+                                <label htmlFor="location">Repeat Every</label>
+                                <select
+                                  onChange={(e) =>
+                                    setRepeatEvery(e.target.value)
+                                  }
+                                  value={repeatEvery}
+                                  className="form-select"
+                                >
+                                  <option value="1">1 week</option>
+                                  <option value="2">2 weeks</option>
+                                  <option value="3">3 weeks</option>
+                                  <option value="4">4 weeks</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-md-7">
+                              <div className="app-field-div mt-10">
+                                <label htmlFor="location">Duration</label>
+                                <select
+                                  onChange={(e) => setDuration(e.target.value)}
+                                  value={duration}
+                                  className="form-select"
+                                >
+                                  <option value="once">Once</option>
+                                  <option value="forever">Forever</option>
+                                  <option value="uptill">Up till</option>
+                                </select>
+                              </div>
+                            </div>
+                            {duration === "uptill" ? (
+                              <div class="col-md-12">
+                                <div className="app-field-div mt-10">
+                                  <label htmlFor="terminationDate">
+                                    Termination date
+                                  </label>
+                                  <DatePicker
+                                    className="form-control date-time-picker"
+                                    placeholderText="MM/DD/YYYY"
+                                    selected={terminationDate}
+                                    id="terminationDate"
+                                    onChange={(date) =>
+                                      setTerminationDate(date)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                    <a href={() => false}>
-                      <div className="reminder-frequency">
-                        <div>
-                          <FontAwesomeIcon icon={faCalendarWeek} />
+                      ) : reminderFrequency === "monthly" ? (
+                        <div className="row monthly">
+                          <div className="col-md-5">
+                            <div className="app-field-div mt-10">
+                              <label htmlFor="location">Repeat Every</label>
+                              <select
+                                onChange={(e) => setRepeatEvery(e.target.value)}
+                                value={repeatEvery}
+                                className="form-select"
+                              >
+                                <option value="1">1 month</option>
+                                <option value="2">2 months</option>
+                                <option value="3">3 months</option>
+                                <option value="4">4 months</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-md-7">
+                            <div className="app-field-div mt-10">
+                              <label htmlFor="location">Duration</label>
+                              <select
+                                onChange={(e) => setDuration(e.target.value)}
+                                value={duration}
+                                className="form-select"
+                              >
+                                <option value="once">Once</option>
+                                <option value="forever">Forever</option>
+                                <option value="uptill">Up till</option>
+                              </select>
+                            </div>
+                          </div>
+                          {duration === "uptill" ? (
+                            <div class="col-md-12">
+                              <div className="app-field-div mt-10">
+                                <label htmlFor="terminationDate">
+                                  Termination date
+                                </label>
+                                <DatePicker
+                                  className="form-control date-time-picker"
+                                  placeholderText="MM/DD/YYYY"
+                                  selected={terminationDate}
+                                  id="terminationDate"
+                                  onChange={(date) => setTerminationDate(date)}
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <div className="col-md-12">
+                            <div className="app-field-div mt-10">
+                              <label htmlFor="location">Repeat by</label>
+                              <select className="form-select">
+                                <option>Day of month</option>
+                              </select>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <span>Weekly</span>
-                        </div>
-                      </div>
-                    </a>
-                    <a href={() => false}>
-                      <div className="reminder-frequency">
-                        <div>
-                          <FontAwesomeIcon icon={faCalendar} />
-                        </div>
-                        <div>
-                          <span>Monthly</span>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  <div className="row daily">
-                    <div className="col-md-5">
-                      <div className="app-field-div mt-10">
-                        <label htmlFor="location">Repeat Every</label>
-                        <select className="form-select">
-                          <option>4 days</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <div className="app-field-div mt-10">
-                        <label htmlFor="location">Duration</label>
-                        <select className="form-select">
-                          <option>Forever</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="weekly">
-                    <div className="d-flex flex-wrap">
-                      <div class="day-circle">Mon</div>
-                      <div class="day-circle">Tue</div>
-                      <div class="day-circle day-selected">Wed</div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-5">
-                        <div className="app-field-div mt-10">
-                          <label htmlFor="location">Repeat Every</label>
-                          <select className="form-select">
-                            <option>4 days</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-7">
-                        <div className="app-field-div mt-10">
-                          <label htmlFor="location">Duration</label>
-                          <select className="form-select">
-                            <option>Until</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row monthly">
-                    <div className="col-md-5">
-                      <div className="app-field-div mt-10">
-                        <label htmlFor="location">Repeat Every</label>
-                        <select className="form-select">
-                          <option>4 months</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <div className="app-field-div mt-10">
-                        <label htmlFor="location">Duration</label>
-                        <select className="form-select">
-                          <option>Forever</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-12">
-                      <div className="app-field-div mt-10">
-                        <label htmlFor="location">Repeat by</label>
-                        <select className="form-select">
-                          <option>Day of month</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+                      ) : (
+                        ""
+                      )}{" "}
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <div className="col-md-4 text-center">
@@ -261,8 +529,10 @@ function CreateReminder() {
                 </div>
                 <div className="details-fields">
                   <div className="app-field-div mt-20">
-                    <label htmlFor="activityName">Service/Activity Name</label>
+                    <label htmlFor="activityName">{reminderType} Name</label>
                     <input
+                      onChange={(e) => setName(e.target.value)}
+                      value={name}
                       id="activityName"
                       className="form-control"
                       placeholder="Name"
@@ -271,6 +541,8 @@ function CreateReminder() {
                   <div className="app-field-div mt-10">
                     <label htmlFor="location">Location</label>
                     <input
+                      onChange={(e) => setLocation(e.target.value)}
+                      value={location}
                       id="location"
                       className="form-control"
                       placeholder="Location"
@@ -279,13 +551,18 @@ function CreateReminder() {
                   <div className="app-field-div mt-10">
                     <label htmlFor="otherComments">Other comments</label>
                     <textarea
+                      onChange={(e) => setComments(e.target.value)}
+                      value={comments}
                       id="otherComments"
                       className="form-control"
                       placeholder="Other details to include"
                     ></textarea>
                   </div>
                   <div className="text-center">
-                    <button className="btn btn-create-reminder">
+                    <button
+                      onClick={createReminderHandler}
+                      className="btn btn-create-reminder"
+                    >
                       Create Reminder
                     </button>
                   </div>
