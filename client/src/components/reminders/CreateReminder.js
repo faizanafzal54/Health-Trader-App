@@ -14,6 +14,7 @@ import {
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { createReminder } from "./reminderService";
+import { toastify } from "../../actions/userActions";
 
 function CreateReminder() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -58,7 +59,8 @@ function CreateReminder() {
         location,
         comments,
       });
-      console.log(res)
+      toastify('success','Reminder has been created successfully')
+      setModalOpen(false)
     } catch (err) {
       console.log(err)
     }

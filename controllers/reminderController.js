@@ -32,6 +32,7 @@ module.exports = {
         location,
         comments,
         isActive: true,
+        status:''
       });
       sendResponse(null, req, res, { reminder });
     } catch (err) {

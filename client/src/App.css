@@ -32,6 +32,10 @@ input[type="number"] {
   }
 }
 
+.text.blue {
+  color: #427A8E;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -203,8 +207,7 @@ span > .kep-login-facebook {
 }
 
 .main-routes {
-  padding-top: 20px;
-  padding-bottom: 20px;
+ padding:20px 0px;
   max-width: 1084px;
   margin-left: auto;
   margin-right: auto;
@@ -298,13 +301,13 @@ span > .kep-login-facebook {
   left: 24px;
   position: le;
 }
-.timeline > .card > .d-flex {
+.module-headers > .card > .d-flex {
   padding-left: 20px;
   padding-right: 20px;
   height: 60px;
   align-items: center;
 }
-.timeline > .card > .d-flex > h5 {
+.module-headers > .card > .d-flex > h5 {
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -312,26 +315,27 @@ span > .kep-login-facebook {
   color: #474646;
 }
 
-.timeline .card .search-actions {
+.card .search-actions {
   background-color: #427a8e;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 10px;
   height: 60px;
 }
-.timeline .search-actions .MuiFormControl-root {
+.search-actions .MuiFormControl-root {
   width: 200px;
 }
-.timeline .search-actions .search .MuiFormControl-root label {
+.search-actions .category .MuiTextField-root {
+  width: 200px;
+}
+.search-actions .search .MuiFormControl-root label {
   margin-left: -13px;
 }
-.timeline .search-actions .category .MuiTextField-root {
-  width: 200px;
-}
-.timeline .search-actions .category .MuiTextField-root label {
+
+.search-actions .category .MuiTextField-root label {
   color: #fff;
 }
-.timeline .search-actions .category .MuiTextField-root svg {
+.search-actions .category .MuiTextField-root svg {
   color: #fff;
 }
 .timeline .reminders {
@@ -511,6 +515,10 @@ span > .kep-login-facebook {
   color: #fff;
   width: 20px;
 }
+.search-actions .search  #standard-adornment-search  {
+  color: #fff;
+}
+
 .my-circle .friends-list .friend-div {
   padding-top: 10px;
 }
@@ -890,6 +898,98 @@ span > .kep-login-facebook {
 .create-reminder-modal .schedule .react-datepicker {
   min-width: 328px;
 }
+.medications .grid {
+  padding:7px 47px 27px 47px;
+}
+.medications .grid .row{
+  min-height: 159px;
+  border: 2px solid #DDDCDC;
+  margin-top: 20px;
+}
+.medications .grid .col-md-4 {
+  text-align: left;
+  padding: 15px 10px;
+}
+
+.medications .grid .name .d-flex img {
+  width: 25px;
+}
+.medications .grid .name .d-flex h5 {
+  font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;color: #427A8E;
+margin-bottom: 0;
+margin-left: 10px;
+
+}
+.medications .grid .name .d-flex .group-name {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #474646;
+  margin:2px 0px 0px 10px
+}
+.medications .grid .name p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #474646;
+  margin-top: 18px;
+  margin-left: 35px;
+}
+.medications .grid .group {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.medications .grid .group .badge-img {
+  width: 18px;
+  height: 18px;
+}
+.medications .grid .group h5 {
+  font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+color: #484644;
+margin-left: 7px;
+margin-bottom: 0;
+}
+.medications .grid .group .bell {
+  width: 18px;
+  height: 22px;
+}
+.medications .grid .group p {
+  font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+margin-top: 5px;
+color: #474646;
+}
+.medications .grid .details {
+  padding:15px 20px
+}
+.medications .grid .details h5{
+  font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+color: #474646;
+margin-bottom: 0px;
+}
+.medications .grid .details label span {
+  font-weight: bolder;
+}
+.medications .grid .details label {
+  font-size: 14px;
+color: #474646;
+}
+.medications .grid .name,.medications .grid .group {
+  border-right: 2px solid #DDDCDC;
+  
+}
 /* Media Queries */
 
 @media only screen and (min-width: 1440px) {
@@ -925,6 +1025,12 @@ span > .kep-login-facebook {
   .my-circle .friends-list .friend-div .name-div {
     width: 100%;
   }
+  .medications .grid .name p {
+    margin-left: 10px;
+  } 
+  .main-routes {
+    padding:20px 20px
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -942,30 +1048,41 @@ span > .kep-login-facebook {
     margin-left: 50px;
   }
 }
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 426px) {
   .account .tabs-title {
     padding-left: 20px;
     padding-right: 20px;
   }
-  .timeline .search-actions .MuiFormControl-root {
+  .search-actions .MuiFormControl-root {
     width: 150px;
   }
-  .timeline .search-actions .category .MuiTextField-root {
+  .search-actions .category .MuiTextField-root {
     width: 150px;
   }
   .timeline .actions-btns .created-date-div {
     padding-top: 10px;
     justify-content: center !important;
   }
+  .medications .grid .name, .medications .grid .group {
+    border-right: none;
+    border-bottom: 2px solid #DDDCDC;
+  }
+  .search-actions .MuiFormControl-root {
+    width: 150px;
+  }
+  .search-actions .category .MuiTextField-root {
+    width: 150px;
+  }
 }
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 376px) {
   .timeline .reminder-div .actions-btns button {
     margin-left: 0px;
   }
-  .timeline .search-actions .MuiFormControl-root {
+  
+  .search-actions .MuiFormControl-root {
     width: 140px;
   }
-  .timeline .search-actions .category .MuiTextField-root {
+  .search-actions .category .MuiTextField-root {
     width: 140px;
   }
 }

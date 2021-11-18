@@ -23,6 +23,7 @@ import { toastify } from "../../../actions/userActions";
 
 function Timeline() {
   const [reminders, setReminders] = useState([]);
+  const [search, setSearch] = useState('');
   const userState = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -49,8 +50,13 @@ function Timeline() {
       setReminders(newReminders);
     }
   };
+  const searchFor = (_reminder,_search)=>{
+    return _reminder.name.toLowerCase().includes(_search) ||
+     _reminder.location.toLowerCase().includes(_search) ||
+     _reminder.comments.toLowerCase().includes(_search) 
+  }
   return (
-    <div className="timeline">
+    <div className="timeline module-headers">
       <div className="card">
         <div className="d-flex justify-content-between">
           <h5>Your Timeline</h5>
@@ -61,13 +67,14 @@ function Timeline() {
             <FormControl>
               <InputLabel
                 className="text-white"
-                htmlFor="standard-adornment-password"
+                htmlFor="standard-adornment-search"
               >
                 Search Reminders
               </InputLabel>
               <Input
+                onChange={e=>setSearch(e.target.value)}
                 color="secondary"
-                id="standard-adornment-password"
+                id="standard-adornment-search"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton>
@@ -94,7 +101,7 @@ function Timeline() {
           <div className="reminder-title">
             <h4>Reminders</h4>
           </div>
-          {reminders.map((reminder) => (
+          {reminders.filter(reminder=>searchFor(reminder, search)).map((reminder) => (
             <div key={reminder._id} className="reminder-div">
               <div className="row justify-content-between">
                 <div className="col-md-6">
@@ -179,6 +186,7 @@ function Timeline() {
               </div>
             </div>
           ))}
+          {reminders.length === 0 ? <span className='text-dark'>No reminder created yet</span>:""}
         </div>
       </div>
     </div>

@@ -43,6 +43,9 @@ const reminderSchema = new Schema(
     comments: {
       type: String,
     },
+    status: {
+      type: String,
+    },
     isActive: {
       type: Boolean,
     },

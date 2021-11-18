@@ -45,34 +45,34 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navLinksContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink to="/">
+                <NavLink onClick={toggleHandler} to="/">
                   <img src={HomeIcon} alt="Home icon" />
                   <span>Home</span>
                 </NavLink>
                 <span className="border-right"></span>
               </li>
               <li className="nav-item">
-                <NavLink to="/c">
+                <NavLink onClick={toggleHandler} to="/c">
                   <FontAwesomeIcon icon={faCalendarAlt} /> <span>Calendar</span>
                 </NavLink>
               </li>
               <li className="nav-item">
                 <span className="border-right"></span>
-                <NavLink to="/m">
+                <NavLink onClick={toggleHandler} to="/medications">
                   <img src={MedIcon} alt="Medical icon" />{" "}
                   <span>Medications</span>
                 </NavLink>
               </li>
               <li>
                 <span className="border-right"></span>
-                <NavLink to="/h">
+                <NavLink onClick={toggleHandler} to="/h">
                   <FontAwesomeIcon icon={faHeartbeat} />{" "}
                   <span>Health Report</span>
                 </NavLink>
               </li>
               <li>
                 <span className="border-right"></span>
-                <NavLink to="/h">
+                <NavLink onClick={toggleHandler} to="/h">
                   <img src={MessageIcon} alt="Msg icon" /> <span>Message</span>
                 </NavLink>
               </li>

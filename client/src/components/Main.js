@@ -5,6 +5,7 @@ import CreateReminder from "./reminders/CreateReminder";
 
 const Home = lazy(() => import("./home/Home"));
 const ResetPassword = lazy(() => import("./login/ResetPassword"));
+const Medications = lazy(() => import("./medications/Medications"));
 
 function Main() {
   return (
@@ -14,6 +15,7 @@ function Main() {
         <div className="main-routes">
           <Route exact path="/" component={Home} />
           <Route exact path="/education" component={ResetPassword} />
+          <Route exact path="/medications" component={Medications} />
           <CreateReminder />
         </div>
       </Suspense>
