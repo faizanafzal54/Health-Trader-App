@@ -59,6 +59,7 @@ function CreateReminder() {
         location,
         comments,
       });
+      console.log(res)
       toastify('success','Reminder has been created successfully')
       setModalOpen(false)
     } catch (err) {

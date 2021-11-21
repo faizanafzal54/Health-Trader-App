@@ -23,7 +23,33 @@ export const formatAMPM = (date) => {
   return strTime;
 };
 
-export const getTime = (date)=>{
+export const getTime = (date) => {
   const dateObj = new Date(date);
   return `${formatAMPM(dateObj)}`;
-}
+};
+
+export const monthName = (index) => {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  return monthNames[index];
+};
+
+export const currentMonthRange = () => {
+  const date = new Date();
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return `${monthName(date.getMonth()).substring(0,3)}. ${firstDay.getDay()}, ${firstDay.getFullYear()} - ${monthName(date.getMonth()).substring(0,3)}. ${lastDay.getDay()}, ${lastDay.getFullYear()}`
+};

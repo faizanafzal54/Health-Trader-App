@@ -45,14 +45,14 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navLinksContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink onClick={toggleHandler} to="/">
+                <NavLink onClick={toggleHandler} exact to="/">
                   <img src={HomeIcon} alt="Home icon" />
                   <span>Home</span>
                 </NavLink>
                 <span className="border-right"></span>
               </li>
               <li className="nav-item">
-                <NavLink onClick={toggleHandler} to="/c">
+                <NavLink onClick={toggleHandler} to="/calendar">
                   <FontAwesomeIcon icon={faCalendarAlt} /> <span>Calendar</span>
                 </NavLink>
               </li>
