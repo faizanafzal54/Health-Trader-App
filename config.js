@@ -4,8 +4,8 @@ module.exports = {
     dbPath: "localhost:27017/",
     dbName: "healthTrader",
     facebookAuth: {
-      appId: "850230712313757",
-      appSecret: "087e706337fdbccaba73c2c75ec914ff",
+      appId: "868966620464100",
+      appSecret: "69c230cb1d9b9413cd24a6db7ec58d2c",
     },
   },
   test: {

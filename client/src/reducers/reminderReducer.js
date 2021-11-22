@@ -1,5 +1,6 @@
 const defaultState = {
   isReminderOpen: false,
+  reminders: [],
 };
 
 const reminderReducer = (state = defaultState, action) => {
@@ -13,6 +14,11 @@ const reminderReducer = (state = defaultState, action) => {
       return {
         ...state,
         isReminderOpen: false,
+      };
+    case "SetReminders":
+      return {
+        ...state,
+        reminders: [...state.reminders, ...action.payload.reminders],
       };
     default:
       return state;
