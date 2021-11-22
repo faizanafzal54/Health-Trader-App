@@ -1,7 +1,7 @@
 module.exports =
   process.env.NODE_ENV === "production"
     ? {
-        apiUrl: "http://localhost:5000/api/",
+        apiUrl: "http://18.116.180.161:5000/api/",
         facebookAppId: "850230712313757",
       }
     : {
