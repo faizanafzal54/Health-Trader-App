@@ -11,6 +11,8 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, RootReducer);
 
+// const loggerMiddleware = createLogger();
+
 const Store = createStore(
   persistedReducer,
   composeWithDevTools(applyMiddleware(thunk))
@@ -24,7 +26,6 @@ export { Store, Persistor };
 // import { createLogger } from 'redux-logger';
 // import rootReducer from '../reducers/index.js';
 
-// const loggerMiddleware = createLogger();
 // const sagaMiddleware = createSagaMiddleware();
 
 // const store = createStore(

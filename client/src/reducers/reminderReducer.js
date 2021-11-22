@@ -4,6 +4,7 @@ const defaultState = {
 };
 
 const reminderReducer = (state = defaultState, action) => {
+  console.log(action);
   switch (action.type) {
     case "OpenModal":
       return {
@@ -15,10 +16,15 @@ const reminderReducer = (state = defaultState, action) => {
         ...state,
         isReminderOpen: false,
       };
+    case "PushReminders":
+      return {
+        ...state,
+        reminders: action.payload.reminders,
+      };
     case "SetReminders":
       return {
         ...state,
-        reminders: [...state.reminders, ...action.payload.reminders],
+        reminders: action.payload.reminders,
       };
     default:
       return state;

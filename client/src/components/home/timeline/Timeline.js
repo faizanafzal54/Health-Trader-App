@@ -23,39 +23,41 @@ import { toastify } from "../../../actions/userActions";
 import { setReminderAction } from "../../../actions/reminderActions";
 
 function Timeline() {
-  const [reminders, setReminders] = useState([]);
   const [search, setSearch] = useState("");
+  // const [localReminders, setLocalReminders] = useState([]);
+
   const userState = useSelector((state) => state.user.user);
-  const reminderState = useSelector((state) => state.reminder);
+  const reminders = useSelector((state) => state.reminder.reminders);
+  const __tempReminders = useSelector((state) => state.reminder);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (reminderState.reminders.length === 0) {
-      getRemindersHandler();
-    } else {
-      setReminders(reminderState.reminders);
-    }
+    getRemindersHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log("Reminders updated :", __tempReminders);
+  }, [__tempReminders]);
 
   const getRemindersHandler = async () => {
     const res = await getReminders(userState._id);
     if (res.status === 200) {
-      setReminders(res.data.data.reminders);
       dispatch(setReminderAction(res.data.data.reminders));
     }
   };
+
   const setReminderStatusHandler = async (reminderId, status) => {
     const res = await setReminderStatus(reminderId, status);
     if (res.status === 200) {
-      const newReminders = reminders.map((reminder) => {
+      const tempReminders = reminders.map((reminder) => {
         if (reminder._id === reminderId) {
           reminder.status = status;
         }
         return reminder;
       });
+      dispatch(setReminderAction(tempReminders));
       toastify("success", `Reminder status has been updated to "${status}"`);
-      setReminders(newReminders);
     }
   };
   const searchFor = (_reminder, _search) => {
@@ -111,95 +113,103 @@ function Timeline() {
           <div className="reminder-title">
             <h4>Reminders</h4>
           </div>
-          {reminders
-            .filter((reminder) => searchFor(reminder, search))
-            .map((reminder) => (
-              <div key={reminder._id} className="reminder-div">
-                <div className="row justify-content-between">
-                  <div className="col-md-6">
-                    <div className="d-flex">
-                      <img
-                        src={
-                          reminder.reminderType === "medication"
-                            ? PillImg
-                            : reminder.reminderType === "appointment"
-                            ? AppointmentImg
-                            : ServiceImg
-                        }
-                        height={
-                          reminder.reminderType === "appointment" ? 30 : 25
-                        }
-                        alt="Pill Img"
-                      />
-                      <h4 className="med-name">{reminder.name}</h4>
+          {reminders &&
+            reminders
+              .filter((reminder) => searchFor(reminder, search))
+              .map((reminder, index) => (
+                <div
+                  key={reminder._id}
+                  className={
+                    index === 0 ? "reminder-div" : "reminder-div mt-20"
+                  }
+                >
+                  <div className="row justify-content-between">
+                    <div className="col-md-6">
+                      <div className="d-flex">
+                        <img
+                          src={
+                            reminder.reminderType === "medication"
+                              ? PillImg
+                              : reminder.reminderType === "appointment"
+                              ? AppointmentImg
+                              : ServiceImg
+                          }
+                          height={
+                            reminder.reminderType === "appointment" ? 30 : 25
+                          }
+                          alt="Pill Img"
+                        />
+                        <h4 className="med-name">{reminder.name}</h4>
+                      </div>
+                      <div className="text-start">
+                        <span className="med-frequency">
+                          {reminder.location}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-start">
-                      <span className="med-frequency">{reminder.location}</span>
-                    </div>
-                  </div>
-                  <div className="col-md-6 text-end">
-                    <span className="med-time">
-                      <FontAwesomeIcon icon={faBell} /> &nbsp;&nbsp;{" "}
-                      {getTime(reminder.startDateTime)}
-                    </span>
-                  </div>
-                </div>
-                <div className="med-text">
-                  <span>{reminder.comments}</span>
-                </div>
-                <div className="med-border"></div>
-                <div className="row actions-btns align-items-center">
-                  <div className="col-md-8">
-                    <div className="d-flex flex-wrap">
-                      <button
-                        onClick={() =>
-                          setReminderStatusHandler(reminder._id, "Taken")
-                        }
-                        className={
-                          reminder.status === "Taken"
-                            ? "btn btn-sm button-taken"
-                            : "btn btn-sm btn-transparent text-success"
-                        }
-                      >
-                        Completed
-                      </button>
-                      <button
-                        onClick={() =>
-                          setReminderStatusHandler(reminder._id, "Missed")
-                        }
-                        className={
-                          reminder.status === "Missed"
-                            ? "btn btn-sm button-missed"
-                            : "btn btn-sm btn-transparent text-danger"
-                        }
-                      >
-                        Missed
-                      </button>
-                      <button
-                        onClick={() =>
-                          setReminderStatusHandler(reminder._id, "Forgot")
-                        }
-                        className={
-                          reminder.status === "Forgot"
-                            ? "btn btn-sm button-forgot"
-                            : "btn btn-sm btn-transparent text-warning"
-                        }
-                      >
-                        Don't Remember
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="d-flex created-date-div justify-content-end">
-                      <span className="created-date me-4">
-                        {getDateTime(reminder.startDateTime)}
+                    <div className="col-md-6 text-end">
+                      <span className="med-time">
+                        <FontAwesomeIcon icon={faBell} /> &nbsp;&nbsp;{" "}
+                        {getTime(reminder.startDateTime)}
                       </span>
-                      <FontAwesomeIcon icon={faEllipsisV} />
+                    </div>
+                  </div>
+                  <div className="med-text">
+                    <span>{reminder.comments}</span>
+                  </div>
+                  <div className="med-border"></div>
+                  <div className="row actions-btns align-items-center">
+                    <div className="col-md-8">
+                      <div className="d-flex flex-wrap">
+                        <button
+                          onClick={() =>
+                            setReminderStatusHandler(reminder._id, "Taken")
+                          }
+                          className={
+                            reminder.status === "Taken"
+                              ? "btn btn-sm button-taken"
+                              : "btn btn-sm btn-transparent text-success"
+                          }
+                        >
+                          Completed
+                        </button>
+                        <button
+                          onClick={() =>
+                            setReminderStatusHandler(reminder._id, "Missed")
+                          }
+                          className={
+                            reminder.status === "Missed"
+                              ? "btn btn-sm button-missed"
+                              : "btn btn-sm btn-transparent text-danger"
+                          }
+                        >
+                          Missed
+                        </button>
+                        <button
+                          onClick={() =>
+                            setReminderStatusHandler(reminder._id, "Forgot")
+                          }
+                          className={
+                            reminder.status === "Forgot"
+                              ? "btn btn-sm button-forgot"
+                              : "btn btn-sm btn-transparent text-warning"
+                          }
+                        >
+                          Don't Remember
+                        </button>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="d-flex created-date-div justify-content-end">
+                        <span className="created-date me-4">
+                          {getDateTime(reminder.startDateTime)}
+                        </span>
+                        <FontAwesomeIcon icon={faEllipsisV} />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           {reminders.length === 0 ? (
             <span className="text-dark">No reminder created yet</span>
           ) : (

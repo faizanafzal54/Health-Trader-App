@@ -8,7 +8,6 @@ const ResetPassword = lazy(() => import("./login/ResetPassword"));
 const Medications = lazy(() => import("./medications/Medications"));
 const Calendar = lazy(() => import("./calendar/Calendar"));
 
-
 function Main() {
   return (
     <div>

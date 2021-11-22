@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { createReminder } from "./reminderService";
 import { toastify } from "../../actions/userActions";
-import { setReminderAction } from "../../actions/reminderActions";
+import { pushReminderAction } from "../../actions/reminderActions";
 
 function CreateReminder() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -60,10 +60,10 @@ function CreateReminder() {
         location,
         comments,
       });
-      console.log(res);
-      dispatch(setReminderAction([res.data.data.reminder]));
+      console.log(res.data.data.reminder);
+      dispatch(pushReminderAction(res.data.data.reminder));
       toastify("success", "Reminder has been created successfully");
-      setModalOpen(false);
+      closeModalHandler();
     } catch (err) {
       console.log(err);
     }
