@@ -311,7 +311,7 @@ function CreateReminder() {
                             </div>
                           </div>
                           {duration === "uptill" ? (
-                            <div class="col-md-12">
+                            <div className="col-md-12">
                               <div className="app-field-div mt-10">
                                 <label htmlFor="terminationDate">
                                   Termination date
@@ -436,7 +436,7 @@ function CreateReminder() {
                               </div>
                             </div>
                             {duration === "uptill" ? (
-                              <div class="col-md-12">
+                              <div className="col-md-12">
                                 <div className="app-field-div mt-10">
                                   <label htmlFor="terminationDate">
                                     Termination date
@@ -489,7 +489,7 @@ function CreateReminder() {
                             </div>
                           </div>
                           {duration === "uptill" ? (
-                            <div class="col-md-12">
+                            <div className="col-md-12">
                               <div className="app-field-div mt-10">
                                 <label htmlFor="terminationDate">
                                   Termination date

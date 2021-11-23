@@ -6,8 +6,8 @@ import {
   createDaysForNextMonth,
   createDaysForPreviousMonth,
   isWeekendDay,
-  getMonthDropdownOptions,
-  getYearDropdownOptions,
+  // getMonthDropdownOptions,
+  // getYearDropdownOptions,
 } from "../../helpers/calendar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -71,17 +71,17 @@ export default function CalendarIndex({
     onYearAndMonthChange([nextYear, nextMonth]);
   };
 
-  const handleMonthSelect = (evt) => {
-    let nextYear = year;
-    let nextMonth = parseInt(evt.target.value, 10);
-    onYearAndMonthChange([nextYear, nextMonth]);
-  };
+  // const handleMonthSelect = (evt) => {
+  //   let nextYear = year;
+  //   let nextMonth = parseInt(evt.target.value, 10);
+  //   onYearAndMonthChange([nextYear, nextMonth]);
+  // };
 
-  const handleYearSelect = (evt) => {
-    let nextMonth = month;
-    let nextYear = parseInt(evt.target.value, 10);
-    onYearAndMonthChange([nextYear, nextMonth]);
-  };
+  // const handleYearSelect = (evt) => {
+  //   let nextMonth = month;
+  //   let nextYear = parseInt(evt.target.value, 10);
+  //   onYearAndMonthChange([nextYear, nextMonth]);
+  // };
 
   return (
     <div className="calendar-root">

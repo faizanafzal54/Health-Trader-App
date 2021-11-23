@@ -235,7 +235,7 @@ module.exports = {
   },
   inviteUser: async (req, res) => {
     try {
-      const { firstName, lastName, circle, notes, phone, email, userId } =
+      const { firstName, lastName, circle, notes, phone, email, userId,notifications } =
         req.body;
       const account = await userDao.findOneByEmail(email);
       if (account === null) {
@@ -249,6 +249,7 @@ module.exports = {
           invitedBy: userId,
           inviteLink: generateRandomLink(),
           inviteLinkDate: new Date(),
+          notifications
         });
         const newCircle = await mycircleDao.create({
           userId,

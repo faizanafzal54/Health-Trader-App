@@ -106,6 +106,9 @@ input[type="number"] {
 .pt-20 {
   padding-top: 20px;
 }
+.gx-0{
+  --bs-gutter-x: 0!important;
+}
 
 .navbar-username {
   font-size: 16px;
@@ -493,6 +496,9 @@ span > .kep-login-facebook {
   line-height: 23px;
   color: #474646;
 }
+.my-circle .title svg {
+  cursor: pointer;
+}
 .my-circle .search-actions {
   background-color: #427a8e;
   padding: 0px 10px 10px 10px;
@@ -542,6 +548,7 @@ span > .kep-login-facebook {
   font-size: 14px;
   line-height: 16px;
   color: #484644;
+  cursor: pointer;
 }
 .my-circle .friends-list .friend-div .name-div .relation {
   font-style: normal;
@@ -571,20 +578,36 @@ span > .kep-login-facebook {
 }
 
 .modal-new-person {
-  padding: 20px;
   max-width: 719px;
 }
 .modal-new-person .info {
   padding-left: 11px;
   padding-right: 11px;
 }
-
-.modal-new-person .title h5 {
+.modal-new-person .title-div {
+  border-bottom: 2px solid #000000;
+  padding: 10px 30px;
+}
+.modal-new-person .title-div h5 {
   font-weight: bold;
-  font-size: 20px;
-  line-height: 23px;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
   color: #474646;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+}
+.modal-new-person .title-div button {
+  background: #FFFFFF;
+border: 2px solid #474646;
+box-sizing: border-box;
+border-radius: 8px;
+padding:9px 15px;
+color:#474646;
+font-size:20px
+}
+.modal-new-person .form-grid {
+  padding:0px 30px 27px 30px
 }
 .modal-new-person .basic-info h5 {
   font-weight: bold;
@@ -596,6 +619,10 @@ span > .kep-login-facebook {
 }
 .modal-new-person .fields {
   padding-top: 5px;
+}
+.modal-new-person .fields .col-md-4,.modal-new-person .fields .col-md-12,.modal-new-person .fields .col-md-8 {
+padding-left: 5px;
+padding-right: 5px;
 }
 .modal-new-person .fields label {
   font-style: normal;
@@ -613,8 +640,8 @@ span > .kep-login-facebook {
   font-size: 16px;
 }
 .modal-new-person .profile-picture-upload .picture {
-  width: 175px;
-  height: 175px;
+  width: 110px;
+  height: 110px;
 }
 .modal-new-person .profile-picture-upload button {
   background: #427a8e;
@@ -650,6 +677,30 @@ span > .kep-login-facebook {
 .modal-new-person .notification-settings .actions .cancel-button {
   height: 29px;
   background: #747474;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #fff;
+  border: none;
+  padding: 5px 10px 5px 10px;
+}
+.modal-new-person .notification-settings .actions .delete-button {
+  height: 29px;
+  background: #B62121;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #fff;
+  border: none;
+  padding: 5px 10px 5px 10px;
+}
+.modal-new-person .notification-settings .actions .edit-button {
+  height: 29px;
+  background: #427A8E;
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
@@ -862,6 +913,13 @@ span > .kep-login-facebook {
   font-weight: bold;
   font-size: 16px;
   margin-top: 20px;
+}
+.app-field-disable{
+  background-color: #F3F3F1;
+}
+.app-field-div input:disabled, .app-field-div input:read-only,.app-field-div select:disabled,.app-field-div textarea:disabled{
+  background-color: #F3F3F1;
+
 }
 .app-field-div {
   padding: 4px 11px;

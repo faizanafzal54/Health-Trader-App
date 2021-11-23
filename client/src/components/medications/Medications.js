@@ -10,14 +10,14 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import MedIcon from "../../assets/Pill icon.png";
 import BadgeIcon from "../../assets/badge.png";
 import BellIcon from "../../assets/Bell icon.png";
 
 function Medications() {
   const [search, setSearch] = useState("");
-  const userState = useSelector((state) => state.user.user);
+  // const userState = useSelector((state) => state.user.user);
 
   return (
     <div className="medications module-headers">
@@ -37,6 +37,7 @@ function Medications() {
               </InputLabel>
               <Input
                 onChange={(e) => setSearch(e.target.value)}
+                value={search}
                 color="secondary"
                 id="standard-adornment-search"
                 endAdornment={

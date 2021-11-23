@@ -22,10 +22,14 @@ import React, { useEffect, useState } from "react";
 import { getmycircle, inviteUser } from "./homeService";
 import { useSelector } from "react-redux";
 import { toastify } from "../../actions/userActions";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import CircleView from "./CircleView";
 
 function MyCircle() {
   const [friends, setFriends] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [mode, setMode] = useState(""); //view || edit
   const [inviteState, setInviteState] = useState({
     firstName: "",
     lastName: "",
@@ -34,6 +38,29 @@ function MyCircle() {
     phone: "",
     email: "",
   });
+  const [isTextNotify, setIsTextNotify] = useState(false);
+  const [isTextReceiveEvery, setIsTextReceiveEvery] = useState(false);
+  const [textDailyReport, setTextDailyReport] = useState({
+    isEnable: false,
+    time: null,
+  });
+  const [textWeeklyReport, setTextWeeklyReport] = useState({
+    isEnable: false,
+    time: null,
+  });
+
+  const [isEmailNotify, setIsEmailNotify] = useState(false);
+  const [isEmailtReceiveEvery, setIsEmailtReceiveEvery] = useState(false);
+  const [emailDailyReport, setEmailDailyReport] = useState({
+    isEnable: false,
+    time: null,
+  });
+  const [emailWeeklyReport, setEmailWeeklyReport] = useState({
+    isEnable: false,
+    time: null,
+  });
+  const [user, setUser] = useState(null);
+
   const userState = useSelector((state) => state.user.user);
 
   const inviteStateHandler = (e) => {
@@ -54,7 +81,36 @@ function MyCircle() {
       return false;
     }
     try {
-      const res = await inviteUser({ ...inviteState, userId: userState._id });
+      const res = await inviteUser({
+        ...inviteState,
+        userId: userState._id,
+        notifications: {
+          textNotifications: {
+            isEnable: isTextNotify,
+            isReceiveEvery: isTextReceiveEvery,
+            daily: {
+              isEnable: textDailyReport.isEnable,
+              time: textDailyReport.time,
+            },
+            weekly: {
+              isEnable: textWeeklyReport.isEnable,
+              time: textWeeklyReport.time,
+            },
+          },
+          emailNotifications: {
+            isEnable: isEmailNotify,
+            isReceiveEvery: isEmailtReceiveEvery,
+            daily: {
+              isEnable: emailDailyReport.isEnable,
+              time: emailDailyReport.time,
+            },
+            weekly: {
+              isEnable: emailWeeklyReport.isEnable,
+              time: emailWeeklyReport.time,
+            },
+          },
+        },
+      });
       if (res.status === 201) {
         toastify("success", "User has been added to my circle");
         setModalOpen(false);
@@ -150,7 +206,13 @@ function MyCircle() {
                 <div className="d-flex justify-content-between">
                   <div className="text-start">
                     <div>
-                      <span className="name">
+                      <span
+                        onClick={() => {
+                          setUser(friend);
+                          setMode("view");
+                        }}
+                        className="name"
+                      >
                         {friend.friendId.firstName} {friend.friendId.lastName}
                       </span>
                     </div>
@@ -184,87 +246,98 @@ function MyCircle() {
           }}
         >
           <div className="modal-new-person">
-            <div className="title">
-              <h5>New Person</h5>
+            <div className="title-div align-items-center d-flex justify-content-between">
+              <h5>Add a new member</h5>
+              <button onClick={() => setModalOpen(false)} className="btn">
+                X
+              </button>
             </div>
-            <div className="basic-info">
-              <h5>Basic Information</h5>
-            </div>
-            <div className="row fields">
-              <div className="col-md-8">
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>
-                      First Name <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      onChange={(e) => inviteStateHandler(e)}
-                      name="firstName"
-                      className="form-control"
-                      placeholder="First Name"
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label>
-                      Last Name <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      onChange={(e) => inviteStateHandler(e)}
-                      name="lastName"
-                      className="form-control"
-                      placeholder="Last Name"
-                    />
-                  </div>
-                  <div className="col-md-12 mt-13">
-                    <label>
-                      Circle <span className="text-danger">*</span>
-                    </label>
+
+            <div className="form-grid">
+              <div className="basic-info">
+                <h5>Basic Information</h5>
+              </div>
+              <div className="row fields">
+                <div className="col-md-3">
+                  <div className="profile-picture-upload basic-info text-center">
                     <div>
-                      <label className="text-muted">
-                        Your circles are significant groups of people
-                      </label>
+                      <Avatar className="picture mt-7 mx-auto"></Avatar>
                     </div>
-                    <select
-                      onChange={(e) => inviteStateHandler(e)}
-                      name="circle"
-                      className="form-select"
-                      placeholder=""
-                    >
-                      <option value=""></option>
-                      <option value="Family">Family</option>
-                    </select>
+                    <div>
+                      <button className="mt-7">
+                        Upload <FontAwesomeIcon icon={faUpload} />{" "}
+                      </button>
+                    </div>
                   </div>
-                  <div className="col-md-12 mt-13">
-                    <label>Notes</label>
-                    <textarea
-                      onChange={(e) => inviteStateHandler(e)}
-                      name="notes"
-                      className="form-control"
-                    ></textarea>
+                </div>
+                <div className="col-md-9">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="app-field-div">
+                        <label>
+                          First Name <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          onChange={(e) => inviteStateHandler(e)}
+                          name="firstName"
+                          className="form-control"
+                          placeholder="First Name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="app-field-div">
+                        <label>
+                          Last Name <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          onChange={(e) => inviteStateHandler(e)}
+                          name="lastName"
+                          className="form-control"
+                          placeholder="Last Name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="app-field-div">
+                        <label>
+                          Circle <span className="text-danger">*</span>
+                        </label>
+                        <select
+                          onChange={(e) => inviteStateHandler(e)}
+                          name="circle"
+                          value={inviteState.circle}
+                          className="form-select"
+                          placeholder=""
+                        >
+                          <option disabled value="">
+                            Select circle type
+                          </option>
+                          <option value="Family">Family</option>
+                          <option value="Friends">Friends</option>
+                          <option value="Providers">Providers</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-12 mt-13">
+                      <div className="app-field-div">
+                        <label>Notes</label>
+                        <textarea
+                          onChange={(e) => inviteStateHandler(e)}
+                          name="notes"
+                          className="form-control"
+                        ></textarea>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
-                <div className="profile-picture-upload basic-info text-center">
-                  <h5>Profile Picture</h5>
-                  <div>
-                    <Avatar className="picture mt-7 mx-auto"></Avatar>
-                  </div>
-                  <div>
-                    <button className="mt-7">
-                      Upload <FontAwesomeIcon icon={faUpload} />{" "}
-                    </button>
-                  </div>
-                </div>
+              <div className="basic-info mt-20">
+                <h5>Contact Information</h5>
               </div>
-            </div>
-            <div className="basic-info mt-50">
-              <h5>Contact Information</h5>
-            </div>
-            <div className="fields row">
-              <div className="col-md-8">
-                <div className="row">
-                  <div className="col-md-6">
+              <div className="row fields gx-0">
+                <div className="col-md-4">
+                  <div className="app-field-div">
                     <label>
                       Phone Number <span className="text-danger">*</span>
                     </label>
@@ -275,7 +348,9 @@ function MyCircle() {
                       placeholder="(000) - 000 - 0000"
                     />
                   </div>
-                  <div className="col-md-12 mt-13">
+                </div>
+                <div className="col-md-8">
+                  <div className="app-field-div">
                     <label>
                       Contact's Email<span className="text-danger">*</span>
                     </label>
@@ -288,156 +363,290 @@ function MyCircle() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4"></div>
-            </div>
-            <div className="basic-info mt-50">
-              <h5>Notification Settings</h5>
-            </div>
-            <div className="row notification-settings">
-              <div className="col-md-6 mt-13">
-                <button>
-                  <div className="form-check mb-0">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Receive Text Notifications
-                    </label>
-                  </div>
-                </button>
-                <div className="mt-05 notification-checkbox">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Receive every notification
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Daily report (at 6 PM)
-                    </label>
-                  </div>
-                  <div className="form-check mb-0">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Weekly report (Every Friday at 6 PM)
-                    </label>
-                  </div>
-                </div>
-                <div className="d-flex actions mt-20">
-                  <button className="cancel-button">Cancel</button>
-                  <button
-                    disabled={
-                      inviteState.firstName.length === 0 ||
-                      inviteState.lastName.length === 0 ||
-                      inviteState.email.length === 0 ||
-                      inviteState.circle === "" ||
-                      inviteState.phone === ""
-                    }
-                    onClick={() => inviteHandler()}
-                    className="save-button ml-30"
-                  >
-                    Save
-                  </button>
-                </div>
+              <div className="basic-info mt-20">
+                <h5>Notification Settings</h5>
               </div>
-              <div className="col-md-6 mt-13">
-                <button>
-                  <div className="form-check mb-0">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexCheckDefault"
+              <div className="row notification-settings">
+                <div className="col-md-6 mt-13">
+                  <button>
+                    <div className="form-check mb-0">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={isTextNotify}
+                        onChange={(e) => setIsTextNotify(e.target.checked)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault"
+                      >
+                        Receive Text Notifications
+                      </label>
+                    </div>
+                  </button>
+                  {isTextNotify ? (
+                    <div className="mt-05 notification-checkbox">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={isTextReceiveEvery}
+                          onChange={(e) =>
+                            setIsTextReceiveEvery(e.target.checked)
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Receive every notification
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={textDailyReport.isEnable}
+                          onChange={(e) =>
+                            setTextDailyReport({
+                              isEnable: e.target.checked,
+                              time: textDailyReport.time,
+                            })
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Daily report
+                        </label>
+                        {textDailyReport.isEnable ? (
+                          <div className="app-field-div">
+                            <label htmlFor="text-daily-time">Report time</label>
+                            <DatePicker
+                              id="text-daily-time"
+                              selected={textDailyReport.time}
+                              onChange={(date) =>
+                                setTextDailyReport({
+                                  isEnable: true,
+                                  time: date,
+                                })
+                              }
+                              showTimeSelect
+                              className="form-control"
+                              showTimeSelectOnly
+                              placeholderText="Select time"
+                              timeIntervals={15}
+                              timeCaption="Time"
+                              dateFormat="h:mm aa"
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="form-check mb-0">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={textWeeklyReport.isEnable}
+                          onChange={(e) =>
+                            setTextWeeklyReport({
+                              isEnable: e.target.checked,
+                              time: textWeeklyReport.time,
+                            })
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Weekly report
+                        </label>
+                        {textWeeklyReport.isEnable ? (
+                          <div className="app-field-div">
+                            <label htmlFor="text-week-time">Report time</label>
+                            <DatePicker
+                              id="text-week-time"
+                              selected={textWeeklyReport.time}
+                              onChange={(date) =>
+                                setTextWeeklyReport({
+                                  isEnable: true,
+                                  time: date,
+                                })
+                              }
+                              showTimeSelect
+                              placeholderText="Select time"
+                              className="form-control"
+                              showTimeSelectOnly
+                              timeIntervals={15}
+                              timeCaption="Time"
+                              dateFormat="h:mm aa"
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="d-flex actions mt-20">
+                    <button className="cancel-button">Cancel</button>
+                    <button
+                      disabled={
+                        inviteState.firstName.length === 0 ||
+                        inviteState.lastName.length === 0 ||
+                        inviteState.email.length === 0 ||
+                        inviteState.circle === "" ||
+                        inviteState.phone === ""
+                      }
+                      onClick={() => inviteHandler()}
+                      className="save-button ml-30"
                     >
-                      Receive Email Notifications
-                    </label>
+                      Save
+                    </button>
                   </div>
-                </button>
-                <div className="mt-05 notification-checkbox">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Receive every notification
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Daily report (at 6 PM)
-                    </label>
-                  </div>
-                  <div className="form-check mb-0">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label
-                      className="form-check-label text-muted"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Weekly report (Every Friday at 6 PM)
-                    </label>
-                  </div>
+                </div>
+                <div className="col-md-6 mt-13">
+                  <button>
+                    <div className="form-check mb-0">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={isEmailNotify}
+                        onChange={(e) => setIsEmailNotify(e.target.checked)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDefault"
+                      >
+                        Receive Email Notifications
+                      </label>
+                    </div>
+                  </button>
+                  {isEmailNotify ? (
+                    <div className="mt-05 notification-checkbox">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={isEmailtReceiveEvery}
+                          onChange={(e) =>
+                            setIsEmailtReceiveEvery(e.target.checked)
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Receive every notification
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={emailDailyReport.isEnable}
+                          onChange={(date) =>
+                            setEmailDailyReport({
+                              isEnable: true,
+                              time: emailDailyReport.time,
+                            })
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Daily report
+                        </label>
+                        {emailDailyReport.isEnable ? (
+                          <div className="app-field-div">
+                            <label htmlFor="email-daily-time">
+                              Report time
+                            </label>
+                            <DatePicker
+                              id="email-daily-time"
+                              selected={emailDailyReport.time}
+                              onChange={(date) =>
+                                setEmailDailyReport({
+                                  isEnable: true,
+                                  time: date,
+                                })
+                              }
+                              showTimeSelect
+                              placeholderText="Select time"
+                              className="form-control"
+                              showTimeSelectOnly
+                              timeIntervals={15}
+                              timeCaption="Time"
+                              dateFormat="h:mm aa"
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="form-check mb-0">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={emailWeeklyReport.isEnable}
+                          onChange={(e) =>
+                            setEmailWeeklyReport({
+                              isEnable: e.target.checked,
+                              date: emailWeeklyReport.time,
+                            })
+                          }
+                        />
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Weekly report
+                        </label>
+                        {emailWeeklyReport.isEnable ? (
+                          <div className="app-field-div">
+                            <label htmlFor="email-week-time">Report time</label>
+                            <DatePicker
+                              id="email-week-time"
+                              selected={emailWeeklyReport.time}
+                              onChange={(date) =>
+                                setEmailWeeklyReport({
+                                  isEnable: true,
+                                  time: date,
+                                })
+                              }
+                              showTimeSelect
+                              placeholderText="Select time"
+                              className="form-control"
+                              showTimeSelectOnly
+                              timeIntervals={15}
+                              timeCaption="Time"
+                              dateFormat="h:mm aa"
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </Box>
       </Modal>
+      {user !== null ? (
+        <CircleView user={user} setMode={(mode)=>setMode(mode)} setUserNull={() => setUser(null)} mode={mode} />
+      ) : (
+        ""
+      )}
     </>
   );
 }
