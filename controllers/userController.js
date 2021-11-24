@@ -166,7 +166,7 @@ module.exports = {
               image: user.image,
             },
           };
-          const token = generateToken(data, "480m");
+          const token = generateToken(data, "7d");
           const refreshToken = generateToken(
             {
               _id: user._id,
@@ -235,8 +235,16 @@ module.exports = {
   },
   inviteUser: async (req, res) => {
     try {
-      const { firstName, lastName, circle, notes, phone, email, userId,notifications } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        circle,
+        notes,
+        phone,
+        email,
+        userId,
+        notifications,
+      } = req.body;
       const account = await userDao.findOneByEmail(email);
       if (account === null) {
         const newUser = await userDao.create({
@@ -249,7 +257,7 @@ module.exports = {
           invitedBy: userId,
           inviteLink: generateRandomLink(),
           inviteLinkDate: new Date(),
-          notifications
+          notifications,
         });
         const newCircle = await mycircleDao.create({
           userId,
@@ -307,6 +315,45 @@ module.exports = {
         err.statusCode = 400;
         sendResponse(err, req, res, err);
       }
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  EditUser: async (req, res) => {
+    try {
+      const {
+        firstName,
+        lastName,
+        circle,
+        notes,
+        phone,
+        email,
+        ownerId, //invited by
+        notifications,
+        userId, // user to edit
+      } = req.body;
+      const user = await userDao.findOneAndUpdate(
+        { _id:userId },
+        { firstName, lastName, circle, notes, phone, email, notifications }
+      );
+
+      const mycircle = await mycircleDao.findOneAndUpdate(
+        { userId:ownerId, friendId: userId },
+        {
+          connectionType: circle,
+        }
+      );
+      sendResponse(null, req, res, { user, mycircle });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  deleteUser: async (req, res) => {
+    try {
+      const { userId,circleId } = req.query;
+      const user = await userDao.findByIdAndDelete(userId);
+      const myCircle = await mycircleDao.findByIdAndDelete(circleId);
+      sendResponse(null, req, res, { user,myCircle });
     } catch (err) {
       sendResponse(err, req, res, err);
     }
@@ -384,7 +431,7 @@ module.exports = {
             image: user.image,
           },
         };
-        const token = generateToken(data, "480m");
+        const token = generateToken(data, "7d");
         const refreshToken = generateToken(
           {
             id: user.id,
@@ -506,7 +553,7 @@ module.exports = {
                 image: response.image,
               },
             };
-            const token = generateToken(data, "480m");
+            const token = generateToken(data, "7d");
             const refreshToken = generateToken(
               {
                 _id: response._id,
@@ -554,7 +601,7 @@ module.exports = {
                 image: registeredUser.image,
               },
             };
-            const token = generateToken(data, "480m");
+            const token = generateToken(data, "7d");
             const refreshToken = generateToken(
               {
                 _id: registeredUser._id,

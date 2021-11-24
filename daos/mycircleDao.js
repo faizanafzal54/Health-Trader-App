@@ -40,4 +40,14 @@ module.exports = {
       throw new Error(err);
     }
   },
+  findByIdAndDelete:async(_id)=>{
+    try {
+      const account = await MyCircle.findByIdAndDelete(_id);
+      return account;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
 };

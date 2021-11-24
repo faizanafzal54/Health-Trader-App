@@ -4,7 +4,6 @@ const defaultState = {
 };
 
 const reminderReducer = (state = defaultState, action) => {
-  console.log(action);
   switch (action.type) {
     case "OpenModal":
       return {

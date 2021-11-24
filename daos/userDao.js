@@ -24,7 +24,9 @@ module.exports = {
   },
   findOneAndUpdate: async (where, update) => {
     try {
-      const response = await User.findOneAndUpdate(where, update);
+      const response = await User.findOneAndUpdate(where, update,{
+        new: true}
+      );
       return response;
     } catch (err) {
       let error = new Error(err);
@@ -35,6 +37,16 @@ module.exports = {
   findOneWhere: async (where) => {
     try {
       const account = await User.findOne(where);
+      return account;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+  findByIdAndDelete:async(_id)=>{
+    try {
+      const account = await User.findByIdAndDelete(_id);
       return account;
     } catch (err) {
       let error = new Error(err);

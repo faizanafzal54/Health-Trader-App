@@ -1,16 +1,12 @@
-import {
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Avatar,
-  Modal,
-  Box,
-} from "@mui/material";
+import { Avatar, Modal, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { deleteUser, editUser } from "./homeService";
+import { toastify } from "../../actions/userActions";
 
 function CircleView(props) {
   const [isViewModalOpen, setModalOpen] = useState(false);
@@ -23,6 +19,8 @@ function CircleView(props) {
     phone: "",
     email: "",
   });
+  const [_id, set_id] = useState(null);
+  const [connectionId, setConnectionId] = useState(null);
   const [isTextNotify, setIsTextNotify] = useState(false);
   const [isTextReceiveEvery, setIsTextReceiveEvery] = useState(false);
   const [textDailyReport, setTextDailyReport] = useState({
@@ -55,12 +53,15 @@ function CircleView(props) {
   };
 
   useEffect(() => {
+    debugger
     if (props.user !== null) {
       setModalOpen(true);
+      set_id(props.user?.friendId._id)
+      setConnectionId(props.user?._id)
       setInviteState({
         firstName: props.user?.friendId.firstName,
         lastName: props.user?.friendId.lastName,
-        circle: props.user?.friendId.circle,
+        circle: props.user?.connectionType,
         notes: props.user?.friendId.notes,
         phone: props.user?.friendId.phone,
         email: props.user?.friendId.email,
@@ -109,6 +110,69 @@ function CircleView(props) {
       });
     }
   }, [props]);
+
+  const deleteHandler =async ()=>{
+    try {
+      const res = await deleteUser(_id,connectionId)
+      if(res.status === 204){
+        toastify('error',"User has been deleted")
+        setModalOpen(false);
+        props.deleteFriend(connectionId)
+        props.setUserNull();
+      }
+    } catch (err) {
+      
+    }
+  }
+
+  const editHandler = async()=>{
+    try {
+      const res = await editUser({
+        ...inviteState,
+        userId:_id,
+        ownerId: userState._id,
+        notifications: {
+          textNotifications: {
+            isEnable: isTextNotify,
+            isReceiveEvery: isTextReceiveEvery,
+            daily: {
+              isEnable: textDailyReport.isEnable,
+              time: textDailyReport.time,
+            },
+            weekly: {
+              isEnable: textWeeklyReport.isEnable,
+              time: textWeeklyReport.time,
+            },
+          },
+          emailNotifications: {
+            isEnable: isEmailNotify,
+            isReceiveEvery: isEmailtReceiveEvery,
+            daily: {
+              isEnable: emailDailyReport.isEnable,
+              time: emailDailyReport.time,
+            },
+            weekly: {
+              isEnable: emailWeeklyReport.isEnable,
+              time: emailWeeklyReport.time,
+            },
+          },
+        },
+      })
+      if(res.status === 200){
+        toastify('success',"changes has been saved")
+        setModalOpen(false);
+        let newUserObj = {
+          ...res.data.data.mycircle,
+          friendId:res.data.data.user
+
+        }
+        props.updateFriends(newUserObj)
+        props.setUserNull();
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <Modal
@@ -232,8 +296,8 @@ function CircleView(props) {
                           Select circle type
                         </option>
                         <option value="Family">Family</option>
-                        <option value="Friends">Friends</option>
-                        <option value="Providers">Providers</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Provider">Provider</option>
                       </select>
                     </div>
                   </div>
@@ -345,12 +409,16 @@ function CircleView(props) {
                           }
                         />
                       )}
-                      <label
-                        className="form-check-label text-muted"
-                        htmlFor="flexCheckDefault"
-                      >
-                        Receive every notification
-                      </label>
+                      {props.mode === "view" && !isTextReceiveEvery ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Receive every notification
+                        </label>
+                      )}
                     </div>
                     <div className="form-check">
                       {props.mode === "view" ? (
@@ -368,15 +436,19 @@ function CircleView(props) {
                           }
                         />
                       )}
+                      {props.mode === "view" && !textDailyReport.isEnable ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Daily report
+                        </label>
+                      )}
 
                       {textDailyReport.isEnable ? (
                         <>
-                          <label
-                            className="form-check-label text-muted"
-                            htmlFor="flexCheckDefault"
-                          >
-                            Daily report
-                          </label>
                           <div
                             className={
                               props.mode === "view"
@@ -427,14 +499,18 @@ function CircleView(props) {
                           />
                         </>
                       )}
+                      {props.mode === "view" && !textWeeklyReport.isEnable ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Weekly report
+                        </label>
+                      )}
                       {textWeeklyReport.isEnable ? (
                         <>
-                          <label
-                            className="form-check-label text-muted"
-                            htmlFor="flexCheckDefault"
-                          >
-                            Weekly report
-                          </label>
                           <div
                             className={
                               props.mode === "view"
@@ -474,13 +550,21 @@ function CircleView(props) {
                 <div className="d-flex actions mt-20">
                   {props.mode === "view" ? (
                     <>
-                      <button onClick={()=>props.setMode("edit")} className="edit-button">Edit</button>
-                      <button className="delete-button ml-30">Delete</button>
+                      <button
+                        onClick={() => props.setMode("edit")}
+                        className="edit-button"
+                      >
+                        Edit
+                      </button>
+                      <button onClick={deleteHandler} className="delete-button ml-30">Delete</button>
                     </>
                   ) : (
                     <>
-                      <button className="cancel-button">Cancel</button>
-                      <button className="save-button ml-30">Save</button>
+                      <button onClick={()=>{
+                        setModalOpen(false);
+                        props.setUserNull();
+                      }} className="cancel-button">Cancel</button>
+                      <button onClick={editHandler} className="save-button ml-30">Save</button>
                     </>
                   )}
                 </div>
@@ -521,12 +605,12 @@ function CircleView(props) {
                           }
                         />
                       )}
-                      <label
+                     {props.mode === 'view' && !isEmailtReceiveEvery ? "" :  <label
                         className="form-check-label text-muted"
                         htmlFor="flexCheckDefault"
                       >
                         Receive every notification
-                      </label>
+                      </label>}
                     </div>
                     <div className="form-check">
                       {props.mode === "view" ? (
@@ -544,12 +628,13 @@ function CircleView(props) {
                           }
                         />
                       )}
-                      <label
+                      {props.mode === 'view' && !emailDailyReport.isEnable ? "" : <label
                         className="form-check-label text-muted"
                         htmlFor="flexCheckDefault"
                       >
                         Daily report
-                      </label>
+                      </label>}
+                      
                       {emailDailyReport.isEnable ? (
                         <div
                           className={
@@ -593,17 +678,18 @@ function CircleView(props) {
                           onChange={(e) =>
                             setEmailWeeklyReport({
                               isEnable: e.target.checked,
-                              date: emailWeeklyReport.time,
+                              time: emailWeeklyReport.time,
                             })
                           }
                         />
                       )}
-                      <label
+                      {props.mode === 'view' && !emailWeeklyReport.isEnable ? "" : <label
                         className="form-check-label text-muted"
                         htmlFor="flexCheckDefault"
                       >
                         Weekly report
-                      </label>
+                      </label>}
+                     
                       {emailWeeklyReport.isEnable ? (
                         <div
                           className={

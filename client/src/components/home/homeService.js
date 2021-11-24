@@ -15,3 +15,11 @@ export const getmycircle = async (userId) => {
 export const inviteUser = async (obj) => {
   return request.post(`/users/inviteUser`, obj);
 };
+
+export const editUser = async (obj) => {
+  return request.put(`/users/editUser`, obj);
+};
+
+export const deleteUser = async ( userId,circleId ) => {
+  return request.delete(`/users/deleteUser?userId=${userId}&circleId=${circleId}`);
+};

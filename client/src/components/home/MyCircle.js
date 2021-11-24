@@ -17,6 +17,7 @@ import {
   TextField,
   Modal,
   Box,
+  Menu,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getmycircle, inviteUser } from "./homeService";
@@ -27,8 +28,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import CircleView from "./CircleView";
 
 function MyCircle() {
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const [friends, setFriends] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
   const [mode, setMode] = useState(""); //view || edit
   const [inviteState, setInviteState] = useState({
     firstName: "",
@@ -68,6 +73,16 @@ function MyCircle() {
       ...inviteState,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const updateFriends = (updatedFriendObj) => {
+    let tempFriends = friends.map((fri) => {
+      if (fri._id === updatedFriendObj._id) {
+        fri = updatedFriendObj;
+      }
+      return fri;
+    });
+    setFriends(tempFriends);
   };
 
   const inviteHandler = async () => {
@@ -157,7 +172,11 @@ function MyCircle() {
                   className="me-20"
                   icon={faPlus}
                 />
-                <FontAwesomeIcon icon={faExpandArrowsAlt} />
+                <FontAwesomeIcon
+                 
+                  icon={faExpandArrowsAlt}
+                />
+                
               </div>
             </div>
           </div>
@@ -221,7 +240,33 @@ function MyCircle() {
                     </div>
                   </div>
                   <div className="d-flex align-items-center">
-                    <FontAwesomeIcon icon={faEllipsisV} />
+                    <FontAwesomeIcon  onClick={(e) => {setMenuOpen(true);
+                    setAnchorEl(e.currentTarget);}} icon={faEllipsisV} />
+                    <Menu
+                  id="long-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "long-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={isMenuOpen}
+                  onClose={() => setMenuOpen(false)}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 48 * 4.5,
+                      width: "10ch",
+                    },
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      setModalOpen(true);
+                      setMode("edit");
+                      setMenuOpen(false)
+                    }}
+                  >
+                    Edit
+                  </MenuItem>
+                </Menu>
                   </div>
                 </div>
               </div>
@@ -314,8 +359,8 @@ function MyCircle() {
                             Select circle type
                           </option>
                           <option value="Family">Family</option>
-                          <option value="Friends">Friends</option>
-                          <option value="Providers">Providers</option>
+                          <option value="Friend">Friend</option>
+                          <option value="Provider">Provider</option>
                         </select>
                       </div>
                     </div>
@@ -643,7 +688,17 @@ function MyCircle() {
         </Box>
       </Modal>
       {user !== null ? (
-        <CircleView user={user} setMode={(mode)=>setMode(mode)} setUserNull={() => setUser(null)} mode={mode} />
+        <CircleView
+          deleteFriend={(id) => {
+            let temp = friends.filter((friend) => friend._id !== id);
+            setFriends(temp);
+          }}
+          updateFriends={updateFriends}
+          user={user}
+          setMode={(mode) => setMode(mode)}
+          setUserNull={() => setUser(null)}
+          mode={mode}
+        />
       ) : (
         ""
       )}

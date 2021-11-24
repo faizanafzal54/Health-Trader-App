@@ -15,6 +15,8 @@ const {
   inviteUser,
   verifyInviteLink,
   completeRegistration,
+  EditUser,
+  deleteUser,
 } = require("../controllers/userController");
 const { verifyToken } = require("../middleware/authValidator");
 
@@ -25,7 +27,9 @@ router.post("/forgotPassword", forgotPassword);
 router.get("/verifyResetLink", verifyResetLink);
 router.get("/verifyInviteLink", verifyInviteLink);
 router.put("/resetPassword", resetPassword);
-router.post("/inviteUser", inviteUser);
+router.post("/inviteUser",verifyToken, inviteUser);
+router.put("/editUser",verifyToken, EditUser);
+router.delete("/deleteUser",verifyToken, deleteUser);
 router.put("/completeRegistration", completeRegistration);
 
 router.put("/refreshToken", refreshToken);
