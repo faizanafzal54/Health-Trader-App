@@ -665,7 +665,7 @@ function MyCircle() {
                           onChange={(e) =>
                             setEmailWeeklyReport({
                               isEnable: e.target.checked,
-                              date: emailWeeklyReport.time,
+                              time: emailWeeklyReport.time,
                             })
                           }
                         />
