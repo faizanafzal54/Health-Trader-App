@@ -30,6 +30,8 @@ import CircleView from "./CircleView";
 function MyCircle() {
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [search, setSearch] = useState("");
+  const [searchGroup, setSearchGroup] = useState("All");
 
   const [friends, setFriends] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -157,6 +159,22 @@ function MyCircle() {
       setFriends(res.data.data.mycircle);
     }
   };
+  const searchFor = (_friend, _search,_searchGroup) => {
+    if(_searchGroup === "All"){
+      return (
+        _friend.friendId.firstName.toLowerCase().includes(_search) ||
+        _friend.friendId.lastName.toLowerCase().includes(_search) ||
+        _friend.friendId.email.toLowerCase().includes(_search) ||
+        _friend.friendId.phone.toLowerCase().includes(_search)  
+      );
+    }
+    return (
+      (_friend.friendId.firstName.toLowerCase().includes(_search) ||
+      _friend.friendId.lastName.toLowerCase().includes(_search) ||
+      _friend.friendId.email.toLowerCase().includes(_search) ||
+      _friend.friendId.phone.toLowerCase().includes(_search) )&& _friend.connectionType === _searchGroup 
+    );
+  };
   return (
     <>
       <div className="my-circle">
@@ -191,8 +209,9 @@ function MyCircle() {
                 Search Friends
               </InputLabel>
               <Input
+              value={search}
+              onChange={e=>setSearch(e.target.value)}
                 color="secondary"
-                id="standard-adornment-password"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton>
@@ -206,17 +225,21 @@ function MyCircle() {
           <div className="category">
             <TextField
               className="text-white ms-4"
-              id="standard-select-currency"
               select
-              label="All Groups"
+              value={searchGroup}
+              onChange={e=>setSearchGroup(e.target.value)}
+              label="Select group"
               variant="standard"
             >
-              <MenuItem>All Groups</MenuItem>
+              <MenuItem value="All">All Groups</MenuItem>
+              <MenuItem value="Family">Family</MenuItem>
+              <MenuItem value="Friend">Friends</MenuItem>
+              <MenuItem value="Provider">Provider</MenuItem>
             </TextField>
           </div>
         </div>
         <div className="friends-list">
-          {friends.map((friend) => (
+          {friends.filter((friend) => searchFor(friend, search,searchGroup)).map((friend) => (
             <div key={friend._id} className="d-flex friend-div">
               <div className="avatar-div">
                 <Avatar className="friend-avatar">H</Avatar>
@@ -538,7 +561,7 @@ function MyCircle() {
                     ""
                   )}
                   <div className="d-flex actions mt-20">
-                    <button className="cancel-button">Cancel</button>
+                    <button onClick={() => setModalOpen(false)} className="cancel-button">Cancel</button>
                     <button
                       disabled={
                         inviteState.firstName.length === 0 ||

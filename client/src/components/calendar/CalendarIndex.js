@@ -15,7 +15,7 @@ import {
   faChevronRight,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { currentMonthRange } from "../../helpers/dateFormator";
+import { currentMonthRange ,currentDay} from "../../helpers/dateFormator";
 import {
   FormControl,
   IconButton,
@@ -35,6 +35,9 @@ export default function CalendarIndex({
   yearAndMonth = [2021, 6],
   onYearAndMonthChange,
   renderDay = () => null,
+  setCalendarType,
+  calendarType,
+
 }) {
   const [year, month] = yearAndMonth;
 
@@ -83,12 +86,16 @@ export default function CalendarIndex({
   //   onYearAndMonthChange([nextYear, nextMonth]);
   // };
 
+  const ampmList = [12,1,2,3,4,5,6,7,8,9,10,11]
+
   return (
     <div className="calendar-root">
       <div className="d-flex search-actions g-0 row">
         <div className="col-md-6">
           <div className="current-date d-flex flex-wrap align-items-center">
-            <span>{currentMonthRange()}</span>
+            {calendarType === 'Month' ?<span>{currentMonthRange()}</span>:<span>{currentDay()}</span> }
+            
+            
             <FontAwesomeIcon
               onClick={handleMonthNavBackButtonClick}
               className="text-white left"
@@ -132,9 +139,9 @@ export default function CalendarIndex({
             </div>
             <div className="col-lg-6">
               <div className="d-flex">
-                <button className="day-button">Day</button>
-                <button className="week-button">Week</button>
-                <button className="month-button selected-frequcy-butoon">
+                <button onClick={()=>setCalendarType("Day")} className={calendarType === 'Day' ? "day-button selected-frequcy-butoon":"day-button"} >Day</button>
+                <button onClick={()=>setCalendarType("Week")}  className={calendarType === 'Week' ? "week-button selected-frequcy-butoon":"week-button"}>Week</button>
+                <button onClick={()=>setCalendarType("Month")}  className={calendarType === 'Month' ? "month-button selected-frequcy-butoon":"month-button"}>
                   Month
                 </button>
               </div>
@@ -165,7 +172,7 @@ export default function CalendarIndex({
             </option>
           ))}
         </select> */}
-      <div className="row calendar-grids">
+      {calendarType === 'Month' ? <div className="row calendar-grids">
         <div className="col-md-6">
           <div className="days-of-week">
             {daysOfWeek.map((day, index) => (
@@ -190,14 +197,46 @@ export default function CalendarIndex({
                   })}
                   
                 >
-                  <div className={day.dayOfMonth === new Date().getDate() ?"current-day-box day-content-wrapper":"day-content-wrapper"} >{renderDay(day)}</div>
+                  <div className={day.dayOfMonth === new Date().getDate() && new Date(day.dateString).getMonth() === new Date().getMonth() ?"current-day-box day-content-wrapper":"day-content-wrapper"} >{renderDay(day)}</div>
                 </div>
               )
             })}
           </div>
         </div>
         <div className='col-md-6'></div>
+      </div>: calendarType === 'Day' ? <>
+      
+      <div className='row day-calendar gx-0'>
+        <div className='col-md-6'>
+          <div className='title'>
+            <h4>AM HOURS</h4>
+          </div>
+          <div className='am-pm'>
+            {ampmList.map(ap=> <div key={`am${ap.toString()}`} className='d-flex align-items-center justify-content-between'>
+              <div><span>{ap} AM </span></div>
+              <div>
+                <div className='border-down'></div>
+              </div>
+            </div>)}
+          </div>
+        </div>
+        <div className='col-md-6'>
+        <div className='title'>
+
+            <h4>PM HOURS</h4>
+          </div>
+          <div className='am-pm'>
+            {ampmList.map(ap=> <div key={`pm${ap.toString()}`} className='d-flex align-items-center justify-content-between'>
+              <div><span>{ap} PM </span></div>
+              <div>
+                <div className='border-down'></div>
+              </div>
+            </div>)}
+          </div>
+        </div>
       </div>
+      
+      </>:""}
       <br/>
     </div>
   );

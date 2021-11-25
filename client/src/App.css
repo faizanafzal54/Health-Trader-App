@@ -110,6 +110,13 @@ input[type="number"] {
   --bs-gutter-x: 0!important;
 }
 
+.search-actions .category .MuiTextField-root div {
+  color: #fff!important;
+}
+.search-actions .search .MuiFormControl-root div {
+  color: #fff!important;
+
+}
 .navbar-username {
   font-size: 16px;
   font-weight: 600;
@@ -1146,12 +1153,12 @@ color: #474646;
 
 .calendar .row {
   --bs-gutter-x: 0;
-  max-height: 100%;
   height: 100%;
 }
  .calendar .search-actions .current-date {
   padding:13px 0px;
-  color:#fff
+  color:#fff;
+  margin-top: 10px;
 }
 .calendar .calendar-grids {
   margin-left: 15px;
@@ -1169,6 +1176,7 @@ line-height: 19px;
 }
 .calendar .search-actions .current-date .right {
   margin-left: 35px;
+  
   cursor: pointer;
 }
 .calendar .search-actions .day-button {
@@ -1214,12 +1222,42 @@ line-height: 19px;
   background-color: #fff;
   color: #427A8E;
 }
+.calendar .day-calendar .title h4{
+  margin-bottom: 0;
+  font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+text-align: center;
+color: #427A8E;
+margin-top: 19px;
+}
+.calendar .day-calendar .am-pm {
+  padding:20px
+}
+.calendar .day-calendar .am-pm .d-flex {
+  margin-top: 18px;
+}
+.calendar .day-calendar .am-pm .d-flex span {
+  font-weight: normal;
+font-size: 12px;
+line-height: 14px;
+text-align: right;
+color: #858484;
+}
+.calendar .day-calendar .am-pm .d-flex .border-down {
+  border-bottom: 2px solid #DDDCDC;
+  min-width: 450px;
+  margin-left: 10px;
+}
 /* Media Queries */
 
 @media only screen and (min-width: 1440px) {
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .calendar .day-calendar .am-pm .d-flex .border-down {
+    min-width: 400px;
+  }
 }
 @media (max-width: 1024px) {
   .home .main-container .row .col-md-9 {
@@ -1271,6 +1309,9 @@ line-height: 19px;
   .home-nav .new-reminder-btn {
     margin-left: 50px;
   }
+  .calendar .day-calendar .am-pm .d-flex .border-down {
+    min-width: 260px;
+  }
 }
 @media only screen and (max-width: 426px) {
   .account .tabs-title {
@@ -1297,6 +1338,9 @@ line-height: 19px;
   .search-actions .category .MuiTextField-root {
     width: 150px;
   }
+  .calendar .day-calendar .am-pm .d-flex .border-down {
+    min-width: 280px;
+  }
 }
 @media only screen and (max-width: 376px) {
   .timeline .reminder-div .actions-btns button {
@@ -1308,6 +1352,9 @@ line-height: 19px;
   }
   .search-actions .category .MuiTextField-root {
     width: 140px;
+  }
+  .calendar .day-calendar .am-pm .d-flex .border-down {
+    min-width: 240px;
   }
 }
 

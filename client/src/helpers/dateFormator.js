@@ -53,3 +53,8 @@ export const currentMonthRange = () => {
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   return `${monthName(date.getMonth()).substring(0,3)}. ${firstDay.getDay()}, ${firstDay.getFullYear()} - ${monthName(date.getMonth()).substring(0,3)}. ${lastDay.getDay()}, ${lastDay.getFullYear()}`
 };
+
+export const currentDay = () => {
+  const date = new Date();
+  return `${monthName(date.getMonth()).substring(0,3)}. ${date.getDay()}, ${date.getFullYear()}`
+};
