@@ -220,7 +220,7 @@ module.exports = {
         err.statusCode = 400;
         sendResponse(err, req, res, err);
       } else {
-        if (dayDifference(new Date(), user.inviteLinkDate) < 4) {
+        if (dayDifference(new Date(), user.inviteLinkDate) < 7) {
           sendResponse(null, req, res, user);
         } else {
           let err = new Error("Link expired");
@@ -351,8 +351,8 @@ module.exports = {
   deleteUser: async (req, res) => {
     try {
       const { userId,circleId } = req.query;
-      const user = await userDao.findByIdAndDelete(userId);
-      const myCircle = await mycircleDao.findByIdAndDelete(circleId);
+      const user = await userDao.findOneAndUpdate({userId},{isDeleted:true});
+      const myCircle = await mycircleDao.findOneAndUpdate({circleId},{isDeleted:true})
       sendResponse(null, req, res, { user,myCircle });
     } catch (err) {
       sendResponse(err, req, res, err);

@@ -9,7 +9,6 @@ import { deleteUser, editUser } from "./homeService";
 import { toastify } from "../../actions/userActions";
 
 function CircleView(props) {
-  const [isViewModalOpen, setModalOpen] = useState(false);
 
   const [inviteState, setInviteState] = useState({
     firstName: "",
@@ -53,11 +52,9 @@ function CircleView(props) {
   };
 
   useEffect(() => {
-    debugger
     if (props.user !== null) {
-      setModalOpen(true);
-      set_id(props.user?.friendId._id)
-      setConnectionId(props.user?._id)
+      set_id(props.user?.friendId._id);
+      setConnectionId(props.user?._id);
       setInviteState({
         firstName: props.user?.friendId.firstName,
         lastName: props.user?.friendId.lastName,
@@ -111,25 +108,23 @@ function CircleView(props) {
     }
   }, [props]);
 
-  const deleteHandler =async ()=>{
+  const deleteHandler = async () => {
     try {
-      const res = await deleteUser(_id,connectionId)
-      if(res.status === 204){
-        toastify('error',"User has been deleted")
-        setModalOpen(false);
-        props.deleteFriend(connectionId)
+      const res = await deleteUser(_id, connectionId);
+      if (res.status === 204) {
+        toastify("error", "User has been deleted");
+        props.setModalOpen(false);
+        props.deleteFriend(connectionId);
         props.setUserNull();
       }
-    } catch (err) {
-      
-    }
-  }
+    } catch (err) {}
+  };
 
-  const editHandler = async()=>{
+  const editHandler = async () => {
     try {
       const res = await editUser({
         ...inviteState,
-        userId:_id,
+        userId: _id,
         ownerId: userState._id,
         notifications: {
           textNotifications: {
@@ -157,30 +152,28 @@ function CircleView(props) {
             },
           },
         },
-      })
-      if(res.status === 200){
-        toastify('success',"changes has been saved")
-        setModalOpen(false);
+      });
+      if (res.status === 200) {
+        toastify("success", "changes has been saved");
+        props.setModalOpen(false);
         let newUserObj = {
           ...res.data.data.mycircle,
-          friendId:res.data.data.user
-
-        }
-        props.updateFriends(newUserObj)
+          friendId: res.data.data.user,
+        };
+        props.updateFriends(newUserObj);
         props.setUserNull();
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <Modal
       className="m-4 overflow-auto"
-      open={isViewModalOpen}
+      open={props.isViewModalOpen}
       onClose={() => {
-        setModalOpen(false);
-        props.setUserNull();
+        props.setModalOpen(false);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -199,8 +192,8 @@ function CircleView(props) {
             <h5>Member - {inviteState.firstName} </h5>
             <button
               onClick={() => {
-                setModalOpen(false);
                 props.setUserNull();
+                props.setModalOpen(false);
               }}
               className="btn"
             >
@@ -556,15 +549,30 @@ function CircleView(props) {
                       >
                         Edit
                       </button>
-                      <button onClick={deleteHandler} className="delete-button ml-30">Delete</button>
+                      <button
+                        onClick={deleteHandler}
+                        className="delete-button ml-30"
+                      >
+                        Delete
+                      </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={()=>{
-                        setModalOpen(false);
-                        props.setUserNull();
-                      }} className="cancel-button">Cancel</button>
-                      <button onClick={editHandler} className="save-button ml-30">Save</button>
+                      <button
+                        onClick={() => {
+                          props.setModalOpen(false);
+                          props.setUserNull();
+                        }}
+                        className="cancel-button"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={editHandler}
+                        className="save-button ml-30"
+                      >
+                        Save
+                      </button>
                     </>
                   )}
                 </div>
@@ -605,12 +613,16 @@ function CircleView(props) {
                           }
                         />
                       )}
-                     {props.mode === 'view' && !isEmailtReceiveEvery ? "" :  <label
-                        className="form-check-label text-muted"
-                        htmlFor="flexCheckDefault"
-                      >
-                        Receive every notification
-                      </label>}
+                      {props.mode === "view" && !isEmailtReceiveEvery ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Receive every notification
+                        </label>
+                      )}
                     </div>
                     <div className="form-check">
                       {props.mode === "view" ? (
@@ -628,13 +640,17 @@ function CircleView(props) {
                           }
                         />
                       )}
-                      {props.mode === 'view' && !emailDailyReport.isEnable ? "" : <label
-                        className="form-check-label text-muted"
-                        htmlFor="flexCheckDefault"
-                      >
-                        Daily report
-                      </label>}
-                      
+                      {props.mode === "view" && !emailDailyReport.isEnable ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Daily report
+                        </label>
+                      )}
+
                       {emailDailyReport.isEnable ? (
                         <div
                           className={
@@ -683,13 +699,17 @@ function CircleView(props) {
                           }
                         />
                       )}
-                      {props.mode === 'view' && !emailWeeklyReport.isEnable ? "" : <label
-                        className="form-check-label text-muted"
-                        htmlFor="flexCheckDefault"
-                      >
-                        Weekly report
-                      </label>}
-                     
+                      {props.mode === "view" && !emailWeeklyReport.isEnable ? (
+                        ""
+                      ) : (
+                        <label
+                          className="form-check-label text-muted"
+                          htmlFor="flexCheckDefault"
+                        >
+                          Weekly report
+                        </label>
+                      )}
+
                       {emailWeeklyReport.isEnable ? (
                         <div
                           className={

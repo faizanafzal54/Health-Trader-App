@@ -69,32 +69,35 @@ const userSchema = new Schema({
   isProfileComplete: {
     type: Boolean,
   },
-  notifications:{
-    textNotifications:{
-      isEnable:Boolean,
-      isReceiveEvery:Boolean,
-      daily:{
-        isEnable:Boolean,
-        time:Date
+  isDeleted: {
+    type: Boolean,
+  },
+  notifications: {
+    textNotifications: {
+      isEnable: Boolean,
+      isReceiveEvery: Boolean,
+      daily: {
+        isEnable: Boolean,
+        time: Date,
       },
-      weekly:{
-        isEnable:Boolean,
-        time:Date
+      weekly: {
+        isEnable: Boolean,
+        time: Date,
       },
     },
-    emailNotifications:{
-      isEnable:Boolean,
-      isReceiveEvery:Boolean,
-      daily:{
-        isEnable:Boolean,
-        time:Date
+    emailNotifications: {
+      isEnable: Boolean,
+      isReceiveEvery: Boolean,
+      daily: {
+        isEnable: Boolean,
+        time: Date,
       },
-      weekly:{
-        isEnable:Boolean,
-        time:Date
+      weekly: {
+        isEnable: Boolean,
+        time: Date,
       },
-    }
-  }
+    },
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;

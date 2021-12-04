@@ -29,6 +29,7 @@ import CircleView from "./CircleView";
 
 function MyCircle() {
 
+  const [isViewModalOpen, setViewModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const [searchGroup, setSearchGroup] = useState("All");
@@ -159,20 +160,21 @@ function MyCircle() {
       setFriends(res.data.data.mycircle);
     }
   };
-  const searchFor = (_friend, _search,_searchGroup) => {
-    if(_searchGroup === "All"){
+  const searchFor = (_friend, _search, _searchGroup) => {
+    if (_searchGroup === "All") {
       return (
         _friend.friendId.firstName.toLowerCase().includes(_search) ||
         _friend.friendId.lastName.toLowerCase().includes(_search) ||
         _friend.friendId.email.toLowerCase().includes(_search) ||
-        _friend.friendId.phone.toLowerCase().includes(_search)  
+        _friend.friendId.phone.toLowerCase().includes(_search)
       );
     }
     return (
       (_friend.friendId.firstName.toLowerCase().includes(_search) ||
-      _friend.friendId.lastName.toLowerCase().includes(_search) ||
-      _friend.friendId.email.toLowerCase().includes(_search) ||
-      _friend.friendId.phone.toLowerCase().includes(_search) )&& _friend.connectionType === _searchGroup 
+        _friend.friendId.lastName.toLowerCase().includes(_search) ||
+        _friend.friendId.email.toLowerCase().includes(_search) ||
+        _friend.friendId.phone.toLowerCase().includes(_search)) &&
+      _friend.connectionType === _searchGroup
     );
   };
   return (
@@ -190,11 +192,7 @@ function MyCircle() {
                   className="me-20"
                   icon={faPlus}
                 />
-                <FontAwesomeIcon
-                 
-                  icon={faExpandArrowsAlt}
-                />
-                
+                <FontAwesomeIcon icon={faExpandArrowsAlt} />
               </div>
             </div>
           </div>
@@ -209,8 +207,8 @@ function MyCircle() {
                 Search Friends
               </InputLabel>
               <Input
-              value={search}
-              onChange={e=>setSearch(e.target.value)}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 color="secondary"
                 endAdornment={
                   <InputAdornment position="end">
@@ -227,7 +225,7 @@ function MyCircle() {
               className="text-white ms-4"
               select
               value={searchGroup}
-              onChange={e=>setSearchGroup(e.target.value)}
+              onChange={(e) => setSearchGroup(e.target.value)}
               label="Select group"
               variant="standard"
             >
@@ -239,62 +237,74 @@ function MyCircle() {
           </div>
         </div>
         <div className="friends-list">
-          {friends.filter((friend) => searchFor(friend, search,searchGroup)).map((friend) => (
-            <div key={friend._id} className="d-flex friend-div">
-              <div className="avatar-div">
-                <Avatar className="friend-avatar">H</Avatar>
-              </div>
-              <div className="name-div">
-                <div className="d-flex justify-content-between">
-                  <div className="text-start">
-                    <div>
-                      <span
-                        onClick={() => {
-                          setUser(friend);
-                          setMode("view");
+          {friends
+            .filter((friend) => searchFor(friend, search, searchGroup))
+            .map((friend) => (
+              <div key={friend._id} className="d-flex friend-div">
+                <div className="avatar-div">
+                  <Avatar className="friend-avatar">H</Avatar>
+                </div>
+                <div className="name-div">
+                  <div className="d-flex justify-content-between">
+                    <div className="text-start">
+                      <div>
+                        <span
+                          onClick={() => {
+                            setUser(friend);
+                            setMode("view");
+                            setViewModalOpen(true)
+                          }}
+                          className="name"
+                        >
+                          {friend.friendId.firstName} {friend.friendId.lastName}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="relation">
+                          {friend.connectionType}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <FontAwesomeIcon
+                        onClick={(e) => {
+                          setMenuOpen(true);
+                          setAnchorEl(e.currentTarget);
                         }}
-                        className="name"
+                        icon={faEllipsisV}
+                      />
+                      <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                          "aria-labelledby": "long-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={isMenuOpen}
+                        onClose={() => setMenuOpen(false)}
+                        PaperProps={{
+                          style: {
+                            maxHeight: 48 * 4.5,
+                            width: "10ch",
+                          },
+                        }}
                       >
-                        {friend.friendId.firstName} {friend.friendId.lastName}
-                      </span>
+                        <MenuItem
+                          onClick={() => {
+                            setUser(friend);
+                            setMode("edit");
+                            setMenuOpen(false);
+                            setViewModalOpen(true)
+
+                          }}
+                        >
+                          Edit
+                        </MenuItem>
+                      </Menu>
                     </div>
-                    <div>
-                      <span className="relation">{friend.connectionType}</span>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <FontAwesomeIcon  onClick={(e) => {setMenuOpen(true);
-                    setAnchorEl(e.currentTarget);}} icon={faEllipsisV} />
-                    <Menu
-                  id="long-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "long-button",
-                  }}
-                  anchorEl={anchorEl}
-                  open={isMenuOpen}
-                  onClose={() => setMenuOpen(false)}
-                  PaperProps={{
-                    style: {
-                      maxHeight: 48 * 4.5,
-                      width: "10ch",
-                    },
-                  }}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      setModalOpen(true);
-                      setMode("edit");
-                      setMenuOpen(false)
-                    }}
-                  >
-                    Edit
-                  </MenuItem>
-                </Menu>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       <Modal
@@ -561,7 +571,12 @@ function MyCircle() {
                     ""
                   )}
                   <div className="d-flex actions mt-20">
-                    <button onClick={() => setModalOpen(false)} className="cancel-button">Cancel</button>
+                    <button
+                      onClick={() => setModalOpen(false)}
+                      className="cancel-button"
+                    >
+                      Cancel
+                    </button>
                     <button
                       disabled={
                         inviteState.firstName.length === 0 ||
@@ -721,6 +736,8 @@ function MyCircle() {
           setMode={(mode) => setMode(mode)}
           setUserNull={() => setUser(null)}
           mode={mode}
+          isViewModalOpen={isViewModalOpen}
+          setModalOpen={setViewModalOpen}
         />
       ) : (
         ""

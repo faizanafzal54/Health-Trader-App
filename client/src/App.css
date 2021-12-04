@@ -115,7 +115,82 @@ input[type="number"] {
 }
 .search-actions .search .MuiFormControl-root div {
   color: #fff!important;
-
+}
+.login {
+  max-width: 790px;
+  margin:0 auto;
+  text-align: left;
+}
+.login img {
+  max-width: 428px;
+  max-height: 514px;
+}
+.login h4{
+  margin-bottom: 0;
+  font-weight: bold;
+font-size: 45px;
+line-height: 53px;
+color: #000000;
+}
+.login .welcome span {
+  margin-top: 10px;
+  font-size: 18px;
+line-height: 21px;
+}
+.login .fields {margin-top: 25px;}
+.login .app-field-div {
+  background-color: white;
+}
+.login .btn-login{
+  background: #427A8E;
+  font-weight: 500;
+font-size: 18px;
+line-height: 21px;
+border-radius: 8px;
+color:#fff;
+margin-top:20px;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+.login .remember-device {
+  margin-top: 20px;
+}
+.login .remember-device label {
+  margin-left: 9px;
+  font-size: 16px;
+}
+.login .remember-device a {
+  padding:0;
+  text-decoration: none;
+  font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+color: #427A8E;
+}
+.login .social-buttons button {
+  margin-top: 10px;
+  font-weight: 500;
+font-size: 16px;
+color:#fff;
+font-family: "Roboto" !important;
+text-transform: none;
+padding-top: 5px;
+padding-bottom: 5px;
+border-radius: 8px;
+border:none
+}
+.login .signup-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+.login .signup-text a {
+  padding:0;
+  text-decoration: none;
+  font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+color: #427A8E;
 }
 .navbar-username {
   font-size: 16px;
@@ -145,9 +220,16 @@ input[type="number"] {
   line-height: normal;
   letter-spacing: normal;
   color: #000000;
+  padding:3px 15px;
+  border:2px solid white;
+  border-radius: 8px;
+
 }
 .navbar-nav .nav-item .active {
-  color: #79905d !important;
+  /* color: #79905d !important; */
+  /* border:2px solid white */
+  background-color: #fff;
+  color: #427A8E !important;
 }
 .row {
   --bs-gutter-x: 1.89rem;
@@ -202,11 +284,7 @@ input[type="number"] {
   /* background-color: #696969;  */
 }
 
-span > .kep-login-facebook {
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem !important;
-}
+
 .header .app-title {
   font-weight: bold;
 }
@@ -583,6 +661,41 @@ span > .kep-login-facebook {
   color: #beae5a;
   font-size: 14px;
 }
+.register {
+  padding:20px;
+  max-width: 719px;
+  margin:0 auto;
+  margin-top:20px
+}
+.register .title h5{
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  color: #474646;
+  margin-bottom: 0;
+}
+.register .basic-info h5 {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #427a8e;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+.register .fields {
+  padding:0px 11px
+}
+.register .add-emergency-contact {
+  font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+text-decoration-line: underline;
+color: #427A8E;
+padding-left:0;
+margin-top: 5px;
+}
 
 .modal-new-person {
   max-width: 719px;
@@ -646,11 +759,11 @@ padding-right: 5px;
   color: #484644;
   font-size: 16px;
 }
-.modal-new-person .profile-picture-upload .picture {
+.modal-new-person .profile-picture-upload .picture, .register .profile-picture-upload .picture{
   width: 110px;
   height: 110px;
 }
-.modal-new-person .profile-picture-upload button {
+.modal-new-person .profile-picture-upload button, .register  .profile-picture-upload button {
   background: #427a8e;
   border-radius: 4px;
   color: #fff;
@@ -670,18 +783,18 @@ padding-right: 5px;
   border: none;
   color: #484644;
 }
-.modal-new-person .profile-picture-upload .upload-title {
+.modal-new-person .profile-picture-upload .upload-title, .register .profile-picture-upload .upload-title {
   font-size: 13px;
   line-height: 9px;
   margin-left: 10px;
 }
-.modal-new-person .profile-picture-upload .type {
+.modal-new-person .profile-picture-upload .type, .register  .profile-picture-upload .type {
   font-size: 12px;
   line-height: 9px;
   margin-left: 10px;
   color: #484644;
 }
-.modal-new-person .notification-settings .actions .cancel-button {
+.modal-new-person .notification-settings .actions .cancel-button,.register .notification-settings .actions .cancel-button {
   height: 29px;
   background: #747474;
   border-radius: 4px;
@@ -705,7 +818,7 @@ padding-right: 5px;
   border: none;
   padding: 5px 10px 5px 10px;
 }
-.modal-new-person .notification-settings .actions .edit-button {
+.modal-new-person .notification-settings .actions .edit-button{
   height: 29px;
   background: #427A8E;
   border-radius: 4px;
@@ -717,7 +830,7 @@ padding-right: 5px;
   border: none;
   padding: 5px 10px 5px 10px;
 }
-.modal-new-person .notification-settings .actions .save-button {
+.modal-new-person .notification-settings .actions .save-button, .register .notification-settings .actions .save-button {
   height: 29px;
   background: #79915d;
   border-radius: 4px;
@@ -729,7 +842,7 @@ padding-right: 5px;
   border: none;
   padding: 5px 10px 5px 10px;
 }
-.modal-new-person .notification-settings .actions .save-button:disabled {
+.modal-new-person .notification-settings .actions .save-button:disabled,.register .notification-settings .actions .save-button:disabled {
   opacity: 0.5;
 }
 .modal-new-person .notification-settings button .form-check {
@@ -926,7 +1039,6 @@ padding-right: 5px;
 }
 .app-field-div input:disabled, .app-field-div input:read-only,.app-field-div select:disabled,.app-field-div textarea:disabled{
   background-color: #F3F3F1;
-
 }
 .app-field-div {
   padding: 4px 11px;

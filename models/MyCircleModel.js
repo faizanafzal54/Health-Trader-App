@@ -17,6 +17,9 @@ const myCicleSchema = new Schema(
     status: {
       type: String,
     },
+    isDeleted: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

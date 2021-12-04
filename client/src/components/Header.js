@@ -127,17 +127,17 @@ export default function Navbar() {
                       data-toggle="tab"
                       role="tab"
                     >
-                      Login
+                      Log In
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink
                       to="/signup"
-                      className="nav-link text-white"
+                      className="ms-2 nav-link text-white"
                       data-toggle="tab"
                       role="tab"
                     >
-                      Create an account
+                      Sign Up
                     </NavLink>
                   </li>
                 </>

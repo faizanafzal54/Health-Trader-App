@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { completeRegistration, verifyInviteLink } from "./loginService";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import history from "../../helpers/history";
 
 function RegisterForm(props) {
   const [inviteLink, setinviteLink] = useState("");
@@ -47,6 +48,7 @@ function RegisterForm(props) {
       console.log(inviteLink);
     } catch (err) {
       console.log(err);
+      history.push("/login");
     }
   };
 
@@ -93,13 +95,14 @@ function RegisterForm(props) {
     try {
       const res = await completeRegistration({ inviteLink, ...inviteState });
       console.log(res);
+      history.push("/login");
     } catch (err) {
       console.log(err);
     }
   };
   return (
-    <div className="p-4 text-start">
-      <div className="card modal-new-person mx-auto">
+    <div className="text-start">
+      <div className="card register mx-auto">
         <div className="title">
           <h5>Complete Registration</h5>
         </div>
@@ -116,7 +119,6 @@ function RegisterForm(props) {
                 </label>
                 <input
                   // onChange={(e) => inviteStateHandler(e)}
-                  disabled
                   value={inviteState.email}
                   name="email"
                   id="email"
@@ -408,7 +410,10 @@ function RegisterForm(props) {
             </div>
           ))}
           <div className="add-emergency-contact">
-            <button onClick={addEmergencyContact} className="btn btn-link">
+            <button
+              onClick={addEmergencyContact}
+              className="btn add-emergency-contact"
+            >
               Add Another Emergency Contact
             </button>
           </div>
