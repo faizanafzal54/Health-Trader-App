@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupAction } from "../../actions/userActions";
-import Checkbox from "@mui/material/Checkbox";
 import { NavLink } from "react-router-dom";
 import LoginImg from "../../assets/signup-img.png";
 

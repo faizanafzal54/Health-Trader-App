@@ -14,9 +14,20 @@ import React, { useState } from "react";
 import MedIcon from "../../assets/Pill icon.png";
 import BadgeIcon from "../../assets/badge.png";
 import BellIcon from "../../assets/Bell icon.png";
+import CreateMedication from "./CreateMedication";
+import { useSelector } from "react-redux";
+import { getMedications } from "./medicationService";
 
 function Medications() {
   const [search, setSearch] = useState("");
+  const [isCreateModalOpen, setCreateModal] = useState(true);
+  const userState = useSelector((state) => state.user);
+
+  const getMedicationsHandler = () => {
+    getMedications(userState.user._id);
+  };
+  getMedicationsHandler();
+
   // const userState = useSelector((state) => state.user.user);
 
   return (
@@ -26,40 +37,53 @@ function Medications() {
           <h5>Medications</h5>
           <FontAwesomeIcon icon={faEllipsisV} />
         </div>
-        <div className="d-flex search-actions">
-          <div className="search">
-            <FormControl>
-              <InputLabel
-                className="text-white"
-                htmlFor="standard-adornment-search"
+        <div className="d-flex search-actions justify-content-between align-items-center pb-0">
+          <div className="d-flex flex-wrap pb-2">
+            <div className="search">
+              <FormControl>
+                <InputLabel
+                  className="text-white"
+                  htmlFor="standard-adornment-search"
+                >
+                  Search Medications
+                </InputLabel>
+                <Input
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                  color="secondary"
+                  id="standard-adornment-search"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <FontAwesomeIcon
+                          className="text-white"
+                          icon={faSearch}
+                        />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
+            <div className="category">
+              <TextField
+                className="text-white ms-4"
+                id="standard-select-currency"
+                select
+                label="Groups"
+                variant="standard"
               >
-                Search Medications
-              </InputLabel>
-              <Input
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-                color="secondary"
-                id="standard-adornment-search"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <FontAwesomeIcon className="text-white" icon={faSearch} />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+                <MenuItem>Category</MenuItem>
+              </TextField>
+            </div>
           </div>
-          <div className="category">
-            <TextField
-              className="text-white ms-4"
-              id="standard-select-currency"
-              select
-              label="Groups"
-              variant="standard"
+          <div>
+            <button
+              onClick={() => setCreateModal(true)}
+              className="btn add-medication-btn"
             >
-              <MenuItem>Category</MenuItem>
-            </TextField>
+              Add New Medication
+            </button>
           </div>
         </div>
         <div className="grid">
@@ -187,6 +211,10 @@ function Medications() {
           </div>
         </div>
       </div>
+      <CreateMedication
+        isCreateModalOpen={isCreateModalOpen}
+        setCreateModal={setCreateModal}
+      />
     </div>
   );
 }

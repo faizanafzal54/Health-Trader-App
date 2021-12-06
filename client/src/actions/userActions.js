@@ -107,15 +107,7 @@ export const logoutAction = () => (dispatch) => {
   history.push("/login");
 };
 
-export const refreshTokenAction = (token, refreshToken) => (dispatch) => {
-  dispatch({
-    type: "RefreshToken",
-    payload: {
-      token,
-      refreshToken,
-    },
-  });
-};
+
 
 export const signupAction = (obj) => async (dispatch) => {
   try {

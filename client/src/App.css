@@ -895,7 +895,7 @@ padding-right: 5px;
 .create-reminder-modal .form-div {
   padding: 20px 32px 20px 32px;
 }
-.create-reminder-modal .form-div .number-circle {
+.number-circle {
   background: #427a8e;
   width: 40px;
   height: 40px;
@@ -1045,6 +1045,7 @@ padding-right: 5px;
   position: relative;
   border: 1px solid #aeadad;
   border-radius: 10px;
+  text-align: start;
 }
 .app-field-div label {
   display: block;
@@ -1165,7 +1166,73 @@ color: #474646;
 }
 .medications .grid .name,.medications .grid .group {
   border-right: 2px solid #DDDCDC;
-  
+}
+.medications .search-actions .add-medication-btn{
+  font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+color: #427A8E;
+padding: 5px 10px;
+background: #FFFFFF;
+border-radius: 8px;
+}
+
+.create-medication .title-div {
+  border-bottom: 2px solid #000000;
+  padding:18px 30px
+}
+.create-medication .title-div h4{
+  font-weight: bold;
+font-size: 30px;
+line-height: 35px;
+display: flex;
+align-items: center;
+color: #474646;
+}
+.create-medication .title-div button {
+  background: #FFFFFF;
+  border: 2px solid #474646;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding:9px 15px;
+  color:#474646;
+  font-size:20px
+}
+.create-medication .fields {
+  padding:20px 44px
+}
+.create-medication .fields .row .col-md-6 span {
+  margin-left: 9px;
+  font-weight: 500;
+  font-size: 16px;
+line-height: 19px;
+color: #484644;
+} 
+.create-medication .fields .row .col-md-6 .text {
+  padding-top: 10px;
+}
+.create-medication .fields .row .col-md-6 .text span {
+  font-style: italic;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+text-align: center;
+color: #484644;
+}
+.create-medication .fields .group h4 {
+  font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+color: #484644;
+}
+.create-medication .fields .group button {
+  margin-top: 23px;
+  height: 39px;
+left: 443px;
+top: 394px;
+background: #79905D;
+border-radius: 8px;
+color:#fff;
 }
 
 /* Calendar */

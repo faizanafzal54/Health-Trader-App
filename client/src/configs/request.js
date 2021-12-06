@@ -1,7 +1,6 @@
 import axios from "axios";
-import { refreshTokenAction, toastify } from "../actions/userActions";
+import { toastify } from "../actions/userActions";
 import { refreshToken } from "../components/login/loginService";
-import { Store } from "../store";
 import { apiUrl } from "./config";
 
 axios.defaults.baseURL = `${apiUrl}`;
@@ -12,9 +11,9 @@ axios.interceptors.response.use(null, async (error) => {
     const res = await refreshToken();
     console.log(res);
     if (res.status === 200) {
-      Store.dispatch(
-        refreshTokenAction(res.data.data.token, res.data.data.refreshToken)
-      );
+      // Store.dispatch(
+      //   refreshTokenAction(res.data.data.token, res.data.data.refreshToken)
+      // );
       // update token here then axios
       // error.response.config.headers[
       //   "Authorization"
