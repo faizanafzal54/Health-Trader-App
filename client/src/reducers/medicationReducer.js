@@ -5,12 +5,12 @@ const defaultState = {
 
 const medicationReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case "OpenModal":
+    case "OpenCreateMedicationModal":
       return {
         ...state,
         isCreateMedicationOpen: true,
       };
-    case "CloseModal":
+    case "CloseCreateMedicationModal":
       return {
         ...state,
         isCreateMedicationOpen: false,
@@ -18,12 +18,12 @@ const medicationReducer = (state = defaultState, action) => {
     case "PushMedications":
       return {
         ...state,
-        medications: action.payload.medications,
+        medications: [...state.medications, action.payload],
       };
     case "SetMedications":
       return {
         ...state,
-        medications: action.payload.medications,
+        medications: action.payload,
       };
     default:
       return state;

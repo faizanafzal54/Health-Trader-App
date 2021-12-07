@@ -15,7 +15,11 @@ import {
   faChevronRight,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { currentMonthRange ,currentDay} from "../../helpers/dateFormator";
+import {
+  currentMonthRange,
+  currentDay,
+  currentWeek,
+} from "../../helpers/dateFormator";
 import {
   FormControl,
   IconButton,
@@ -37,7 +41,6 @@ export default function CalendarIndex({
   renderDay = () => null,
   setCalendarType,
   calendarType,
-
 }) {
   const [year, month] = yearAndMonth;
 
@@ -86,16 +89,19 @@ export default function CalendarIndex({
   //   onYearAndMonthChange([nextYear, nextMonth]);
   // };
 
-  const ampmList = [12,1,2,3,4,5,6,7,8,9,10,11]
+  const ampmList = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   return (
     <div className="calendar-root">
       <div className="d-flex search-actions g-0 row">
         <div className="col-md-6">
           <div className="current-date d-flex flex-wrap align-items-center">
-            {calendarType === 'Month' ?<span>{currentMonthRange()}</span>:<span>{currentDay()}</span> }
-            
-            
+            {calendarType === "Month" ? (
+              <span>{currentMonthRange()}</span>
+            ) : (
+              <span>{currentDay()}</span>
+            )}
+
             <FontAwesomeIcon
               onClick={handleMonthNavBackButtonClick}
               className="text-white left"
@@ -112,7 +118,7 @@ export default function CalendarIndex({
           <div className="row g-0 align-items-center">
             <div className="col-lg-6 text-start">
               <div className="search">
-                <FormControl style={{width:"100%"}}>
+                <FormControl style={{ width: "100%" }}>
                   <InputLabel
                     className="text-white"
                     htmlFor="standard-adornment-search"
@@ -139,9 +145,34 @@ export default function CalendarIndex({
             </div>
             <div className="col-lg-6">
               <div className="d-flex">
-                <button onClick={()=>setCalendarType("Day")} className={calendarType === 'Day' ? "day-button selected-frequcy-butoon":"day-button"} >Day</button>
-                <button onClick={()=>setCalendarType("Week")}  className={calendarType === 'Week' ? "week-button selected-frequcy-butoon":"week-button"}>Week</button>
-                <button onClick={()=>setCalendarType("Month")}  className={calendarType === 'Month' ? "month-button selected-frequcy-butoon":"month-button"}>
+                <button
+                  onClick={() => setCalendarType("Day")}
+                  className={
+                    calendarType === "Day"
+                      ? "day-button selected-frequcy-butoon"
+                      : "day-button"
+                  }
+                >
+                  Day
+                </button>
+                <button
+                  onClick={() => setCalendarType("Week")}
+                  className={
+                    calendarType === "Week"
+                      ? "week-button selected-frequcy-butoon"
+                      : "week-button"
+                  }
+                >
+                  Week
+                </button>
+                <button
+                  onClick={() => setCalendarType("Month")}
+                  className={
+                    calendarType === "Month"
+                      ? "month-button selected-frequcy-butoon"
+                      : "month-button"
+                  }
+                >
                   Month
                 </button>
               </div>
@@ -172,72 +203,118 @@ export default function CalendarIndex({
             </option>
           ))}
         </select> */}
-      {calendarType === 'Month' ? <div className="row calendar-grids">
-        <div className="col-md-6">
-          <div className="days-of-week">
-            {daysOfWeek.map((day, index) => (
-              <div
-                key={day}
-                className={classNames("day-of-week-header-cell", {
-                  "weekend-day": [6, 0].includes(index),
-                })}
-              >
-                {day.toString().substring(0, 3).toUpperCase()}
+      {calendarType === "Month" ? (
+        <div className="row calendar-grids">
+          <div className="col-md-6">
+            <div className="days-of-week">
+              {daysOfWeek.map((day, index) => (
+                <div
+                  key={day}
+                  className={classNames("day-of-week-header-cell", {
+                    "weekend-day": [6, 0].includes(index),
+                  })}
+                >
+                  {day.toString().substring(0, 3).toUpperCase()}
+                </div>
+              ))}
+            </div>
+            <div className="days-grid">
+              {calendarGridDayObjects.map((day) => {
+                return (
+                  <div
+                    key={day.dateString}
+                    className={classNames("day-grid-item-container", {
+                      "weekend-day": isWeekendDay(day.dateString),
+                      "current-month": day.isCurrentMonth,
+                    })}
+                  >
+                    <div
+                      className={
+                        day.dayOfMonth === new Date().getDate() &&
+                        new Date(day.dateString).getMonth() ===
+                          new Date().getMonth()
+                          ? "current-day-box day-content-wrapper"
+                          : "day-content-wrapper"
+                      }
+                    >
+                      {renderDay(day)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="col-md-6"></div>
+        </div>
+      ) : calendarType === "Day" ? (
+        <>
+          <div className="row day-calendar gx-0">
+            <div className="col-md-6">
+              <div className="title">
+                <h4>AM HOURS</h4>
+              </div>
+              <div className="am-pm">
+                {ampmList.map((ap) => (
+                  <div
+                    key={`am${ap.toString()}`}
+                    className="d-flex align-items-center justify-content-between"
+                  >
+                    <div>
+                      <span>{ap} AM </span>
+                    </div>
+                    <div>
+                      <div className="border-down"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="title">
+                <h4>PM HOURS</h4>
+              </div>
+              <div className="am-pm">
+                {ampmList.map((ap) => (
+                  <div
+                    key={`pm${ap.toString()}`}
+                    className="d-flex align-items-center justify-content-between"
+                  >
+                    <div>
+                      <span>{ap} PM </span>
+                    </div>
+                    <div>
+                      <div className="border-down"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      ) : calendarType === "Week" ? (
+        <div className="week-calendar">
+          <div className="d-flex justify-content-between flex-wrap">
+            {currentWeek().map((date) => (
+              <div>
+                <span className="day-name text-start">{date.day} </span>
+                <div
+                  className={
+                    new Date().getDay() === date.date.getDay()
+                      ? "box-active box"
+                      : "box"
+                  }
+                >
+                  <span className="day-number">1</span>
+                  <span className="total-reminders">2 Reminders</span>
+                </div>
               </div>
             ))}
           </div>
-          <div className="days-grid">
-            {calendarGridDayObjects.map((day) => {
-              return (
-                <div
-                  key={day.dateString}
-                  className={classNames("day-grid-item-container", {
-                    "weekend-day": isWeekendDay(day.dateString),
-                    "current-month": day.isCurrentMonth,
-                  })}
-                  
-                >
-                  <div className={day.dayOfMonth === new Date().getDate() && new Date(day.dateString).getMonth() === new Date().getMonth() ?"current-day-box day-content-wrapper":"day-content-wrapper"} >{renderDay(day)}</div>
-                </div>
-              )
-            })}
-          </div>
         </div>
-        <div className='col-md-6'></div>
-      </div>: calendarType === 'Day' ? <>
-      
-      <div className='row day-calendar gx-0'>
-        <div className='col-md-6'>
-          <div className='title'>
-            <h4>AM HOURS</h4>
-          </div>
-          <div className='am-pm'>
-            {ampmList.map(ap=> <div key={`am${ap.toString()}`} className='d-flex align-items-center justify-content-between'>
-              <div><span>{ap} AM </span></div>
-              <div>
-                <div className='border-down'></div>
-              </div>
-            </div>)}
-          </div>
-        </div>
-        <div className='col-md-6'>
-        <div className='title'>
-
-            <h4>PM HOURS</h4>
-          </div>
-          <div className='am-pm'>
-            {ampmList.map(ap=> <div key={`pm${ap.toString()}`} className='d-flex align-items-center justify-content-between'>
-              <div><span>{ap} PM </span></div>
-              <div>
-                <div className='border-down'></div>
-              </div>
-            </div>)}
-          </div>
-        </div>
-      </div>
-      
-      </>:""}
-      <br/>
+      ) : (
+        ""
+      )}
+      <br />
     </div>
   );
 }

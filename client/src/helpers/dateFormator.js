@@ -58,3 +58,30 @@ export const currentDay = () => {
   const date = new Date();
   return `${monthName(date.getMonth()).substring(0,3)}. ${date.getDay()}, ${date.getFullYear()}`
 };
+
+export const currentWeek = () => {
+  let week = new Array();
+  // Starting Monday not Sunday
+  let current = new Date();
+  current.setDate(current.getDate() - current.getDay());
+  for (var i = 0; i < 7; i++) {
+    week.push({ date: new Date(current), day: dayName(new Date(current)) });
+    current.setDate(current.getDate() + 1);
+  }
+
+  return week;
+};
+
+export const dayName = (date) => {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const d = new Date(date);
+  return days[d.getDay()];
+};

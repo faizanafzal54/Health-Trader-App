@@ -6,7 +6,7 @@ module.exports = {
     try {
       const { userId, name, dose, rate, additionalInfo, medicationGroups } =
         req.body;
-      const reminder = await medicationDao.create({
+      const medication = await medicationDao.create({
         userId,
         name,
         dose,
@@ -14,7 +14,7 @@ module.exports = {
         additionalInfo,
         medicationGroups,
       });
-      sendResponse(null, req, res, { reminder });
+      sendResponse(null, req, res, { medication });
     } catch (err) {
       sendResponse(err, req, res, err);
     }

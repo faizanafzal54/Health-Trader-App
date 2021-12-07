@@ -1428,6 +1428,50 @@ color: #858484;
   min-width: 450px;
   margin-left: 10px;
 }
+.calendar .week-calendar {
+  padding:20px 27px
+}
+.calendar .week-calendar .d-flex .day-name {
+  font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+color: #474646;
+text-transform: uppercase;
+}
+.calendar .week-calendar .d-flex .box {
+  padding:10px;
+  margin-top: 20px;
+  background: #fff;
+border: 2px solid #427A8E;
+box-sizing: border-box;
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+border-radius: 8px;
+min-height: 100px;
+min-width: 130px;
+display: flex;
+justify-content: space-between;
+flex-direction: column;
+text-align: left;
+}
+.calendar .week-calendar .d-flex .box-active {
+  background: #E4EEF1;
+}
+.calendar .week-calendar .d-flex .box .day-number {
+  display: block;
+  font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+color: #474646;
+}
+.calendar .week-calendar .d-flex .box .total-reminders {
+  display: block;
+  font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+text-align: right;
+color: #427A8E;
+}
 /* Media Queries */
 
 @media only screen and (min-width: 1440px) {
@@ -1520,6 +1564,9 @@ color: #858484;
   .calendar .day-calendar .am-pm .d-flex .border-down {
     min-width: 280px;
   }
+  .calendar .week-calendar .d-flex >div {
+    margin-top: 20px;
+  } 
 }
 @media only screen and (max-width: 376px) {
   .timeline .reminder-div .actions-btns button {

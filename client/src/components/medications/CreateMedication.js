@@ -6,6 +6,7 @@ import { createMedicationAction } from "../../actions/medicationAction";
 function CreateMedication(props) {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
+  const medicalState = useSelector((state) => state.medication);
 
   const [name, setName] = useState("");
   const [dose, setDose] = useState("");
@@ -30,8 +31,8 @@ function CreateMedication(props) {
     <div>
       <Modal
         className="m-4 overflow-auto"
-        open={props.isCreateModalOpen}
-        onClose={() => props.setCreateModal(false)}
+        open={medicalState.isCreateMedicationOpen}
+        onClose={() => props.modalHander(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -48,10 +49,7 @@ function CreateMedication(props) {
           <div className="card create-medication">
             <div className="title-div d-flex justify-content-between align-items-center">
               <h4>Add new Medication</h4>
-              <button
-                onClick={() => props.setCreateModal(false)}
-                className="btn"
-              >
+              <button onClick={() => props.modalHander(false)} className="btn">
                 X
               </button>
             </div>
@@ -86,7 +84,7 @@ function CreateMedication(props) {
                           value={dose}
                           onChange={(e) => setDose(e.target.value)}
                           className="form-control"
-                          placeholder="Name"
+                          placeholder="i.e. 400mg"
                         />
                       </div>
                     </div>
@@ -98,7 +96,7 @@ function CreateMedication(props) {
                           value={rate}
                           onChange={(e) => setRate(e.target.value)}
                           className="form-control"
-                          placeholder="Name"
+                          placeholder="i.e. 1/day"
                         />
                       </div>
                     </div>
@@ -112,7 +110,7 @@ function CreateMedication(props) {
                           value={additionalInfo}
                           onChange={(e) => setAdditionalInfo(e.target.value)}
                           className="form-control"
-                          placeholder="Name"
+                          placeholder="with or without food"
                         ></textarea>
                       </div>
                     </div>
