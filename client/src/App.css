@@ -226,10 +226,10 @@ color: #427A8E;
 
 }
 .navbar-nav .nav-item .active {
-  /* color: #79905d !important; */
+  color: #79905d !important;
   /* border:2px solid white */
   background-color: #fff;
-  color: #427A8E !important;
+  /* color: #427A8E !important; */
 }
 .row {
   --bs-gutter-x: 1.89rem;

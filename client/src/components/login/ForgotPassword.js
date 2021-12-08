@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
 import { forgotPasswordAction } from "../../actions/userActions";
+import LoginImg from "../../assets/signup-img.png";
 
 function ForgotPassword() {
   const dispatch = useDispatch();
@@ -21,54 +21,54 @@ function ForgotPassword() {
     dispatch(forgotPasswordAction(email));
   };
   return (
-    <div>
-      <div className="col-md-12">
-        <div className="col-md-6 px-5 py-5">
-          <h4>Health Trader</h4>
-          <h2 className="mt-3">Reset your password</h2>
-          <div className="col-md-7 mx-auto">
-            <div className="mt-4 text-start">
-              <label>
-                Forgot your password? Enter the email address you usually use to
-                login to Health Trader.
-              </label>
-              <input
-                value={email}
-                onChange={emailChangeHandler}
-                className="form-control mt-5"
-                name="email"
-                placeholder="Enter your email address"
-              />
-              {emailError === "" ? (
-                ""
-              ) : (
-                <span className={`text-danger font-12`}>{emailError}</span>
-              )}
+    <div className="login">
+      <form onSubmit={forgotPasswordHandler}>
+        <div className="row align-items-center vh-100">
+          <div className="col-md-6">
+            <div>
+              <h4>Reset Password</h4>
             </div>
-            <div className="d-flex justify-content-between mt-4">
-              <button
-                onClick={forgotPasswordHandler}
-                disabled={emailError !== "" || email.length < 6}
-                className="btn btn-primary"
-              >
-                Change my password
-              </button>
+            <div className="welcome">
+              <span>Enter the email address you usually use to login</span>
             </div>
-            <hr />
-            <div className="text-start mt-5">
-              <span>
-                No account yet?
-                <NavLink to="/signup">
-                  <b>Create an account</b>
-                </NavLink>
-              </span>
+            <div className="fields">
+              <div className="app-field-div">
+                <label htmlFor="email">Email</label>
+                <input
+                  value={email}
+                  onChange={emailChangeHandler}
+                  className="form-control"
+                  name="email"
+                  id="email"
+                  placeholder="email.address@example.com"
+                />
+                {emailError === "" ? (
+                  ""
+                ) : (
+                  <span className={`text-danger font-12`}>{emailError}</span>
+                )}
+              </div>
+
+              <div className="d-grid">
+                <button
+                  type="submit"
+                  disabled={emailError !== "" || email.length < 6}
+                  className="btn btn-block btn-login"
+                >
+                  Change my password
+                </button>
+              </div>
             </div>
           </div>
-          <div className="col-md-6"></div>
+          <div className="col-md-6">
+            <img src={LoginImg} alt="Logo" />
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
 
 export default ForgotPassword;
+
+

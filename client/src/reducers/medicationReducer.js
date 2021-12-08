@@ -1,6 +1,8 @@
 const defaultState = {
   isCreateMedicationOpen: false,
+  isCreateGroupOpen: false,
   medications: [],
+  groups: [],
 };
 
 const medicationReducer = (state = defaultState, action) => {
@@ -25,6 +27,27 @@ const medicationReducer = (state = defaultState, action) => {
         ...state,
         medications: action.payload,
       };
+    case "OpenCreateGroupModal":
+      return {
+        ...state,
+        isCreateGroupOpen: true,
+      };
+    case "CloseCreateGroupModal":
+      return {
+        ...state,
+        isCreateGroupOpen: false,
+      };
+    case "PushGroups":
+      return {
+        ...state,
+        groups: [...state.groups, action.payload],
+      };
+    case "SetGroups":
+      return {
+        ...state,
+        groups: action.payload,
+      };
+
     default:
       return state;
   }

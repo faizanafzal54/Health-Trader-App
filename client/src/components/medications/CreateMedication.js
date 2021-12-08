@@ -12,7 +12,7 @@ function CreateMedication(props) {
   const [dose, setDose] = useState("");
   const [rate, setRate] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
-  const [medicationGroup, setMedicationGroup] = useState([]);
+  const [group, setGroup] = useState("");
 
   const createHandler = async () => {
     dispatch(
@@ -22,7 +22,7 @@ function CreateMedication(props) {
         dose,
         rate,
         additionalInfo,
-        medicationGroup,
+        group,
       })
     );
   };
@@ -124,27 +124,28 @@ function CreateMedication(props) {
                   <div className="text">
                     <span>Pair your medication with a group or circles.</span>
                   </div>
+
                   <div className="group mt-20">
                     <h4>Assign to a Group</h4>
-                    <div>
-                      <Checkbox
-                        onChange={() => console.log()}
-                        className="ps-0"
-                        color="success"
-                      />
-                      <label>Morning Vitamins</label>
-                    </div>
-                  </div>
-                  <div className="group mt-20">
-                    <h4>Assign to a Group</h4>
-                    <div>
-                      <Checkbox
-                        onChange={() => console.log()}
-                        className="ps-0"
-                        color="success"
-                      />
-                      <label>Morning Vitamins</label>
-                    </div>
+                    {medicalState.groups.map((_group) => (
+                      <div key={_group._id}>
+                        <Checkbox
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setGroup(_group._id);
+                            } else {
+                              setGroup("");
+                            }
+                          }}
+                          className="ps-0"
+                          checked={group === _group._id}
+                          color="success"
+                          id={_group._id}
+                        />
+                        <label htmlFor={_group._id}>{_group.name} </label>
+                      </div>
+                    ))}
+
                     <div className="text-center">
                       <button onClick={createHandler} className="btn">
                         Add new Medication

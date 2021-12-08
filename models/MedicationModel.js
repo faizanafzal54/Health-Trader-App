@@ -7,7 +7,10 @@ const medicationSchema = new Schema(
     //     type: Schema.Types.ObjectId,
     //     ref: "User",
     //   },
-    medicationGroups: [{}],
+    group: {
+      type: Schema.Types.ObjectId,
+      ref: "Group",
+    },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",

@@ -32,6 +32,7 @@ function CreateReminder() {
   const [comments, setComments] = useState("");
 
   const reminderState = useSelector((state) => state.reminder);
+  const medicationState = useSelector((state) => state.medication);
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -544,14 +545,32 @@ function CreateReminder() {
                     />
                   </div>
                   <div className="app-field-div mt-10">
-                    <label htmlFor="location">Location</label>
-                    <input
-                      onChange={(e) => setLocation(e.target.value)}
-                      value={location}
-                      id="location"
-                      className="form-control"
-                      placeholder="Location"
-                    />
+                    {reminderType === "medication" ? (
+                      <>
+                        <label htmlFor="medicationgroup">
+                          Medication Group
+                        </label>
+                        <select id="medicationgroup" className="form-select">
+                          <option disabled>Select group</option>
+                          {medicationState.groups.map((group) => (
+                            <option value={group._id} key={group._id}>
+                              {group.name}{" "}
+                            </option>
+                          ))}
+                        </select>
+                      </>
+                    ) : (
+                      <>
+                        <label htmlFor="location">Location</label>
+                        <input
+                          onChange={(e) => setLocation(e.target.value)}
+                          value={location}
+                          id="location"
+                          className="form-control"
+                          placeholder="Location"
+                        />
+                      </>
+                    )}
                   </div>
                   <div className="app-field-div mt-10">
                     <label htmlFor="otherComments">Other comments</label>

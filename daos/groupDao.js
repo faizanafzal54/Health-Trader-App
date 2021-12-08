@@ -1,48 +1,48 @@
-const Medication = require("../models/MedicationModel");
+const Group = require("../models/GroupModel");
 
 module.exports = {
   create: async (obj) => {
     try {
-      let medication = new Medication(obj);
-      const response = await medication.save()
+      let group = new Group(obj);
+      const response = await group.save();
       return response;
     } catch (err) {
       throw new Error(err);
     }
   },
-  findOne: async (_id) => {
+  findOne: async (userId) => {
     try {
-      const medication = await Medication.findOne({ _id })
-        .populate("group")
+      const group = await Group.findOne({ userId })
+        // .populate("friendId")
         .lean();
-      return medication;
+      return group;
     } catch (err) {
       throw new Error(err);
     }
   },
   find: async (userId) => {
     try {
-      const medications = await Medication.find({ userId, isDeleted: false })
-        .populate("group")
+      const groups = await Group.find({ userId, isDeleted: false })
+        // .populate("friendId")
         .lean();
-      return medications;
+      return groups;
     } catch (err) {
       throw new Error(err);
     }
   },
   findOneAndUpdate: async (where, set) => {
     try {
-      const medication = await Medication.findOneAndUpdate(where, set, {
+      const group = await Group.findOneAndUpdate(where, set, {
         new: true,
       });
-      return medication;
+      return group;
     } catch (err) {
       throw new Error(err);
     }
   },
   findByIdAndDelete: async (_id) => {
     try {
-      const response = await Medication.findByIdAndDelete(_id);
+      const response = await Group.findByIdAndDelete(_id);
       return response;
     } catch (err) {
       let error = new Error(err);
