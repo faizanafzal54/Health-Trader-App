@@ -7,14 +7,18 @@ const reminderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    groupId: {
+      type: Schema.Types.ObjectId,
+      ref: "Group",
+    },
     reminderType: {
       type: String,
     },
     startDateTime: {
       type: Date,
     },
-    isRepeating:{
-      type:Boolean
+    isRepeating: {
+      type: Boolean,
     },
     reminderFrequency: {
       type: String, //Day, Week, Month
@@ -26,7 +30,7 @@ const reminderSchema = new Schema(
       type: String, //1day, 1week, 1month
     },
     duration: {
-      type: String,//once,forever,uptil
+      type: String, //once,forever,uptil
     },
     terminationDate: {
       type: Date,
@@ -43,9 +47,7 @@ const reminderSchema = new Schema(
     comments: {
       type: String,
     },
-    status: {
-      type: String,
-    },
+
     isActive: {
       type: Boolean,
     },

@@ -24,12 +24,13 @@ function CreateReminder() {
   const [startDateTime, setStartDateTime] = useState(new Date());
   const [reminderFrequency, setReminderFrequency] = useState("daily");
   const [dayOfWeek, setDayOfWeek] = useState("");
-  const [repeatEvery, setRepeatEvery] = useState("");
-  const [duration, setDuration] = useState("");
+  const [repeatEvery, setRepeatEvery] = useState(1);
+  const [duration, setDuration] = useState("once");
   const [terminationDate, setTerminationDate] = useState(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [comments, setComments] = useState("");
+  const [medicationGroup, setMedicationGroup] = useState("");
 
   const reminderState = useSelector((state) => state.reminder);
   const medicationState = useSelector((state) => state.medication);
@@ -60,6 +61,7 @@ function CreateReminder() {
         name,
         location,
         comments,
+        medicationGroup,
       });
       console.log(res.data.data.reminder);
       dispatch(pushReminderAction(res.data.data.reminder));
@@ -194,12 +196,16 @@ function CreateReminder() {
                 </div>
                 <div className="schedule">
                   <div className="app-field-div mt-20">
-                    <label htmlFor="activityName">Start Date and time</label>
+                    <label htmlFor="startDateTime">Start Date and time</label>
                     <DatePicker
                       className="form-control date-time-picker"
                       placeholderText="MM/DD/YYYY -- HH:MM"
                       selected={startDateTime}
-                      onChange={(date) => setStartDateTime(date)}
+                      id="startDateTime"
+                      onChange={(date) => {
+                        setStartDateTime(date);
+                        setDayOfWeek(date.getDay().toString());
+                      }}
                       showTimeSelect
                       timeFormat="HH:mm"
                       timeIntervals={15}
@@ -211,11 +217,12 @@ function CreateReminder() {
                   <div className="repeat-check">
                     <Checkbox
                       onChange={(e) => setIsRepeating(e.target.checked)}
-                      value={isRepeating}
+                      checked={isRepeating}
                       className="ps-0"
                       color="success"
+                      id="isRepeating"
                     />
-                    <label>Repeating Reminder</label>
+                    <label htmlFor="isRepeating">Repeating Reminder</label>
                   </div>
                   {isRepeating ? (
                     <>
@@ -283,24 +290,26 @@ function CreateReminder() {
                         <div className="row daily">
                           <div className="col-md-5">
                             <div className="app-field-div mt-10">
-                              <label htmlFor="location">Repeat Every</label>
+                              <label htmlFor="repeatEvery">Repeat Every</label>
                               <select
+                                id="repeatEvery"
                                 onChange={(e) => setRepeatEvery(e.target.value)}
                                 value={repeatEvery}
                                 className="form-select"
                               >
-                                <option value="1">1 day</option>
-                                <option value="2">2 days</option>
-                                <option value="3">3 days</option>
-                                <option value="4">4 days</option>
-                                <option value="5">5 days</option>
+                                <option value={1}>1 day</option>
+                                <option value={2}>2 days</option>
+                                <option value={3}>3 days</option>
+                                <option value={4}>4 days</option>
+                                <option value={5}>5 days</option>
                               </select>
                             </div>
                           </div>
                           <div className="col-md-7">
                             <div className="app-field-div mt-10">
-                              <label htmlFor="location">Duration</label>
+                              <label htmlFor="duration">Duration</label>
                               <select
+                                id="duration"
                                 onChange={(e) => setDuration(e.target.value)}
                                 value={duration}
                                 className="form-select"
@@ -334,9 +343,9 @@ function CreateReminder() {
                         <div className="weekly">
                           <div className="d-flex flex-wrap justify-content-around mt-10">
                             <div
-                              onClick={() => setDayOfWeek("Mon")}
+                              onClick={() => setDayOfWeek("1")}
                               className={
-                                dayOfWeek === "Mon"
+                                dayOfWeek === "1"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -344,9 +353,9 @@ function CreateReminder() {
                               Mon
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Tue")}
+                              onClick={() => setDayOfWeek("2")}
                               className={
-                                dayOfWeek === "Tue"
+                                dayOfWeek === "2"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -354,9 +363,9 @@ function CreateReminder() {
                               Tue
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Wed")}
+                              onClick={() => setDayOfWeek("3")}
                               className={
-                                dayOfWeek === "Wed"
+                                dayOfWeek === "3"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -364,9 +373,9 @@ function CreateReminder() {
                               Wed
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Thu")}
+                              onClick={() => setDayOfWeek("4")}
                               className={
-                                dayOfWeek === "Thu"
+                                dayOfWeek === "4"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -374,9 +383,9 @@ function CreateReminder() {
                               Thu
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Fri")}
+                              onClick={() => setDayOfWeek("5")}
                               className={
-                                dayOfWeek === "Fri"
+                                dayOfWeek === "5"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -384,9 +393,9 @@ function CreateReminder() {
                               Fri
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Sat")}
+                              onClick={() => setDayOfWeek("6")}
                               className={
-                                dayOfWeek === "Sat"
+                                dayOfWeek === "6"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -394,9 +403,9 @@ function CreateReminder() {
                               Sat
                             </div>
                             <div
-                              onClick={() => setDayOfWeek("Sun")}
+                              onClick={() => setDayOfWeek("0")}
                               className={
-                                dayOfWeek === "Sun"
+                                dayOfWeek === "0"
                                   ? "day-selected day-circle"
                                   : "day-circle"
                               }
@@ -550,8 +559,15 @@ function CreateReminder() {
                         <label htmlFor="medicationgroup">
                           Medication Group
                         </label>
-                        <select id="medicationgroup" className="form-select">
-                          <option disabled>Select group</option>
+                        <select
+                          id="medicationgroup"
+                          value={medicationGroup}
+                          onChange={(e) => setMedicationGroup(e.target.value)}
+                          className="form-select"
+                        >
+                          <option value="" disabled>
+                            Select group
+                          </option>
                           {medicationState.groups.map((group) => (
                             <option value={group._id} key={group._id}>
                               {group.name}{" "}
