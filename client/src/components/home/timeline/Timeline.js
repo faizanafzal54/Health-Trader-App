@@ -31,6 +31,7 @@ function Timeline() {
   const __tempReminders = useSelector((state) => state.reminder);
   const dispatch = useDispatch();
 
+ 
   useEffect(() => {
     getRemindersHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,12 +47,11 @@ function Timeline() {
       dispatch(setReminderAction(res.data.data.reminders));
     }
   };
-
-  const setReminderStatusHandler = async (reminderId, status) => {
-    const res = await setReminderStatus(reminderId, status);
+  const setReminderStatusHandler = async (metaId, status) => {
+    const res = await setReminderStatus(metaId, status);
     if (res.status === 200) {
       const tempReminders = reminders.map((reminder) => {
-        if (reminder._id === reminderId) {
+        if (reminder.metaId === metaId) {
           reminder.status = status;
         }
         return reminder;
@@ -64,7 +64,8 @@ function Timeline() {
     return (
       _reminder.name.toLowerCase().includes(_search) ||
       _reminder.location.toLowerCase().includes(_search) ||
-      _reminder.comments.toLowerCase().includes(_search)
+      _reminder.comments.toLowerCase().includes(_search) ||
+      getDateTime(_reminder.date).toLowerCase().includes(_search)
     );
   };
   return (
@@ -118,7 +119,7 @@ function Timeline() {
               .filter((reminder) => searchFor(reminder, search))
               .map((reminder, index) => (
                 <div
-                  key={reminder._id}
+                  key={reminder.metaId}
                   className={
                     index === 0 ? "reminder-div" : "reminder-div mt-20"
                   }
@@ -143,14 +144,16 @@ function Timeline() {
                       </div>
                       <div className="text-start">
                         <span className="med-frequency">
-                          {reminder.location}
+                          {reminder.location === ""
+                            ? reminder.groupName
+                            : reminder.location}
                         </span>
                       </div>
                     </div>
                     <div className="col-md-6 text-end">
                       <span className="med-time">
                         <FontAwesomeIcon icon={faBell} /> &nbsp;&nbsp;{" "}
-                        {getTime(reminder.startDateTime)}
+                        {getTime(reminder.date)}
                       </span>
                     </div>
                   </div>
@@ -163,7 +166,7 @@ function Timeline() {
                       <div className="d-flex flex-wrap">
                         <button
                           onClick={() =>
-                            setReminderStatusHandler(reminder._id, "Taken")
+                            setReminderStatusHandler(reminder.metaId, "Taken")
                           }
                           className={
                             reminder.status === "Taken"
@@ -175,7 +178,7 @@ function Timeline() {
                         </button>
                         <button
                           onClick={() =>
-                            setReminderStatusHandler(reminder._id, "Missed")
+                            setReminderStatusHandler(reminder.metaId, "Missed")
                           }
                           className={
                             reminder.status === "Missed"
@@ -187,7 +190,7 @@ function Timeline() {
                         </button>
                         <button
                           onClick={() =>
-                            setReminderStatusHandler(reminder._id, "Forgot")
+                            setReminderStatusHandler(reminder.metaId, "Forgot")
                           }
                           className={
                             reminder.status === "Forgot"
@@ -202,7 +205,7 @@ function Timeline() {
                     <div className="col-md-4">
                       <div className="d-flex created-date-div justify-content-end">
                         <span className="created-date me-4">
-                          {getDateTime(reminder.startDateTime)}
+                          {getDateTime(reminder.date)}
                         </span>
                         <FontAwesomeIcon icon={faEllipsisV} />
                       </div>

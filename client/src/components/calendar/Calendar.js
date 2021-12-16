@@ -8,7 +8,7 @@ function Calendar() {
     new Date().getFullYear(),
     new Date().getMonth() + 1,
   ]);
-  const [calendarType, setCalendarType] = useState("Week"); //month,day,week
+  const [calendarType, setCalendarType] = useState("Month"); //Month,Day,Week
 
   return (
     <div>

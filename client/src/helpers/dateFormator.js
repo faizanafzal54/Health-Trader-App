@@ -47,22 +47,33 @@ export const monthName = (index) => {
   return monthNames[index];
 };
 
-export const currentMonthRange = () => {
+export const currentMonthRange = (_currentMonth) => {
   const date = new Date();
+  date.setMonth(_currentMonth - 1);
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  return `${monthName(date.getMonth()).substring(0,3)}. ${firstDay.getDay()}, ${firstDay.getFullYear()} - ${monthName(date.getMonth()).substring(0,3)}. ${lastDay.getDay()}, ${lastDay.getFullYear()}`
+  return `${monthName(date.getMonth()).substring(
+    0,
+    3
+  )}. ${firstDay.getDate()}, ${firstDay.getFullYear()} - ${monthName(
+    date.getMonth()
+  ).substring(0, 3)}. ${lastDay.getDate()}, ${lastDay.getFullYear()}`;
 };
 
-export const currentDay = () => {
-  const date = new Date();
-  return `${monthName(date.getMonth()).substring(0,3)}. ${date.getDay()}, ${date.getFullYear()}`
+export const currentDay = (today) => {
+  const date = new Date(today);
+  return `${monthName(date.getMonth()).substring(
+    0,
+    3
+  )}. ${date.getDate()}, ${date.getFullYear()}`;
 };
 
-export const currentWeek = () => {
+export const currentWeek = (weekCount) => {
   let week = new Array();
   // Starting Monday not Sunday
   let current = new Date();
+  let x = 7 * weekCount;
+  current.setDate(current.getDate() + x);
   current.setDate(current.getDate() - current.getDay());
   for (var i = 0; i < 7; i++) {
     week.push({ date: new Date(current), day: dayName(new Date(current)) });
@@ -70,6 +81,26 @@ export const currentWeek = () => {
   }
 
   return week;
+};
+export const currentWeekText = (weekCount) => {
+  let week = new Array();
+  // Starting Monday not Sunday
+  let current = new Date();
+  let x = 7 * weekCount;
+  current.setDate(current.getDate() + x);
+  current.setDate(current.getDate() - current.getDay());
+
+  let first = new Date(current);
+  let last = new Date(current);
+  last.setDate(current.getDate() + 6);
+
+  return `${monthName(first.getMonth()).substring(
+    0,
+    3
+  )}. ${first.getDate()}- ${monthName(last.getMonth()).substring(
+    0,
+    3
+  )}. ${last.getDate()}, ${last.getFullYear()}`;
 };
 
 export const dayName = (date) => {

@@ -42,6 +42,28 @@ module.exports = {
       throw error;
     }
   },
+  findByMonth: async (userId, gtDate, ltDate) => {
+    try {
+      const reminders = await ReminderMeta.find({
+        date: { $gte: gtDate, $lte: ltDate },
+        userId,
+        isActive: true,
+      })
+        .populate({
+          path: "reminderId",
+          populate: {
+            path: "groupId",
+          },
+        })
+        .populate("reminderTo")
+        .lean();
+      return reminders;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
   findOneAndUpdate: async (where, set) => {
     try {
       const reminder = await ReminderMeta.findOneAndUpdate(where, set, {

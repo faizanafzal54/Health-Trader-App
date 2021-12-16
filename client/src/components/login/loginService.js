@@ -39,13 +39,6 @@ export const completeRegistration = (data) => {
   return request.put(`${apiUrl}users/completeRegistration`, data);
 };
 
-export const refreshToken = () => {
-  const state = Store.getState();
-
-  return request.put(`${apiUrl}users/refreshToken`, {
-    refreshToken: state.user.refreshToken,
-  });
-};
 
 export const checkAuth = () => {
   const state = Store.getState();

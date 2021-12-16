@@ -4,8 +4,8 @@ export const getReminders = async (userId) => {
   return request.get(`/reminders?userId=${userId}`);
 };
 
-export const setReminderStatus = async (reminderId, status) => {
-  return request.put(`/reminders/setStatus`, { reminderId, status });
+export const setReminderStatus = async (metaId, status) => {
+  return request.put(`/reminders/setStatus`, { metaId, status });
 };
 
 export const getmycircle = async (userId) => {

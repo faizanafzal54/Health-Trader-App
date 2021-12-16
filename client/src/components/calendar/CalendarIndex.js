@@ -19,6 +19,7 @@ import {
   currentMonthRange,
   currentDay,
   currentWeek,
+  currentWeekText,
 } from "../../helpers/dateFormator";
 import {
   FormControl,
@@ -27,6 +28,9 @@ import {
   InputAdornment,
   InputLabel,
 } from "@mui/material";
+import { useState } from "react";
+import MonthViewReminders from "./MonthViewReminders";
+import { useSelector } from "react-redux";
 
 CalendarIndex.propTypes = {
   className: PropTypes.string,
@@ -43,6 +47,10 @@ export default function CalendarIndex({
   calendarType,
 }) {
   const [year, month] = yearAndMonth;
+  const [currentMonth, setcurrentMonth] = useState(new Date().getMonth() + 1);
+  const [today, settoday] = useState(new Date());
+  const [weekCount, setweekCount] = useState(0);
+  const tempReminders = useSelector((state) => state.reminder.reminders);
 
   let currentMonthDays = createDaysForCurrentMonth(year, month);
   let previousMonthDays = createDaysForPreviousMonth(
@@ -60,10 +68,17 @@ export default function CalendarIndex({
   const handleMonthNavBackButtonClick = () => {
     let nextYear = year;
     let nextMonth = month - 1;
+
     if (nextMonth === 0) {
       nextMonth = 12;
       nextYear = year - 1;
     }
+    setcurrentMonth(nextMonth === 0 ? 12 : nextMonth);
+    let tempToday = today;
+    tempToday.setDate(tempToday.getDate() - 1);
+    settoday(tempToday);
+    setweekCount(weekCount - 1);
+
     onYearAndMonthChange([nextYear, nextMonth]);
   };
 
@@ -74,7 +89,22 @@ export default function CalendarIndex({
       nextMonth = 1;
       nextYear = year + 1;
     }
+    setcurrentMonth(nextMonth === 13 ? 1 : nextMonth);
+    let tempToday = today;
+    tempToday.setDate(tempToday.getDate() + 1);
+    settoday(tempToday);
+    setweekCount(weekCount + 1);
     onYearAndMonthChange([nextYear, nextMonth]);
+  };
+
+  const getReminderCount = (date) => {
+    const filteredReminders = tempReminders.filter((reminder) => {
+      return (
+        new Date(reminder.date).getDate() === date.getDate() &&
+        new Date(reminder.date).getMonth() === date.getMonth()
+      );
+    });
+    return filteredReminders.length === 0 ? "" : filteredReminders.length;
   };
 
   // const handleMonthSelect = (evt) => {
@@ -97,9 +127,11 @@ export default function CalendarIndex({
         <div className="col-md-6">
           <div className="current-date d-flex flex-wrap align-items-center">
             {calendarType === "Month" ? (
-              <span>{currentMonthRange()}</span>
+              <span>{currentMonthRange(currentMonth)}</span>
+            ) : calendarType === "Day" ? (
+              <span>{currentDay(today)}</span>
             ) : (
-              <span>{currentDay()}</span>
+              <span>{currentWeekText(weekCount)} </span>
             )}
 
             <FontAwesomeIcon
@@ -238,13 +270,20 @@ export default function CalendarIndex({
                       }
                     >
                       {renderDay(day)}
+                      <div className="reminder-count">
+                        <span>
+                          {getReminderCount(new Date(day.dateString))}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="col-md-6"></div>
+          <div className="col-md-6">
+            <MonthViewReminders />
+          </div>
         </div>
       ) : calendarType === "Day" ? (
         <>
@@ -294,7 +333,7 @@ export default function CalendarIndex({
       ) : calendarType === "Week" ? (
         <div className="week-calendar">
           <div className="d-flex justify-content-between flex-wrap">
-            {currentWeek().map((date) => (
+            {currentWeek(weekCount).map((date) => (
               <div>
                 <span className="day-name text-start">{date.day} </span>
                 <div
@@ -304,7 +343,7 @@ export default function CalendarIndex({
                       : "box"
                   }
                 >
-                  <span className="day-number">1</span>
+                  <span className="day-number">{date.date.getDate()}</span>
                   <span className="total-reminders">2 Reminders</span>
                 </div>
               </div>

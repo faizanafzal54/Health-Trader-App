@@ -194,18 +194,48 @@ module.exports = {
   getRemindersOfUser: async (req, res) => {
     try {
       const { userId } = req.query;
-      const reminders = await reminderDao.find(userId);
-      const meta = await reminderMetaDao.find(userId);
-      sendResponse(null, req, res, { reminders });
+
+      let tempgt = new Date();
+      const gtDate = tempgt.setDate(tempgt.getDate() - 1); // Start Date
+      let templt = new Date();
+      const ltDate = templt.setDate(templt.getDate() + 30); // End Date to get reminders
+
+      const reminders = await reminderMetaDao.findByMonth(
+        userId,
+        gtDate,
+        ltDate
+      );
+      let formattedReminders = reminders.map((reminder) => {
+        return {
+          metaId: reminder._id,
+          createdAt: reminder.createdAt,
+          date: reminder.date,
+          isActive: reminder.isActive,
+          status: reminder.status,
+          userId: reminder.userId,
+          reminderId: reminder.reminderId?._id,
+          name: reminder.reminderId?.name,
+          reminderFrequency: reminder.reminderId?.reminderFrequency,
+          reminderType: reminder.reminderId?.reminderType,
+          comments: reminder.reminderId?.comments,
+          location: reminder.reminderId?.location,
+          reminderTypereminderType:
+            reminder.reminderId?.reminderTypereminderType,
+          terminationDate: reminder.reminderId?.terminationDate,
+          groupId: reminder.reminderId?.groupId._id,
+          groupName: reminder.reminderId?.groupId.name,
+        };
+      });
+      sendResponse(null, req, res, { reminders: formattedReminders });
     } catch (err) {
       sendResponse(err, req, res, err);
     }
   },
   setReminderStatus: async (req, res) => {
     try {
-      const { reminderId, status } = req.body;
-      const updatedReminder = await reminderDao.findOneAndUpdate(
-        { _id: reminderId },
+      const { metaId, status } = req.body;
+      const updatedReminder = await reminderMetaDao.findOneAndUpdate(
+        { _id: metaId },
         { $set: { status } }
       );
       sendResponse(null, req, res, { reminder: updatedReminder });
