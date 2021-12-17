@@ -12,32 +12,29 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getDateTime, getTime } from "../../helpers/dateFormator";
 import { toastify } from "../../actions/userActions";
-import { setReminderAction } from "../../actions/reminderActions";
+import {
+  setCalendarRemindersAction,
+  setReminderAction,
+} from "../../actions/reminderActions";
 
 function MonthViewReminders() {
   const [search, setSearch] = useState("");
-  const [reminders, setReminders] = useState([]);
-  const tempReminders = useSelector((state) => state.reminder.reminders);
+  const calendarReminders = useSelector(
+    (state) => state.reminder.calendarReminders
+  );
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const filteredReminders = tempReminders.filter((reminder) => {
-      return new Date(reminder.date).getMonth() === new Date().getMonth();
-    });
-    setReminders(filteredReminders);
-  }, [tempReminders]);
 
   const setReminderStatusHandler = async (metaId, status) => {
     const res = await setReminderStatus(metaId, status);
     if (res.status === 200) {
-      const tempReminders = reminders.map((reminder) => {
+      const tempReminders = calendarReminders.map((reminder) => {
         if (reminder.metaId === metaId) {
           reminder.status = status;
         }
         return reminder;
       });
-      dispatch(setReminderAction(tempReminders));
+      dispatch(setCalendarRemindersAction(tempReminders));
       toastify("success", `Reminder status has been updated to "${status}"`);
     }
   };
@@ -55,8 +52,8 @@ function MonthViewReminders() {
         <div className="reminder-title">
           <h4>Reminders</h4>
         </div>
-        {reminders &&
-          reminders
+        {calendarReminders &&
+          calendarReminders
             .filter((reminder) => searchFor(reminder, search))
             .map((reminder, index) => (
               <div
@@ -155,7 +152,7 @@ function MonthViewReminders() {
                 </div>
               </div>
             ))}
-        {reminders.length === 0 ? (
+        {calendarReminders.length === 0 ? (
           <span className="text-dark">No reminder created yet</span>
         ) : (
           ""

@@ -457,6 +457,17 @@ color: #427A8E;
   background-position: center;
   right: calc(100% + 11px);
 }
+.daily-view .reminder-div {
+  margin-left: 20px;
+}
+.daily-view .reminder-div {
+  border: 2px solid #dddcdc;
+  padding-top: 17px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: relative;
+}
 .timeline .reminders .reminder-div {
   border: 2px solid #dddcdc;
   padding-top: 17px;
@@ -465,10 +476,10 @@ color: #427A8E;
   padding-right: 20px;
   position: relative;
 }
-.timeline .reminders .reminder-div img {
+.timeline .reminders .reminder-div img,.daily-view .reminder-div img {
   width: 25px;
 }
-.timeline .reminders .reminder-div .med-name {
+.timeline .reminders .reminder-div .med-name,.daily-view .reminder-div .med-name {
   font-weight: bold;
   margin-bottom: 0px;
   margin-left: 20px;
@@ -476,17 +487,17 @@ color: #427A8E;
   font-size: 16px;
   line-height: 19px;
 }
-.timeline .reminders .reminder-div .med-time {
+.timeline .reminders .reminder-div .med-time,.daily-view .reminder-div .med-time {
   color: #484644;
   font-weight: normal;
   font-size: 12px;
   line-height: 14px;
 }
-.timeline .reminders .reminder-div .med-time svg {
+.timeline .reminders .reminder-div .med-time svg,.daily-view .reminder-div .med-time svg {
   color: #484644;
   width: 13px;
 }
-.timeline .reminders .reminder-div .med-frequency {
+.timeline .reminders .reminder-div .med-frequency,.daily-view .reminder-div .med-frequency {
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -494,14 +505,14 @@ color: #427A8E;
   margin-left: 45px;
   color: #484644;
 }
-.timeline .reminders .reminder-div .med-text {
+.timeline .reminders .reminder-div .med-text,.daily-view .reminder-div .med-text {
   font-size: 12px;
   line-height: 14px;
   text-align: left;
   padding-left: 45px;
   padding-top: 15px;
 }
-.timeline .reminder-div .med-border {
+.timeline .reminder-div .med-border,.daily-view .reminder-div .med-border {
   border-bottom: 2px solid #dddcdc;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -512,7 +523,7 @@ color: #427A8E;
   text-align: right;
   color: #c7c7c7;
 }
-.timeline .reminder-div .actions-btns button {
+.timeline .reminder-div .actions-btns button,.daily-view .reminder-div .actions-btns button {
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -1424,7 +1435,7 @@ margin-top: 19px;
 .calendar .day-calendar .am-pm {
   padding:20px
 }
-.calendar .day-calendar .am-pm .d-flex {
+.calendar .day-calendar .am-pm > .d-flex {
   margin-top: 18px;
 }
 .calendar .day-calendar .am-pm .d-flex span {

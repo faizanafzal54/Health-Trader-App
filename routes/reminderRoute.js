@@ -4,11 +4,13 @@ const {
   getRemindersOfUser,
   setReminderStatus,
   createReminder,
+  getCalendarReminders,
 } = require("../controllers/reminderController");
 const { verifyToken } = require("../middleware/authValidator");
 
-router.get("/", getRemindersOfUser);
-router.post("/create", createReminder);
-router.put("/setStatus", setReminderStatus);
+router.get("/", verifyToken, getRemindersOfUser);
+router.get("/calendarReminders", verifyToken, getCalendarReminders);
+router.post("/create", verifyToken, createReminder);
+router.put("/setStatus", verifyToken, setReminderStatus);
 
 module.exports = router;

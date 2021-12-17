@@ -5,11 +5,12 @@ import { apiUrl } from "./config";
 axios.defaults.baseURL = `${apiUrl}`;
 
 axios.interceptors.response.use(null, async (error) => {
+  console.log(error.response);
   if (error.config && error.response && error.response.status === 401) {
-    toastify("error", error.response.data.err.message);
+    toastify("error", error.response?.data?.err?.message);
   }
   if (error.config && error.response && error.response.status !== 401) {
-    toastify("error", error.response.data.err.message);
+    toastify("error", error.response?.data?.err?.message);
   }
 
   return Promise.reject(error);

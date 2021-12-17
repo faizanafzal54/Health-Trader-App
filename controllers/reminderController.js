@@ -200,7 +200,7 @@ module.exports = {
       let templt = new Date();
       const ltDate = templt.setDate(templt.getDate() + 30); // End Date to get reminders
 
-      const reminders = await reminderMetaDao.findByMonth(
+      const reminders = await reminderMetaDao.findByDateRange(
         userId,
         gtDate,
         ltDate
@@ -240,6 +240,45 @@ module.exports = {
       );
       sendResponse(null, req, res, { reminder: updatedReminder });
     } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  getCalendarReminders: async (req, res) => {
+    try {
+      const { userId, year, month } = req.query; // Month is new Date().getMonth() + 1
+
+      var gtDate = new Date(year, parseInt(month), 1);
+      var ltDate = new Date(year, parseInt(month) + 1, 0);
+
+      const reminders = await reminderMetaDao.findByDateRange(
+        userId,
+        gtDate,
+        ltDate
+      );
+      let formattedReminders = reminders.map((reminder) => {
+        return {
+          metaId: reminder._id,
+          createdAt: reminder.createdAt,
+          date: reminder.date,
+          isActive: reminder.isActive,
+          status: reminder.status,
+          userId: reminder.userId,
+          reminderId: reminder.reminderId?._id,
+          name: reminder.reminderId?.name,
+          reminderFrequency: reminder.reminderId?.reminderFrequency,
+          reminderType: reminder.reminderId?.reminderType,
+          comments: reminder.reminderId?.comments,
+          location: reminder.reminderId?.location,
+          reminderTypereminderType:
+            reminder.reminderId?.reminderTypereminderType,
+          terminationDate: reminder.reminderId?.terminationDate,
+          groupId: reminder.reminderId?.groupId._id,
+          groupName: reminder.reminderId?.groupId.name,
+        };
+      });
+      sendResponse(null, req, res, { reminders: formattedReminders });
+    } catch (err) {
+      console.log(err);
       sendResponse(err, req, res, err);
     }
   },

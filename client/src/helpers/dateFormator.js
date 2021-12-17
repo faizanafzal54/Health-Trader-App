@@ -12,6 +12,16 @@ export const getDateTime = (date) => {
   return `${month}/${day}/${year} at ${formatAMPM(dateObj)}`;
 };
 
+export const hoursInAMPM = (date) => {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  let strTime = hours + " " + ampm;
+  return strTime;
+};
+
 export const formatAMPM = (date) => {
   let hours = date.getHours();
   let minutes = date.getMinutes();
@@ -47,9 +57,8 @@ export const monthName = (index) => {
   return monthNames[index];
 };
 
-export const currentMonthRange = (_currentMonth) => {
-  const date = new Date();
-  date.setMonth(_currentMonth - 1);
+export const currentMonthRange = (_year, _currentMonth) => {
+  const date = new Date(_year, _currentMonth);
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   return `${monthName(date.getMonth()).substring(
@@ -60,20 +69,16 @@ export const currentMonthRange = (_currentMonth) => {
   ).substring(0, 3)}. ${lastDay.getDate()}, ${lastDay.getFullYear()}`;
 };
 
-export const currentDay = (today) => {
-  const date = new Date(today);
-  return `${monthName(date.getMonth()).substring(
-    0,
-    3
-  )}. ${date.getDate()}, ${date.getFullYear()}`;
+export const currentDay = (year, month, date) => {
+  console.log();
+  return `${monthName(month).substring(0, 3)}. ${date}, ${year}`;
 };
 
-export const currentWeek = (weekCount) => {
+export const currentWeek = (year, month, date) => {
   let week = new Array();
   // Starting Monday not Sunday
-  let current = new Date();
-  let x = 7 * weekCount;
-  current.setDate(current.getDate() + x);
+  let current = new Date(year, month, date);
+  current.setDate(current.getDate());
   current.setDate(current.getDate() - current.getDay());
   for (var i = 0; i < 7; i++) {
     week.push({ date: new Date(current), day: dayName(new Date(current)) });
@@ -82,13 +87,13 @@ export const currentWeek = (weekCount) => {
 
   return week;
 };
-export const currentWeekText = (weekCount) => {
-  let week = new Array();
+export const currentWeekText = (year, month, date) => {
   // Starting Monday not Sunday
-  let current = new Date();
-  let x = 7 * weekCount;
-  current.setDate(current.getDate() + x);
+  let current = new Date(year, month, date);
+
+  current.setDate(current.getDate());
   current.setDate(current.getDate() - current.getDay());
+  console.log(current);
 
   let first = new Date(current);
   let last = new Date(current);

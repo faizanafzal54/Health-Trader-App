@@ -31,6 +31,7 @@ import {
 import { useState } from "react";
 import MonthViewReminders from "./MonthViewReminders";
 import { useSelector } from "react-redux";
+import DailyViewReminder from "./DailyViewReminder";
 
 CalendarIndex.propTypes = {
   className: PropTypes.string,
@@ -46,19 +47,18 @@ export default function CalendarIndex({
   setCalendarType,
   calendarType,
 }) {
-  const [year, month] = yearAndMonth;
-  const [currentMonth, setcurrentMonth] = useState(new Date().getMonth() + 1);
-  const [today, settoday] = useState(new Date());
-  const [weekCount, setweekCount] = useState(0);
-  const tempReminders = useSelector((state) => state.reminder.reminders);
+  const [year, month, date] = yearAndMonth;
+  const tempReminders = useSelector(
+    (state) => state.reminder.calendarReminders
+  );
 
-  let currentMonthDays = createDaysForCurrentMonth(year, month);
+  let currentMonthDays = createDaysForCurrentMonth(year, month + 1);
   let previousMonthDays = createDaysForPreviousMonth(
     year,
-    month,
+    month + 1,
     currentMonthDays
   );
-  let nextMonthDays = createDaysForNextMonth(year, month, currentMonthDays);
+  let nextMonthDays = createDaysForNextMonth(year, month + 1, currentMonthDays);
   let calendarGridDayObjects = [
     ...previousMonthDays,
     ...currentMonthDays,
@@ -69,32 +69,58 @@ export default function CalendarIndex({
     let nextYear = year;
     let nextMonth = month - 1;
 
-    if (nextMonth === 0) {
-      nextMonth = 12;
+    if (nextMonth === -1) {
+      nextMonth = 11;
       nextYear = year - 1;
     }
-    setcurrentMonth(nextMonth === 0 ? 12 : nextMonth);
-    let tempToday = today;
-    tempToday.setDate(tempToday.getDate() - 1);
-    settoday(tempToday);
-    setweekCount(weekCount - 1);
 
-    onYearAndMonthChange([nextYear, nextMonth]);
+    if (calendarType === "Month") {
+      onYearAndMonthChange([nextYear, nextMonth, date]);
+    } else if (calendarType === "Day") {
+      let today = new Date(year, month, date);
+      today.setDate(today.getDate() - 1);
+      onYearAndMonthChange([
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+      ]);
+    } else {
+      let today = new Date(year, month, date);
+      today.setDate(today.getDate() - 7);
+      onYearAndMonthChange([
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+      ]);
+    }
   };
 
   const handleMonthNavForwardButtonClick = () => {
     let nextYear = year;
     let nextMonth = month + 1;
-    if (nextMonth === 13) {
-      nextMonth = 1;
+    if (nextMonth === 12) {
+      nextMonth = 0;
       nextYear = year + 1;
     }
-    setcurrentMonth(nextMonth === 13 ? 1 : nextMonth);
-    let tempToday = today;
-    tempToday.setDate(tempToday.getDate() + 1);
-    settoday(tempToday);
-    setweekCount(weekCount + 1);
-    onYearAndMonthChange([nextYear, nextMonth]);
+    if (calendarType === "Month") {
+      onYearAndMonthChange([nextYear, nextMonth, date]);
+    } else if (calendarType === "Day") {
+      let today = new Date(year, month, date);
+      today.setDate(today.getDate() + 1);
+      onYearAndMonthChange([
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+      ]);
+    } else {
+      let today = new Date(year, month, date);
+      today.setDate(today.getDate() + 7);
+      onYearAndMonthChange([
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+      ]);
+    }
   };
 
   const getReminderCount = (date) => {
@@ -118,20 +144,18 @@ export default function CalendarIndex({
   //   let nextYear = parseInt(evt.target.value, 10);
   //   onYearAndMonthChange([nextYear, nextMonth]);
   // };
-
   const ampmList = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
   return (
     <div className="calendar-root">
       <div className="d-flex search-actions g-0 row">
         <div className="col-md-6">
           <div className="current-date d-flex flex-wrap align-items-center">
             {calendarType === "Month" ? (
-              <span>{currentMonthRange(currentMonth)}</span>
+              <span>{currentMonthRange(year, month)}</span>
             ) : calendarType === "Day" ? (
-              <span>{currentDay(today)}</span>
+              <span>{currentDay(year, month, date)}</span>
             ) : (
-              <span>{currentWeekText(weekCount)} </span>
+              <span>{currentWeekText(year, month, date)} </span>
             )}
 
             <FontAwesomeIcon
@@ -287,73 +311,47 @@ export default function CalendarIndex({
         </div>
       ) : calendarType === "Day" ? (
         <>
-          <div className="row day-calendar gx-0">
-            <div className="col-md-6">
-              <div className="title">
-                <h4>AM HOURS</h4>
-              </div>
-              <div className="am-pm">
-                {ampmList.map((ap) => (
-                  <div
-                    key={`am${ap.toString()}`}
-                    className="d-flex align-items-center justify-content-between"
-                  >
-                    <div>
-                      <span>{ap} AM </span>
-                    </div>
-                    <div>
-                      <div className="border-down"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="title">
-                <h4>PM HOURS</h4>
-              </div>
-              <div className="am-pm">
-                {ampmList.map((ap) => (
-                  <div
-                    key={`pm${ap.toString()}`}
-                    className="d-flex align-items-center justify-content-between"
-                  >
-                    <div>
-                      <span>{ap} PM </span>
-                    </div>
-                    <div>
-                      <div className="border-down"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <DailyViewReminder
+            date={new Date(year, month, date)}
+            ampmList={ampmList}
+          />
         </>
       ) : calendarType === "Week" ? (
         <div className="week-calendar">
           <div className="d-flex justify-content-between flex-wrap">
-            {currentWeek(weekCount).map((date) => (
-              <div>
-                <span className="day-name text-start">{date.day} </span>
-                <div
-                  className={
-                    new Date().getDay() === date.date.getDay()
-                      ? "box-active box"
-                      : "box"
-                  }
-                >
-                  <span className="day-number">{date.date.getDate()}</span>
-                  <span className="total-reminders">2 Reminders</span>
+            {currentWeek(year, month, date).map((date) => {
+              const count = getReminderCount(new Date(date.date));
+              return (
+                <div>
+                  <span className="day-name text-start">{date.day} </span>
+                  <div
+                    className={
+                      new Date().getDate() === date.date.getDate() &&
+                      month === new Date().getMonth()
+                        ? "box-active box"
+                        : "box"
+                    }
+                  >
+                    <span className="day-number">{date.date.getDate()}</span>
+                    {count > 0 ? (
+                      <span className="total-reminders">{count} Reminders</span>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ) : (
         ""
       )}
       <br />
+      <DailyViewReminder
+        date={new Date(year, month, date)}
+        ampmList={ampmList}
+      />
     </div>
   );
 }

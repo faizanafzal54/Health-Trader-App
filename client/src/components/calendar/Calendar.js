@@ -1,14 +1,44 @@
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCalendarRemindersAction } from "../../actions/reminderActions";
 import CalendarIndex, { CalendarDayHeader } from "./CalendarIndex";
 
 function Calendar() {
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+
   const [yearAndMonth, setYearAndMonth] = useState([
     new Date().getFullYear(),
-    new Date().getMonth() + 1,
+    new Date().getMonth(),
+    new Date().getDate(),
   ]);
+  const [ver_date, ver_setDate] = useState(new Date());
+  const [isFirst, setIsFirst] = useState(true);
+
   const [calendarType, setCalendarType] = useState("Month"); //Month,Day,Week
+
+  useEffect(() => {
+    getCalendarReminders();
+    setIsFirst(false);
+  }, []);
+
+  useEffect(() => {
+    console.log(yearAndMonth[1], ver_date.getMonth());
+    if (isFirst) {
+      return;
+    }
+    if (yearAndMonth[1] === ver_date.getMonth()) {
+    } else {
+      getCalendarReminders();
+      setIsFirst(false);
+    }
+  }, [yearAndMonth]);
+
+  const getCalendarReminders = () => {
+    dispatch(setCalendarRemindersAction(userState.user?._id, yearAndMonth));
+  };
 
   return (
     <div>
