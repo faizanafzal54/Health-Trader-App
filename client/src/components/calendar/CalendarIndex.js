@@ -28,7 +28,6 @@ import {
   InputAdornment,
   InputLabel,
 } from "@mui/material";
-import { useState } from "react";
 import MonthViewReminders from "./MonthViewReminders";
 import { useSelector } from "react-redux";
 import DailyViewReminder from "./DailyViewReminder";
@@ -132,7 +131,14 @@ export default function CalendarIndex({
     });
     return filteredReminders.length === 0 ? "" : filteredReminders.length;
   };
-
+  const setDayFromWeek = (date) => (e) => {
+    const tempDate = new Date(date);
+    onYearAndMonthChange([
+      tempDate.getFullYear(),
+      tempDate.getMonth(),
+      tempDate.getDate(),
+    ]);
+  };
   // const handleMonthSelect = (evt) => {
   //   let nextYear = year;
   //   let nextMonth = parseInt(evt.target.value, 10);
@@ -319,20 +325,21 @@ export default function CalendarIndex({
       ) : calendarType === "Week" ? (
         <div className="week-calendar">
           <div className="d-flex justify-content-between flex-wrap">
-            {currentWeek(year, month, date).map((date) => {
-              const count = getReminderCount(new Date(date.date));
+            {currentWeek(year, month, date).map((_date) => {
+              const count = getReminderCount(new Date(_date.date));
               return (
-                <div>
-                  <span className="day-name text-start">{date.day} </span>
+                <div key={_date.date.toString()}>
+                  <span className="day-name text-start">{_date.day} </span>
                   <div
                     className={
-                      new Date().getDate() === date.date.getDate() &&
-                      month === new Date().getMonth()
+                      date === _date.date.getDate() &&
+                      month === _date.date.getMonth()
                         ? "box-active box"
                         : "box"
                     }
+                    onClick={setDayFromWeek(_date.date)}
                   >
-                    <span className="day-number">{date.date.getDate()}</span>
+                    <span className="day-number">{_date.date.getDate()}</span>
                     {count > 0 ? (
                       <span className="total-reminders">{count} Reminders</span>
                     ) : (
@@ -343,15 +350,17 @@ export default function CalendarIndex({
               );
             })}
           </div>
+          <div>
+            <DailyViewReminder
+              date={new Date(year, month, date)}
+              ampmList={ampmList}
+            />
+          </div>
         </div>
       ) : (
         ""
       )}
       <br />
-      <DailyViewReminder
-        date={new Date(year, month, date)}
-        ampmList={ampmList}
-      />
     </div>
   );
 }

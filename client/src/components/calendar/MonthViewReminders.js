@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import PillImg from "../../assets/Pill icon.png";
 import AppointmentImg from "../../assets/appointment icon.png";
 import ServiceImg from "../../assets/service icon.png";
-import {
-  getReminders,
-  setReminderStatus,
-} from "../../components/home/homeService";
+import { setReminderStatus } from "../../components/home/homeService";
 import { useDispatch, useSelector } from "react-redux";
 import { getDateTime, getTime } from "../../helpers/dateFormator";
 import { toastify } from "../../actions/userActions";
-import {
-  setCalendarRemindersAction,
-  setReminderAction,
-} from "../../actions/reminderActions";
+import { setCalendarUpdateAction } from "../../actions/reminderActions";
 
 function MonthViewReminders() {
   const [search, setSearch] = useState("");
@@ -34,7 +28,7 @@ function MonthViewReminders() {
         }
         return reminder;
       });
-      dispatch(setCalendarRemindersAction(tempReminders));
+      dispatch(setCalendarUpdateAction(tempReminders));
       toastify("success", `Reminder status has been updated to "${status}"`);
     }
   };

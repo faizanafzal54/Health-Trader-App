@@ -10,7 +10,6 @@ function CreateGroup(props) {
 
   const [name, setName] = useState("");
 
-  const [medicationGroup, setMedicationGroup] = useState([]);
 
   const createHandler = async () => {
     dispatch(

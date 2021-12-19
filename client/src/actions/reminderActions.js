@@ -44,3 +44,12 @@ export const setCalendarRemindersAction =
       });
     }
   };
+
+  export const setCalendarUpdateAction = (reminders) => async (dispatch) => {
+    dispatch({
+      type: "SetCalendarReminders",
+      payload: {
+        reminders: reminders,
+      },
+    });
+  };

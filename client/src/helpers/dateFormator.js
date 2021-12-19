@@ -14,7 +14,6 @@ export const getDateTime = (date) => {
 
 export const hoursInAMPM = (date) => {
   let hours = date.getHours();
-  let minutes = date.getMinutes();
   let ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
@@ -75,7 +74,7 @@ export const currentDay = (year, month, date) => {
 };
 
 export const currentWeek = (year, month, date) => {
-  let week = new Array();
+  let week = [];
   // Starting Monday not Sunday
   let current = new Date(year, month, date);
   current.setDate(current.getDate());
@@ -93,7 +92,6 @@ export const currentWeekText = (year, month, date) => {
 
   current.setDate(current.getDate());
   current.setDate(current.getDate() - current.getDay());
-  console.log(current);
 
   let first = new Date(current);
   let last = new Date(current);

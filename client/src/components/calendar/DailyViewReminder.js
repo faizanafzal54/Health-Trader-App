@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getDateTime, getTime, hoursInAMPM } from "../../helpers/dateFormator";
 import PillImg from "../../assets/Pill icon.png";
 import AppointmentImg from "../../assets/appointment icon.png";
 import ServiceImg from "../../assets/service icon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { setReminderStatus } from "../home/homeService";
+import { setCalendarUpdateAction } from "../../actions/reminderActions";
+import { toastify } from "../../actions/userActions";
 
 function DailyViewReminder({ ampmList, date }) {
+  const dispatch = useDispatch();
   const calendarReminders = useSelector(
     (state) => state.reminder.calendarReminders
   );
@@ -22,9 +26,22 @@ function DailyViewReminder({ ampmList, date }) {
       );
     });
     settodayReminder(foundReminder);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calendarReminders]);
 
-  const setReminderStatusHandler = () => {};
+  const setReminderStatusHandler = async (metaId, status) => {
+    const res = await setReminderStatus(metaId, status);
+    if (res.status === 200) {
+      const tempReminders = calendarReminders.map((reminder) => {
+        if (reminder.metaId === metaId) {
+          reminder.status = status;
+        }
+        return reminder;
+      });
+      dispatch(setCalendarUpdateAction(tempReminders));
+      toastify("success", `Reminder status has been updated to "${status}"`);
+    }
+  };
 
   return (
     <div className="row day-calendar gx-0">
@@ -42,7 +59,8 @@ function DailyViewReminder({ ampmList, date }) {
                 <span>{ap} AM </span>
               </div>
               <div>
-                {hoursInAMPM(new Date(todayReminder?.date)) === `${ap} AM` ? (
+                {hoursInAMPM(new Date(todayReminder?.date)) === `${ap} AM` &&
+                todayReminder ? (
                   <div className="daily-view">
                     <div className="reminders">
                       <div className="reminder-div">
@@ -175,7 +193,8 @@ function DailyViewReminder({ ampmList, date }) {
                 <span>{ap} PM </span>
               </div>
               <div>
-                {hoursInAMPM(new Date(todayReminder?.date)) === `${ap} PM` ? (
+                {hoursInAMPM(new Date(todayReminder?.date)) === `${ap} PM` &&
+                todayReminder ? (
                   <div className="daily-view">
                     <div className="reminders">
                       <div className="reminder-div">

@@ -34,6 +34,7 @@ function Medications() {
 
   useEffect(() => {
     getMedicationsHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getMedicationsHandler = () => {

@@ -1462,6 +1462,7 @@ color: #474646;
 text-transform: uppercase;
 }
 .calendar .week-calendar .d-flex .box {
+  cursor: pointer;
   padding:10px;
   margin-top: 20px;
   background: #fff;

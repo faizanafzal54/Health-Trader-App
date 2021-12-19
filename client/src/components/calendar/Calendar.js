@@ -22,6 +22,7 @@ function Calendar() {
   useEffect(() => {
     getCalendarReminders();
     setIsFirst(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -31,9 +32,12 @@ function Calendar() {
     }
     if (yearAndMonth[1] === ver_date.getMonth()) {
     } else {
+      const [year, month, date] = yearAndMonth;
+      ver_setDate(year, month, date);
       getCalendarReminders();
       setIsFirst(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearAndMonth]);
 
   const getCalendarReminders = () => {
