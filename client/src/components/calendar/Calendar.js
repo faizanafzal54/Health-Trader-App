@@ -26,6 +26,7 @@ function Calendar() {
   }, []);
 
   useEffect(() => {
+    console.log(ver_date);
     console.log(yearAndMonth[1], ver_date.getMonth());
     if (isFirst) {
       return;
@@ -33,7 +34,7 @@ function Calendar() {
     if (yearAndMonth[1] === ver_date.getMonth()) {
     } else {
       const [year, month, date] = yearAndMonth;
-      ver_setDate(year, month, date);
+      ver_setDate(new Date(year, month, date));
       getCalendarReminders();
       setIsFirst(false);
     }
