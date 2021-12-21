@@ -15,7 +15,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { createReminder } from "./reminderService";
 import { toastify } from "../../actions/userActions";
-import { pushReminderAction } from "../../actions/reminderActions";
+import {
+  pushReminderAction,
+  setReminderAction,
+} from "../../actions/reminderActions";
+import { getReminders } from "../home/homeService";
 
 function CreateReminder() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -48,7 +52,7 @@ function CreateReminder() {
 
   const createReminderHandler = async () => {
     try {
-      const res = await createReminder({
+      await createReminder({
         userId: userState.user?._id,
         reminderType,
         startDateTime,
@@ -63,8 +67,10 @@ function CreateReminder() {
         comments,
         medicationGroup,
       });
-      console.log(res.data.data.reminder);
-      dispatch(pushReminderAction(res.data.data.reminder));
+      const res = await getReminders(userState.user?._id);
+      if (res.status === 200) {
+        dispatch(setReminderAction(res.data.data.reminders));
+      }
       toastify("success", "Reminder has been created successfully");
       closeModalHandler();
     } catch (err) {

@@ -36,7 +36,7 @@ module.exports = {
         comments,
         isActive: true,
         status: "",
-        groupId: medicationGroup,
+        groupId: medicationGroup === "" ? undefined : medicationGroup,
       });
 
       if (!isRepeating) {
@@ -49,7 +49,6 @@ module.exports = {
           reminderTo: [],
         };
         const meta = await reminderMetaDao.insertMany([obj]);
-        console.log(meta);
       } else {
         let docs = [];
         switch (reminderFrequency) {
@@ -64,7 +63,9 @@ module.exports = {
                 reminderTo: [],
               });
             } else if (duration === "uptill") {
-              let loop = new Date(startDateTime);
+              const tempStart =  new Date(startDateTime)
+              var loop = new Date(tempStart.getTime());
+              loop.setDate(tempStart.getDate() - 1);
               while (loop <= new Date(terminationDate)) {
                 docs.push({
                   userId: userId,
@@ -222,8 +223,8 @@ module.exports = {
           reminderTypereminderType:
             reminder.reminderId?.reminderTypereminderType,
           terminationDate: reminder.reminderId?.terminationDate,
-          groupId: reminder.reminderId?.groupId._id,
-          groupName: reminder.reminderId?.groupId.name,
+          groupId: reminder.reminderId?.groupId?._id,
+          groupName: reminder.reminderId?.groupId?.name,
         };
       });
       sendResponse(null, req, res, { reminders: formattedReminders });
