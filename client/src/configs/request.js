@@ -1,5 +1,6 @@
 import axios from "axios";
-import { toastify } from "../actions/userActions";
+import { logoutAction, toastify } from "../actions/userActions";
+import { Store } from "../store";
 import { apiUrl } from "./config";
 
 axios.defaults.baseURL = `${apiUrl}`;
@@ -8,6 +9,7 @@ axios.interceptors.response.use(null, async (error) => {
   console.log(error.response);
   if (error.config && error.response && error.response.status === 401) {
     toastify("error", error.response?.data?.err?.message);
+    Store.dispatch(logoutAction());
   }
   if (error.config && error.response && error.response.status !== 401) {
     toastify("error", error.response?.data?.err?.message);

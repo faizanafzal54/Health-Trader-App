@@ -65,8 +65,8 @@ const SignUp = () => {
 
   return (
     <div className="login">
-      <div className="row align-items-center vh-100">
-        <div className="col-md-6">
+      <div className="row gx-0 align-items-center vh-100">
+        <div className="col-lg-6">
           <div>
             <h4>Welcome</h4>
           </div>
@@ -181,7 +181,7 @@ const SignUp = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-lg-6">
           <img src={LoginImg} alt="Logo" />
         </div>
       </div>

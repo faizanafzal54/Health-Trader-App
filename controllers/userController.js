@@ -10,6 +10,7 @@ const mycircleDao = require("../daos/mycircleDao");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const transporter = require("../utils/transporter");
+const req = require("express/lib/request");
 const saltRounds = 10;
 
 module.exports = {
@@ -264,6 +265,7 @@ module.exports = {
           friendId: newUser._id,
           connectionType: circle,
           status: "",
+          isDeleted: false,
         });
         sendResponse(null, req, res, { newUser, newCircle });
         const mailOptions = {
@@ -333,12 +335,12 @@ module.exports = {
         userId, // user to edit
       } = req.body;
       const user = await userDao.findOneAndUpdate(
-        { _id:userId },
+        { _id: userId },
         { firstName, lastName, circle, notes, phone, email, notifications }
       );
 
       const mycircle = await mycircleDao.findOneAndUpdate(
-        { userId:ownerId, friendId: userId },
+        { userId: ownerId, friendId: userId },
         {
           connectionType: circle,
         }
@@ -350,10 +352,16 @@ module.exports = {
   },
   deleteUser: async (req, res) => {
     try {
-      const { userId,circleId } = req.query;
-      const user = await userDao.findOneAndUpdate({userId},{isDeleted:true});
-      const myCircle = await mycircleDao.findOneAndUpdate({circleId},{isDeleted:true})
-      sendResponse(null, req, res, { user,myCircle });
+      const { userId, circleId } = req.query;
+      const user = await userDao.findOneAndUpdate(
+        { userId },
+        { isDeleted: true }
+      );
+      const myCircle = await mycircleDao.findOneAndUpdate(
+        { circleId },
+        { isDeleted: true }
+      );
+      sendResponse(null, req, res, { user, myCircle });
     } catch (err) {
       sendResponse(err, req, res, err);
     }
@@ -622,5 +630,14 @@ module.exports = {
         }
       }
     )(req, res);
+  },
+  getUser: async (req, res) => {
+    try {
+      const { userId } = req.query;
+      const account = await userDao.findByPk(userId);
+      sendResponse(null, req, res, { user: account });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
   },
 };

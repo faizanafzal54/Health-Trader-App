@@ -60,6 +60,9 @@ input[type="number"] {
   }
 }
 
+.cursor-p {
+  cursor: pointer;
+}
 .bg-orange {
   background-color: #fd5721;
 }
@@ -1558,6 +1561,10 @@ color: #427A8E;
   .calendar .day-calendar .am-pm .d-flex .border-down {
     min-width: 260px;
   }
+  .login .row .col-lg-6 {
+    text-align: center;
+    padding: 10px 20px;
+  }
 }
 @media only screen and (max-width: 426px) {
   .account .tabs-title {
@@ -1590,6 +1597,9 @@ color: #427A8E;
   .calendar .week-calendar .d-flex >div {
     margin-top: 20px;
   } 
+  .login img {
+    max-width: 350px;
+  }
 }
 @media only screen and (max-width: 376px) {
   .timeline .reminder-div .actions-btns button {

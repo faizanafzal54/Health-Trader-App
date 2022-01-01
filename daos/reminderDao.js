@@ -33,4 +33,20 @@ module.exports = {
       throw new Error(err);
     }
   },
+  pushInSubCollection: async (where, push) => {
+    try {
+      const reminder = await Reminder.findOneAndUpdate(where, { $push: push });
+      return reminder;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  pullFromSubCollection: async (where, pull) => {
+    try {
+      const reminder = await Reminder.findOneAndUpdate(where, { $pull: pull });
+      return reminder;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

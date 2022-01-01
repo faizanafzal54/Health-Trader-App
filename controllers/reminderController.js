@@ -63,7 +63,7 @@ module.exports = {
                 reminderTo: [],
               });
             } else if (duration === "uptill") {
-              const tempStart =  new Date(startDateTime)
+              const tempStart = new Date(startDateTime);
               var loop = new Date(tempStart.getTime());
               loop.setDate(tempStart.getDate() - 1);
               while (loop <= new Date(terminationDate)) {
@@ -270,16 +270,26 @@ module.exports = {
           reminderType: reminder.reminderId?.reminderType,
           comments: reminder.reminderId?.comments,
           location: reminder.reminderId?.location,
-          reminderTypereminderType:
-            reminder.reminderId?.reminderTypereminderType,
           terminationDate: reminder.reminderId?.terminationDate,
-          groupId: reminder.reminderId?.groupId._id,
-          groupName: reminder.reminderId?.groupId.name,
+          groupId: reminder.reminderId?.groupId?._id ?? null,
+          groupName: reminder.reminderId?.groupId?.name ?? null,
         };
       });
       sendResponse(null, req, res, { reminders: formattedReminders });
     } catch (err) {
       console.log(err);
+      sendResponse(err, req, res, err);
+    }
+  },
+  addMemberToReminder: async (req, res) => {
+    try {
+      const { reminderId, memberId } = req.body;
+      const reminder = await reminderDao.pushInSubCollection(
+        { _id: reminderId },
+        memberId
+      );
+      sendResponse(null, req, res, { reminder });
+    } catch (err) {
       sendResponse(err, req, res, err);
     }
   },

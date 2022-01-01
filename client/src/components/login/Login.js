@@ -27,7 +27,7 @@ function Login(props) {
   return (
     <div className="login">
       <form onSubmit={loginWithEmailHandler}>
-        <div className="row g-0 px-4 align-items-center vh-100">
+        <div className="row gx-0 px-4 align-items-center vh-100">
           <div className="col-lg-6">
             <div>
               <h4>Welcome</h4>

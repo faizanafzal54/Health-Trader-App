@@ -22,10 +22,10 @@ module.exports = {
   },
   find: async (userId) => {
     try {
-      const reminders = await MyCircle.find({ userId, isDeleted: false })
+      const circles = await MyCircle.find({ userId, isDeleted: false })
         .populate("friendId")
         .lean();
-      return reminders;
+      return circles;
     } catch (err) {
       throw new Error(err);
     }

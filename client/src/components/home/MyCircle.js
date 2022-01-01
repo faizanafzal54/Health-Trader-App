@@ -252,7 +252,7 @@ function MyCircle() {
                           onClick={() => {
                             setUser(friend);
                             setMode("view");
-                            setViewModalOpen(true)
+                            setViewModalOpen(true);
                           }}
                           className="name"
                         >
@@ -267,6 +267,7 @@ function MyCircle() {
                     </div>
                     <div className="d-flex align-items-center">
                       <FontAwesomeIcon
+                        className="cursor-p"
                         onClick={(e) => {
                           setMenuOpen(true);
                           setAnchorEl(e.currentTarget);
@@ -293,8 +294,7 @@ function MyCircle() {
                             setUser(friend);
                             setMode("edit");
                             setMenuOpen(false);
-                            setViewModalOpen(true)
-
+                            setViewModalOpen(true);
                           }}
                         >
                           Edit
@@ -451,12 +451,13 @@ function MyCircle() {
                       <input
                         className="form-check-input"
                         type="checkbox"
+                        id="isTextNotify"
                         value={isTextNotify}
                         onChange={(e) => setIsTextNotify(e.target.checked)}
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="flexCheckDefault"
+                        htmlFor="isTextNotify"
                       >
                         Receive Text Notifications
                       </label>
@@ -598,12 +599,13 @@ function MyCircle() {
                       <input
                         className="form-check-input"
                         type="checkbox"
+                        id="isEmailNotify"
                         value={isEmailNotify}
                         onChange={(e) => setIsEmailNotify(e.target.checked)}
                       />
                       <label
                         className="form-check-label"
-                        htmlFor="flexCheckDefault"
+                        htmlFor="isEmailNotify"
                       >
                         Receive Email Notifications
                       </label>
@@ -616,13 +618,14 @@ function MyCircle() {
                           className="form-check-input"
                           type="checkbox"
                           value={isEmailtReceiveEvery}
+                          id="isEmailtReceiveEvery"
                           onChange={(e) =>
                             setIsEmailtReceiveEvery(e.target.checked)
                           }
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="isEmailtReceiveEvery"
                         >
                           Receive every notification
                         </label>
