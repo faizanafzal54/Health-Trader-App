@@ -102,7 +102,7 @@ module.exports = {
 
   findByPk: async (id) => {
     try {
-      const account = await User.findByPk(id);
+      const account = await User.findById(id);
       return account;
     } catch (err) {
       let error = new Error(err);

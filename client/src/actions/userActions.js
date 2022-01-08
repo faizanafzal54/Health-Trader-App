@@ -8,6 +8,7 @@ import {
 import { signupThroughEmail } from "../components/signup/signupService.js";
 import history from "../helpers/history.js";
 import { toast } from "react-toastify";
+import { updateProfile } from "../components/account/accountService.js";
 
 export const toastify = (type, toastMessage) => {
   switch (type) {
@@ -107,8 +108,6 @@ export const logoutAction = () => (dispatch) => {
   history.push("/login");
 };
 
-
-
 export const signupAction = (obj) => async (dispatch) => {
   try {
     const res = await signupThroughEmail(obj);
@@ -165,6 +164,31 @@ export const resetPasswordAction = (link, password) => async () => {
     if (res.status === 200) {
       toastify("success", "Password has been updated");
       history.push("/login");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateProfileAction = (obj) => async (dispatch) => {
+  try {
+    const res = await updateProfile(obj);
+    if (res.status === 200) {
+      dispatch({
+        type: "UpdateUser",
+        payload: {
+          _id: res.data.data.user._id,
+          name:
+            res.data.data.user.firstName + " " + res.data.data.user.lastName,
+          firstName: res.data.data.user.firstName,
+          lastName: res.data.data.user.lastName,
+          email: res.data.data.user.email,
+          role: res.data.data.user.role,
+          phone: res.data.data.user.phone,
+          image: res.data.data.user.image,
+        },
+      });
+      toastify("success", "Profile updated");
     }
   } catch (err) {
     console.log(err);

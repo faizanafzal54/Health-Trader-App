@@ -19,8 +19,8 @@ module.exports = {
         location,
         comments,
         medicationGroup,
+        reminderTo,
       } = req.body;
-      console.log(req.body);
       const reminder = await reminderDao.create({
         userId,
         reminderType,
@@ -37,6 +37,7 @@ module.exports = {
         isActive: true,
         status: "",
         groupId: medicationGroup === "" ? undefined : medicationGroup,
+        reminderTo,
       });
 
       if (!isRepeating) {
@@ -46,7 +47,7 @@ module.exports = {
           isActive: true,
           status: "",
           date: startDateTime,
-          reminderTo: [],
+          reminderTo: reminderTo,
         };
         const meta = await reminderMetaDao.insertMany([obj]);
       } else {
@@ -60,7 +61,7 @@ module.exports = {
                 isActive: true,
                 status: "",
                 date: startDateTime,
-                reminderTo: [],
+                reminderTo: reminderTo,
               });
             } else if (duration === "uptill") {
               const tempStart = new Date(startDateTime);
@@ -73,7 +74,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: loop,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
 
                 const tempDate = loop.setDate(
@@ -83,7 +84,6 @@ module.exports = {
               }
             } else if (duration === "forever") {
               for (let i = 1; i <= 365; i += parseInt(repeatEvery)) {
-                console.log(i);
                 let today = new Date(startDateTime);
                 today.setDate(today.getDate() + i);
                 docs.push({
@@ -92,7 +92,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: today,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
               }
             }
@@ -105,7 +105,7 @@ module.exports = {
                 isActive: true,
                 status: "",
                 date: startDateTime,
-                reminderTo: [],
+                reminderTo: reminderTo,
               });
             } else if (duration === "uptill") {
               let loop = new Date(startDateTime);
@@ -116,7 +116,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: loop,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
                 let sum = 7 * parseInt(repeatEvery);
                 const tempDate = loop.setDate(loop.getDate() + sum);
@@ -125,7 +125,6 @@ module.exports = {
             } else if (duration === "forever") {
               let sum = 7 * parseInt(repeatEvery);
               for (let i = 1; i <= 365; i += sum) {
-                console.log(i);
                 let today = new Date(startDateTime);
                 today.setDate(today.getDate() + i);
                 docs.push({
@@ -134,7 +133,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: today,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
               }
             }
@@ -147,7 +146,7 @@ module.exports = {
                 isActive: true,
                 status: "",
                 date: startDateTime,
-                reminderTo: [],
+                reminderTo: reminderTo,
               });
             } else if (duration === "uptill") {
               let loop = new Date(startDateTime);
@@ -158,7 +157,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: loop,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
                 const tempDate = loop.setMonth(
                   loop.getMonth() + parseInt(repeatEvery)
@@ -167,7 +166,6 @@ module.exports = {
               }
             } else if (duration === "forever") {
               for (let i = 0; i <= 22; i += parseInt(repeatEvery)) {
-                console.log(i);
                 let today = new Date(startDateTime);
                 today.setMonth(today.getMonth() + i);
                 docs.push({
@@ -176,7 +174,7 @@ module.exports = {
                   isActive: true,
                   status: "",
                   date: today,
-                  reminderTo: [],
+                  reminderTo: reminderTo,
                 });
               }
             }
@@ -225,6 +223,7 @@ module.exports = {
           terminationDate: reminder.reminderId?.terminationDate,
           groupId: reminder.reminderId?.groupId?._id,
           groupName: reminder.reminderId?.groupId?.name,
+          isMine:reminder.userId === userId ? true:false
         };
       });
       sendResponse(null, req, res, { reminders: formattedReminders });

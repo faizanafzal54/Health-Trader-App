@@ -30,7 +30,7 @@ module.exports = {
         city,
         state,
         country,
-        zip,
+        zipCode,
       } = req.body;
       const prevAccount = await userDao.findOneByEmail(email);
 
@@ -50,7 +50,7 @@ module.exports = {
           city,
           state,
           country,
-          zip,
+          zipCode,
         });
 
         sendResponse(null, req, res, { newUser });
@@ -504,14 +504,43 @@ module.exports = {
   },
   updateProfile: async (req, res) => {
     try {
-      const { id, displayName, firstName, lastName, phone } = req.body;
-      const userRes = await update(id, {
-        displayName,
+      const {
+        userId,
         firstName,
+        middleName,
         lastName,
         phone,
-      });
-      sendResponse(null, req, res, { user: userRes[1][0] });
+        password,
+        dateOfBirth,
+        emergencyPhone,
+        address,
+        city,
+        state,
+        country,
+        zipCode,
+        emergencyContacts,
+      } = req.body;
+
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const updatedUser = await userDao.findOneAndUpdate(
+        { _id: userId },
+        {
+          firstName,
+          middleName,
+          lastName,
+          phone,
+          password: password.length > 7 ? hashedPassword : undefined,
+          dateOfBirth,
+          emergencyPhone,
+          address,
+          city,
+          state,
+          country,
+          zipCode,
+          emergencyContacts,
+        }
+      );
+      sendResponse(null, req, res, { user: updatedUser });
     } catch (err) {
       sendResponse(err, req, res, err);
     }
@@ -593,7 +622,7 @@ module.exports = {
               city: "",
               state: "",
               country: "",
-              zip: "",
+              zipCode: "",
             });
             const data = {
               ip: req.ip,

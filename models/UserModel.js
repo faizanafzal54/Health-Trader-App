@@ -35,7 +35,7 @@ const userSchema = new Schema({
   country: {
     type: String,
   },
-  zip: {
+  zipCode: {
     type: String,
   },
   password: {
@@ -98,6 +98,14 @@ const userSchema = new Schema({
       },
     },
   },
+  emergencyContacts: [
+    {
+      firstName: String,
+      lastName: String,
+      role: String,
+      email: String,
+    },
+  ],
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;

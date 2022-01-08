@@ -35,9 +35,11 @@ function CreateReminder() {
   const [location, setLocation] = useState("");
   const [comments, setComments] = useState("");
   const [medicationGroup, setMedicationGroup] = useState("");
+  const [reminderTo, setReminderTo] = useState("");
 
   const reminderState = useSelector((state) => state.reminder);
   const medicationState = useSelector((state) => state.medication);
+  const friends = useSelector((state) => state.circle.users);
   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -66,6 +68,7 @@ function CreateReminder() {
         location,
         comments,
         medicationGroup,
+        reminderTo: [reminderTo],
       });
       const res = await getReminders(userState.user?._id);
       if (res.status === 200) {
@@ -603,6 +606,27 @@ function CreateReminder() {
                       className="form-control"
                       placeholder="Other details to include"
                     ></textarea>
+                  </div>
+                  <div className="app-field-div mt-10">
+                    <label htmlFor="selectcircle">Circle(s)</label>
+                    <select
+                      id="selectcircle"
+                      value={reminderTo}
+                      onChange={(e) => setReminderTo(e.target.value)}
+                      className="form-select"
+                    >
+                      <option value="" disabled>
+                        Select circle(s)
+                      </option>
+                      {friends.map((friend) => (
+                        <option
+                          value={friend.friendId._id}
+                          key={friend.friendId._id}
+                        >
+                          {friend.friendId?.firstName}{" "}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="text-center">
                     <button

@@ -20,21 +20,23 @@ import {
   Menu,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getmycircle, inviteUser } from "./homeService";
-import { useSelector } from "react-redux";
+import { inviteUser } from "./homeService";
+import { useDispatch, useSelector } from "react-redux";
 import { toastify } from "../../actions/userActions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CircleView from "./CircleView";
+import {
+  findAllCircleMemberActions,
+  setCircleAction,
+} from "../../actions/circleAction";
 
 function MyCircle() {
-
   const [isViewModalOpen, setViewModalOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const [searchGroup, setSearchGroup] = useState("All");
 
-  const [friends, setFriends] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [mode, setMode] = useState(""); //view || edit
@@ -70,6 +72,8 @@ function MyCircle() {
   const [user, setUser] = useState(null);
 
   const userState = useSelector((state) => state.user.user);
+  const friends = useSelector((state) => state.circle.users);
+  const dispatch = useDispatch();
 
   const inviteStateHandler = (e) => {
     setInviteState({
@@ -85,7 +89,7 @@ function MyCircle() {
       }
       return fri;
     });
-    setFriends(tempFriends);
+    dispatch(setCircleAction(tempFriends));
   };
 
   const inviteHandler = async () => {
@@ -142,7 +146,7 @@ function MyCircle() {
             friendId: res.data.data.newUser,
           },
         ];
-        setFriends(newFriends);
+        dispatch(setCircleAction(newFriends));
       }
     } catch (err) {
       console.log(err);
@@ -155,11 +159,9 @@ function MyCircle() {
   }, []);
 
   const getMyCircleHandler = async () => {
-    const res = await getmycircle(userState._id);
-    if (res.status === 200) {
-      setFriends(res.data.data.mycircle);
-    }
+    dispatch(findAllCircleMemberActions(userState._id));
   };
+
   const searchFor = (_friend, _search, _searchGroup) => {
     if (_searchGroup === "All") {
       return (
@@ -732,7 +734,7 @@ function MyCircle() {
         <CircleView
           deleteFriend={(id) => {
             let temp = friends.filter((friend) => friend._id !== id);
-            setFriends(temp);
+            dispatch(setCircleAction(temp));
           }}
           updateFriends={updateFriends}
           user={user}

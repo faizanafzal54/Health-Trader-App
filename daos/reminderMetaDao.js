@@ -45,8 +45,9 @@ module.exports = {
   findByDateRange: async (userId, gtDate, ltDate) => {
     try {
       const reminders = await ReminderMeta.find({
+        $or: [{ userId: userId }, { reminderTo: userId }],
         date: { $gte: gtDate, $lte: ltDate },
-        userId,
+
         isActive: true,
       })
         .populate({
