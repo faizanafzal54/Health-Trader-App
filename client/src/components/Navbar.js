@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faCalendarAlt,
+  faFile,
   faHeartbeat,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -65,15 +66,15 @@ function Navbar() {
               </li>
               <li>
                 <span className="border-right"></span>
-                <NavLink onClick={toggleHandler} to="/h">
+                <NavLink onClick={toggleHandler} to="/report">
                   <FontAwesomeIcon icon={faHeartbeat} />{" "}
                   <span>Health Report</span>
                 </NavLink>
               </li>
               <li>
                 <span className="border-right"></span>
-                <NavLink onClick={toggleHandler} to="/h">
-                  <img src={MessageIcon} alt="Msg icon" /> <span>Message</span>
+                <NavLink onClick={toggleHandler} to="/uploadFiles">
+                  <FontAwesomeIcon icon={faFile} /> <span>Files</span>
                 </NavLink>
               </li>
             </ul>

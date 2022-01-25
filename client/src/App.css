@@ -1498,6 +1498,20 @@ line-height: 19px;
 text-align: right;
 color: #427A8E;
 }
+
+.report {
+  padding:20px
+}
+.report .header-text {
+text-align: left;
+}
+.report .header-text h5 {
+  font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+color: #427A8E;
+}
 /* Media Queries */
 
 @media only screen and (min-width: 1440px) {
