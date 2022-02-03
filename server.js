@@ -9,6 +9,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = 5000;
 const environment = "development";
 const mongoose = require("mongoose");
+const cron = require("node-cron");
 
 var http = require("http"),
   path = require("path"),
@@ -28,6 +29,7 @@ app.use(
 
 //
 const fileupload = require("express-fileupload");
+const { triggerEmailReminder } = require("./utils/cronjobs");
 app.use(fileupload());
 //cors
 app.use(cors());
@@ -48,6 +50,12 @@ const db = `mongodb://${dbUrl}${dbName}`;
     console.log(`Error! Connecting to MongoDB ${err}`);
   }
 })();
+
+//Cronjobs
+cron.schedule("0 */30 * * * *", () => {
+  console.log("running a task every minute");
+  triggerEmailReminder();
+});
 
 require("./routes/routes").configure(app);
 

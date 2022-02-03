@@ -88,7 +88,8 @@ function RegisterForm(props) {
       inviteState.firstName.length === 0 ||
       inviteState.lastName.length === 0 ||
       inviteState.email.length === 0 ||
-      inviteState.phone === ""
+      inviteState.phone === "" ||
+      inviteState.password !== inviteState.password2
     ) {
       return false;
     }
@@ -175,9 +176,7 @@ function RegisterForm(props) {
             </div>
             <div className="col-md-4 pt-05">
               <div className="app-field-div">
-                <label htmlFor="middleName">
-                  Middle Name <span className="text-danger">*</span>
-                </label>
+                <label htmlFor="middleName">Middle Name</label>
                 <input
                   onChange={(e) => inviteStateHandler(e)}
                   name="middleName"
@@ -425,7 +424,9 @@ function RegisterForm(props) {
                   inviteState.firstName.length === 0 ||
                   inviteState.lastName.length === 0 ||
                   inviteState.email.length === 0 ||
-                  inviteState.phone === ""
+                  inviteState.phone === "" ||
+                  inviteState.password.length < 8 ||
+                  inviteState.password !== inviteState.password2
                 }
                 onClick={() => saveHandler()}
                 className="save-button ml-30"

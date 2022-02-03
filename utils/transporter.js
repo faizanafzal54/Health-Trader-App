@@ -1,11 +1,12 @@
 let nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  // host: "smtp.gmail.com",
+  // service: "gmail",
+  host: "smtp.office365.com",
+  port: 587,
   auth: {
-    user: "cranehawk54@gmail.com",
-    pass: "Chawk7862924",
+    user: "myrecords@fountainlife.com",
+    pass: `8Dd6fshXaT`,
   },
 });
 

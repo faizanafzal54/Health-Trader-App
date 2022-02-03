@@ -470,6 +470,7 @@ function MyCircle() {
                       <div className="form-check">
                         <input
                           className="form-check-input"
+                          id="isTextReceiveEvery"
                           type="checkbox"
                           value={isTextReceiveEvery}
                           onChange={(e) =>
@@ -478,7 +479,7 @@ function MyCircle() {
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="isTextReceiveEvery"
                         >
                           Receive every notification
                         </label>
@@ -488,6 +489,7 @@ function MyCircle() {
                           className="form-check-input"
                           type="checkbox"
                           value={textDailyReport.isEnable}
+                          id="textDailyReportisEnable"
                           onChange={(e) =>
                             setTextDailyReport({
                               isEnable: e.target.checked,
@@ -497,7 +499,7 @@ function MyCircle() {
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="textDailyReportisEnable"
                         >
                           Daily report
                         </label>
@@ -531,6 +533,7 @@ function MyCircle() {
                           className="form-check-input"
                           type="checkbox"
                           value={textWeeklyReport.isEnable}
+                          id="textWeeklyReportEnable"
                           onChange={(e) =>
                             setTextWeeklyReport({
                               isEnable: e.target.checked,
@@ -540,7 +543,7 @@ function MyCircle() {
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="textWeeklyReportEnable"
                         >
                           Weekly report
                         </label>
@@ -636,6 +639,7 @@ function MyCircle() {
                         <input
                           className="form-check-input"
                           type="checkbox"
+                          id="emailDailyReportIsEnalbe"
                           value={emailDailyReport.isEnable}
                           onChange={(date) =>
                             setEmailDailyReport({
@@ -646,7 +650,7 @@ function MyCircle() {
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="emailDailyReportIsEnalbe"
                         >
                           Daily report
                         </label>
@@ -681,6 +685,7 @@ function MyCircle() {
                         <input
                           className="form-check-input"
                           type="checkbox"
+                          id="emailWeeklyReportenable"
                           value={emailWeeklyReport.isEnable}
                           onChange={(e) =>
                             setEmailWeeklyReport({
@@ -691,7 +696,7 @@ function MyCircle() {
                         />
                         <label
                           className="form-check-label text-muted"
-                          htmlFor="flexCheckDefault"
+                          htmlFor="emailWeeklyReportenable"
                         >
                           Weekly report
                         </label>

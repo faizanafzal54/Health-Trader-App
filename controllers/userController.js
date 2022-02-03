@@ -12,6 +12,7 @@ const passport = require("passport");
 const transporter = require("../utils/transporter");
 const req = require("express/lib/request");
 const saltRounds = 10;
+const appUrl = "http://18.116.180.161:5000";
 
 module.exports = {
   register: async (req, res) => {
@@ -73,7 +74,7 @@ module.exports = {
         { resetPasswordLink }
       );
       const mailOptions = {
-        from: "cranehawk54@gmail.com",
+        from: "myrecords@fountainlife.com",
         to: `${email}`,
         subject: "Reset Password -- Health Trader App",
         html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
@@ -94,7 +95,7 @@ module.exports = {
                 <td style="padding-left:40px; padding-right:40px; padding-top:0px;">
                   <p style="display:block; margin:0;   font-family:field-work-light; font-weight: normal; font-size:21px; line-height: 35px;">
                     Hello, <br/>
-                    Your Reset Password Link is <br/><a href="http://localhost:3000/resetPassword/${resetPasswordLink}">click here</a>
+                    Your Reset Password Link is <br/><a href="${appUrl}/resetPassword/${resetPasswordLink}">click here</a>
                 </td>
               </tr>
               <tr style="display:block; border-top:2px solid green;">
@@ -269,7 +270,7 @@ module.exports = {
         });
         sendResponse(null, req, res, { newUser, newCircle });
         const mailOptions = {
-          from: "cranehawk54@gmail.com",
+          from: "myrecords@fountainlife.com",
           to: `${email}`,
           subject: "Invitation for registeration-- Health Trader App",
           html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
@@ -290,9 +291,9 @@ module.exports = {
                   <td style="padding-left:40px; padding-right:40px; padding-top:0px;">
                     <p style="display:block; margin:0;   font-family:field-work-light; font-weight: normal; font-size:21px; line-height: 35px;">
                       Hello, <br/>
-                      Your app registration Link is <br/><a href="http://localhost:3000/register/${
-                        newUser.inviteLink
-                      }">click here</a>
+                      Your app registration Link is <br/><a href="${appUrl}/register/${
+            newUser.inviteLink
+          }">click here</a>
                   </td>
                 </tr>
                 <tr style="display:block; border-top:2px solid green;">
@@ -387,7 +388,6 @@ module.exports = {
 
       if (account !== null) {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        console.log(password);
         const registeredUser = await userDao.findOneAndUpdate(
           { email },
           {
@@ -470,7 +470,6 @@ module.exports = {
         uploadParams.Body = req.files?.image?.data;
         uploadParams.Key = `${userId}_profilepic_${req.files?.image?.name}`;
         const uploadedFile = await s3.upload(uploadParams).promise();
-        console.log(uploadedFile);
         const userRes = await updateImage(userId, uploadedFile.Key);
         sendResponse(null, req, res, { user: userRes[1][0] });
       } else {
@@ -488,7 +487,6 @@ module.exports = {
       sendResponse(null, req, res, { user: userRes[1][0] });
 
       const deletedObj = await s3.deleteObject(params).promise();
-      console.log(deletedObj);
     } catch (err) {
       sendResponse(err, req, res, err);
     }

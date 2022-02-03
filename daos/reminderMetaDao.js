@@ -78,4 +78,27 @@ module.exports = {
       throw error;
     }
   },
+
+  findByTimeForCron: async (gtDate, ltDate) => {
+    try {
+      const reminders = await ReminderMeta.find({
+        date: { $gte: gtDate, $lte: ltDate },
+        isActive: true,
+      })
+        .populate({
+          path: "reminderId",
+          populate: {
+            path: "groupId",
+          },
+        })
+        .populate("userId")
+        .populate("reminderTo")
+        .lean();
+      return reminders;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
 };

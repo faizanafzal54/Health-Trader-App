@@ -17,7 +17,8 @@ function ForgotPassword() {
     }
   };
 
-  const forgotPasswordHandler = () => {
+  const forgotPasswordHandler = (e) => {
+    e.preventDefault();
     dispatch(forgotPasswordAction(email));
   };
   return (

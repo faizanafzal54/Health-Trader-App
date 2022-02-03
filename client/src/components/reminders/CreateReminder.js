@@ -68,7 +68,7 @@ function CreateReminder() {
         location,
         comments,
         medicationGroup,
-        reminderTo: [reminderTo],
+        reminderTo: reminderTo === "" ? [] : [reminderTo],
       });
       const res = await getReminders(userState.user?._id);
       if (res.status === 200) {
