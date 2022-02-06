@@ -50,9 +50,9 @@ const emailTransport = (_email, _date) => {
                           <td style="padding-left:40px; padding-right:40px; padding-top:0px;">
                             <p style="display:block; margin:0;   font-family:field-work-light; font-weight: normal; font-size:21px; line-height: 35px;">
                               Hello, <br/>
-                              You have a reminder at ${formatAMPM(
+                              You have a reminder at ${new Date(
                                 _date
-                              )}. Go to <a href="${appUrl}">App</a>.
+                              ).toLocaleTimeString()}}. Go to <a href="${appUrl}">App</a>.
                           </td>
                         </tr>
                         <tr style="display:block; border-top:2px solid green;">
