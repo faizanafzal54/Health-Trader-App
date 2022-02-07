@@ -15,6 +15,15 @@ const saltRounds = 10;
 const appUrl = "http://18.116.180.161:5000";
 
 module.exports = {
+  changeTimeZone: async (req, res) => {
+    try {
+      const { userId, timeZone } = req.body;
+      await userDao.findOneAndUpdate({ _id: userId }, { timeZone });
+      sendResponse(null, req, res, {});
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
   register: async (req, res) => {
     try {
       const {
@@ -32,6 +41,7 @@ module.exports = {
         state,
         country,
         zipCode,
+        timeZone,
       } = req.body;
       const prevAccount = await userDao.findOneByEmail(email);
 
@@ -52,6 +62,7 @@ module.exports = {
           state,
           country,
           zipCode,
+          timeZone,
         });
 
         sendResponse(null, req, res, { newUser });
@@ -334,10 +345,20 @@ module.exports = {
         ownerId, //invited by
         notifications,
         userId, // user to edit
+        timeZone,
       } = req.body;
       const user = await userDao.findOneAndUpdate(
         { _id: userId },
-        { firstName, lastName, circle, notes, phone, email, notifications }
+        {
+          firstName,
+          lastName,
+          circle,
+          notes,
+          phone,
+          email,
+          notifications,
+          timeZone,
+        }
       );
 
       const mycircle = await mycircleDao.findOneAndUpdate(
@@ -383,6 +404,7 @@ module.exports = {
         city,
         state,
         zipCode,
+        timeZone,
       } = req.body;
       const account = await userDao.findOneWhere({ email, inviteLink });
 
@@ -406,6 +428,7 @@ module.exports = {
             isProfileComplete: true,
             inviteLink: "",
             inviteLinkDate: null,
+            timeZone,
           }
         );
         sendResponse(null, req, res, { user: registeredUser });
@@ -517,6 +540,7 @@ module.exports = {
         country,
         zipCode,
         emergencyContacts,
+        timeZone,
       } = req.body;
 
       const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -536,6 +560,7 @@ module.exports = {
           country,
           zipCode,
           emergencyContacts,
+          timeZone,
         }
       );
       sendResponse(null, req, res, { user: updatedUser });

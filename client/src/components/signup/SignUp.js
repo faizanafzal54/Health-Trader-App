@@ -59,6 +59,7 @@ const SignUp = () => {
       country: state.country,
       zip: state.zip,
       role: 1,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
     dispatch(signupAction(obj));
   };

@@ -13,11 +13,19 @@ const triggerEmailReminder = async () => {
     console.log(reminders.length);
     for (let reminder of reminders) {
       if (reminder.userId?.email) {
-        emailTransport(reminder.userId?.email, reminder.date);
+        emailTransport(
+          reminder.userId?.email,
+          reminder.date,
+          reminder.userId?.timeZone || "America/New_York"
+        );
       }
       for (let to of reminder.reminderTo) {
         if (to.email) {
-          emailTransport(to.email, reminder.date);
+          emailTransport(
+            to.email,
+            reminder.date,
+            reminder.userId?.timeZone || "America/New_York"
+          );
         }
       }
     }
@@ -26,7 +34,7 @@ const triggerEmailReminder = async () => {
   }
 };
 
-const emailTransport = (_email, _date) => {
+const emailTransport = (_email, _date, timeZone) => {
   console.log(_email);
   const mailOptions = {
     from: "myrecords@fountainlife.com",
@@ -52,7 +60,9 @@ const emailTransport = (_email, _date) => {
                               Hello, <br/>
                               You have a reminder at ${new Date(
                                 _date
-                              ).toLocaleTimeString()}}. Go to <a href="${appUrl}">App</a>.
+                              ).toLocaleString("en-US", {
+                                timeZone: timeZone,
+                              })}. Go to <a href="${appUrl}">App</a>.
                           </td>
                         </tr>
                         <tr style="display:block; border-top:2px solid green;">

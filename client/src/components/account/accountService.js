@@ -7,3 +7,10 @@ export const getProfile = async (userId) => {
 export const updateProfile = async (obj) => {
   return request.put("/users/update", obj);
 };
+
+export const changeTimeZone = async (userId) => {
+  return request.put("/users/changeTimeZone", {
+    userId,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
+};

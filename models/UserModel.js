@@ -106,6 +106,10 @@ const userSchema = new Schema({
       email: String,
     },
   ],
+  timeZone: {
+    type: String,
+    default: "America/New_York",
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;

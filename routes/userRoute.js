@@ -18,6 +18,7 @@ const {
   EditUser,
   deleteUser,
   getUser,
+  changeTimeZone,
 } = require("../controllers/userController");
 const { verifyToken } = require("../middleware/authValidator");
 
@@ -40,5 +41,5 @@ router.put("/removeProfilePicture", verifyToken, removeProfilePicture);
 router.put("/deactivate", verifyToken, deactivateAccount);
 router.put("/update", verifyToken, updateProfile);
 router.put("/changePassword", verifyToken, changePassword);
-
+router.put("/changeTimeZone", verifyToken, changeTimeZone);
 module.exports = router;

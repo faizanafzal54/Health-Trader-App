@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDateTime, getTime } from "../../../helpers/dateFormator";
 import { toastify } from "../../../actions/userActions";
 import { setReminderAction } from "../../../actions/reminderActions";
+import { changeTimeZone } from "../../account/accountService";
 
 function Timeline() {
   const [search, setSearch] = useState("");
@@ -31,7 +32,6 @@ function Timeline() {
   const __tempReminders = useSelector((state) => state.reminder);
   const dispatch = useDispatch();
 
- 
   useEffect(() => {
     getRemindersHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,6 +42,7 @@ function Timeline() {
   }, [__tempReminders]);
 
   const getRemindersHandler = async () => {
+    await changeTimeZone(userState._id);
     const res = await getReminders(userState._id);
     if (res.status === 200) {
       dispatch(setReminderAction(res.data.data.reminders));

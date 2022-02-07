@@ -113,6 +113,7 @@ function MyAccount(props) {
         updateProfileAction({
           userId,
           ...profileState,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         })
       );
     } catch (err) {

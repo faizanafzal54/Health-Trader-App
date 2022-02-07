@@ -94,7 +94,11 @@ function RegisterForm(props) {
       return false;
     }
     try {
-      const res = await completeRegistration({ inviteLink, ...inviteState });
+      const res = await completeRegistration({
+        inviteLink,
+        ...inviteState,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      });
       console.log(res);
       history.push("/login");
     } catch (err) {
