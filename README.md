@@ -1,4 +1,4 @@
-Health-Trader-App/ Patient Portal
+Health-Trader-App/Patient Portal
 
 Backend:
   * Node JS
