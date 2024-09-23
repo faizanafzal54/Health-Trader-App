@@ -37,7 +37,7 @@ const triggerEmailReminder = async () => {
 const emailTransport = (_email, _date, timeZone) => {
   console.log(_email);
   const mailOptions = {
-    from: "myrecords@fountainlife.com",
+    from: "",
     to: `${_email}`,
     subject: "Reminder-- Health Trader App",
     html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">

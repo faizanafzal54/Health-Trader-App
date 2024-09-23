@@ -85,7 +85,7 @@ module.exports = {
         { resetPasswordLink }
       );
       const mailOptions = {
-        from: "myrecords@fountainlife.com",
+        from: "",
         to: `${email}`,
         subject: "Reset Password -- Health Trader App",
         html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
@@ -281,7 +281,7 @@ module.exports = {
         });
         sendResponse(null, req, res, { newUser, newCircle });
         const mailOptions = {
-          from: "myrecords@fountainlife.com",
+          from: "",
           to: `${email}`,
           subject: "Invitation for registeration-- Health Trader App",
           html: `<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
