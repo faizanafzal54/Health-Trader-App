@@ -1,13 +1,19 @@
-Health-Trader-App
-Node v 16.13.0 Install node, npm, mongodb
+Health-Trader-App/ Patient Portal
 
-Frontend: React with Redux Thunk and functional components
+Backend:
+  * Node JS
+  * Express JS
+  * mongoose
+  Node v 16.13.0 
+    * Install node, npm, mongodb, pm2
+    * pmp2 start server.js
 
-npm install
-npm start
-npm run build
-Backend with Express JS, mongoose
+Frontend:
+  * React
+  * Redux Thunk
+  * CSS
+  Setup|
+     * npm install
+     * npm start
 
-npm install
-npm install pm2
-pm2 start server.js
+
