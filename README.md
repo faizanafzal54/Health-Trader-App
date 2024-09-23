@@ -1,7 +1,7 @@
 Health-Trader-App
 Node v 16.13.0 Install node, npm, mongodb
 
-Frontend: with Redux Thunk and functional components
+Frontend: React with Redux Thunk and functional components
 
 npm install
 npm start
