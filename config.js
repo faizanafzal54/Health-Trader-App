@@ -1,11 +1,11 @@
 module.exports = {
   development: {
-    jwtSecret: "!Has",
+    jwtSecret: "!Has", // jwt secret
     dbPath: "localhost:27017/",
     dbName: "healthTrader",
     facebookAuth: {
-      appId: "",
-      appSecret: "",
+      appId: "", // Facebook appId
+      appSecret: "", // Facebook App Secret
     },
   },
   test: {
