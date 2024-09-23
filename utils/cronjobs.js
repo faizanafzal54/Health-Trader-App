@@ -1,7 +1,7 @@
 const reminderMetaDao = require("../daos/reminderMetaDao");
 const transporter = require("./transporter");
 const { formatAMPM } = require("./utils");
-const appUrl = "http://18.116.180.161:5000";
+const appUrl = ""; // your app url
 
 const triggerEmailReminder = async () => {
   try {
@@ -10,7 +10,7 @@ const triggerEmailReminder = async () => {
     let templt = new Date();
     const ltDate = templt.setTime(templt.getTime() + 30 * 60 * 1000);
     const reminders = await reminderMetaDao.findByTimeForCron(gtDate, ltDate);
-    console.log(reminders.length);
+    
     for (let reminder of reminders) {
       if (reminder.userId?.email) {
         emailTransport(
