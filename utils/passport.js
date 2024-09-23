@@ -29,7 +29,7 @@ module.exports.facebookStrategy = () => {
             }
           }
         } catch (err) {
-          console.log("Error,", err);
+          console.log("Facebook strategy Error,", err);
           return done(err);
         }
       }
